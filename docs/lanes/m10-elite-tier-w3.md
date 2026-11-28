@@ -49,7 +49,7 @@ Chaos 305 Nicht-Elites + Elite-Cluster (2 je Typ), 640×360-Fenster bei 960×540
 | gargoyle Innen-Stufen (Offline) | 2 | **3** | ≥ 3 ✅ |
 | übrige 4 T4-Typen (Offline) | 2 | 2 — **nicht heilbar im Fenster** (neuer Palettenindex nötig) | ≥ 3 ❗ dokumentiert |
 | T4-Bucket gruen (Runtime) | 77,3 % | **74,5 %** | „≥ ~75 %“ — 74,5 % knapp darunter, **dominant erhalten** (gruen 74,5 vs. mittel-neutral 24,7 vs. blau 0,8); Trade-off wie im Refine (82 → 77,3), Priorität Terrain-Kontrast |
-| min Tier-Zentroid (Offline, exakt) | 41,8* | 41,8 | ≥ 30 ✅ |
+| min Tier-Zentroid (Offline, exakt) | 43,2 | **41,8** | ≥ 30 ✅ |
 | T2-dominant glut-braun (Runtime) | 83,2 % | **83,2 %** (unverändert) | ≥ 82 ✅ |
 | T0/T2-Zentroid (Offline, exakt) | 134,9 | 134,9 | ≥ 130 ✅ |
 | Amber-Rim-Anteil (A10) | 1,0 | **1,0** | 1,0 ✅ |
@@ -57,10 +57,11 @@ Chaos 305 Nicht-Elites + Elite-Cluster (2 je Typ), 640×360-Fenster bei 960×540
 | JS-Fehler / lebend / Elites / texMiss | 0 / 339 / 34 / 0 | 0 / 339 / 34 / 0 | ✅ |
 | Renderer (Pflicht) | Mesa Intel RPL-S (iGPU) | Mesa Intel RPL-S (iGPU) | kein SwiftShader ✅ |
 
-\* Offline-Baseline nach dem Refine-Stand (horror/gargoyle noch 0,7); das
-Chaos-gewichtete Offline-Subset (T4 gruen 75,9 %) liegt nahe, ist aber nicht
-identisch mit der Runtime-Metrik (2 Instanzen je Typ, ungewichtet) — die
-verbindliche gruen-Gegenprobe ist der Runtime-Lauf.
+\* Offline-Vorher-Guards im Refine-Stand (`guardsBaseline`, horror/gargoyle noch
+0,7): min Zentroid 43,2, T0/T2 134,9, Chaos-gewichtetes T4-gruen-Subset 78,7 %.
+Nach dem K1-Fix: 41,8 / 134,9 / 75,9 %. Das Chaos-gewichtete Offline-Subset liegt
+nahe an, ist aber nicht identisch mit der Runtime-Metrik (2 Instanzen je Typ,
+ungewichtet) — die verbindliche gruen-Gegenprobe ist der Runtime-Lauf.
 
 ### Verträge (unangetastet, geprüft durch Test-Suite)
 
@@ -86,7 +87,7 @@ davon lesbar relevant:
 | — (Ist: 31) | 67,6 % (paleMist 67,6 %) | 62,2 % | 75,9 % | Befund bestätigt |
 | 26 (blut-rot hell) | **0 %** | **0 %** | **65,4 % < ~75 %** | ❌ verletzt K1-Grenze |
 | 30 (marsh) | 29,8 % | 22,9 % | 87,3 % | ❌ liegt in der häufigen Grasrampe (28/29/30) — reintroduziert exakt den Refine-K1-Mangel (T4-Körper auf Grasfarben unlesbar); Fremd-Anteil bleibt zudem ~30 %/23 % |
-| 5/6/9/29 | 59,7–97,9 % | 59,7–90,5 % | 65,4–67,3 % | ❌ keine Verbesserung bzw. Grenzverletzung |
+| 5/6/9/29 | 32,4–97,9 % | 59,7–90,5 % | 65,4–67,3 % | ❌ keine Verbesserung bzw. Grenzverletzung |
 
 **Entscheidung: verworfen.** Kein per-Type-Dye macht beide Typen nachweislich
 lesbarer, ohne eine K1-Grenze (gruen ≥ ~75 % bzw. Terrain-Kontrast) zu verletzen:
@@ -101,16 +102,31 @@ Punkt bleibt dokumentiert; keine zweite Karte, kein zusätzliches Messen.
 - `shots/m10-elite-tier-w3-before.json/.png/-crop4x.png` — Baseline (Ist-Stand nach Refine-Merge)
 - `shots/m10-elite-tier-w3-k1.json/.png/-crop4x.png` — Final-Stand (= After, K2 verworfen)
 - `shots/m10-elite-tier-w3-analysis.json` — Offline-Suchlauf: K1-Baseline-/Kandidaten-/Adoption-Tabellen,
-  Guards (Vorher/Nachher, Chaos-gewichtete Runtime-Subsets), K2-Kandidaten-Tabelle
+  Guards (Vorher/Nachher, Chaos-gewichtete Runtime-Subsets), K2-Kandidaten-Tabelle.
+  Provenienz: der committete Lauf ist der Offline-Lauf im **Vorher**-Codezustand;
+  `k1.guards` rechnet über die expliziten Adoption-Mixes (= Nachher-Stand, 41,8/75,9 %),
+  `k1.guardsBaseline` über `eliteTierMixFor` (Vorher, 43,2/78,7 %) — Kandidaten- und
+  K2-Tabellen sind mischexplizit und standunabhängig; mit dem After-Lauf abgeglichen.
 - Renderer-String-Pflicht erfüllt: `ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S),
   OpenGL ES 3.2)` (iGPU, kein SwiftShader) in beiden Lauf-JSONs.
 
 ## Abnahme
 
-- `npx tsc --noEmit` grün, `npm run build` grün, `npm test` grün
-  (elite-tier-families 7, elite-rim 8, crowd-variety 6, enemy-palette 6).
-- art-director (streng, kommerziell auslieferbar, am 4x-Crop): siehe Karten-Notiz.
-- Reviewer: siehe Karten-Notiz.
+- `npx tsc --noEmit` grün, `npm run build` grün, `npm test` 1357/1357 grün
+  (elite-tier-families 7, elite-rim 11, crowd-variety 6, enemy-palette 6).
+- **art-director (streng, kommerziell auslieferbar, am 4x-Crop + eigenem Offline-Render
+  10x nearest): PASS 4/5, „muss neu": nichts.** Eigenverifikation deckt sich exakt mit
+  analysis.json (horror 1 → 2 Stufen `[31,9]`, gargoyle 2 → 3 `[31,9,7]` als
+  zusammenhängendes Brust-/Flügel-Band, kein Einzelpixel-Rauschen); Amber-Rim 1,0
+  alle 17 Typen in beiden Läufen; Palette/binäres Alpha/keine Mixel; T4-Familie
+  liest sich grün gegen Moorgras und T0–T3. Abwertungen (kein Muss, dokumentiert):
+  horror 2. Stufe dünn (11/242 Innenpixel ≈ 4,5 %), 4 T4-Typen bei 2 Stufen (neuer
+  Palettenindex nötig), gruen 74,5 % vs. ~75 %.
+- **Reviewer: PASS** — Scope sauber (nur enemySprites.ts + elite-tier-families.test.ts +
+  Doku/shots; tiles.ts/EnemyPool/Run.ts/gen-fx.ts unberührt), `eliteTierMixFor` bleibt
+  reine deterministische Funktion, K1-Test echt nicht-tautologisch (Entfernen aus dem
+  Set → Mix 0,7 → Stufen 1/2 → rot), 30/30 Zieltests grün. 3 Doku-Zahlen korrigiert
+  (min Zentroid Vorher 43,2, K2-Zeile 32,4–97,9 %, elite-rim 11) + Testtitel Fine-Mix.
 - Mess-Skript-Budget: Suchlauf 2 Edit-Iterationen (Modell-Validierung + Label-Fix
   via stash/run — keine Tuning-Schleife), Runtime-Läufe je Stand 1x.
 

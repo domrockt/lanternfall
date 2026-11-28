@@ -171,7 +171,7 @@ describe("elite-tier-families: Faerbe-Klassen je Tier", () => {
     }
   });
 
-  it("K1 (#7526): T4-Stufenkollaps — horror >= 2, gargoyle >= 3 Innen-Stufen (Soft-Mix 0,6)", () => {
+  it("K1 (#7526): T4-Stufenkollaps — horror >= 2, gargoyle >= 3 Innen-Stufen (Fine-Mix 0,6)", () => {
     const targets: Record<string, number> = { horror: 2, gargoyle: 3 };
     for (const [id, min] of Object.entries(targets)) {
       const index = ENEMY_LIST.findIndex((d) => d.id === id);
