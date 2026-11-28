@@ -6,9 +6,13 @@
  * 2–6-Spielpixel-Blöcke) + Glow-Rampen, die auf Amber/Lantern enden statt Weiß.
  * K3/K4 ergänzen Gradient-Quantisierung (textures.ts) und ADD-Alpha-Deckel.
  */
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 // @ts-ignore — Node-Typen sind im Repo nicht installiert; Vitest stellt fs bereit.
 import { readFileSync } from "node:fs";
+
+vi.mock("phaser", () => ({
+  default: { BlendModes: { ADD: 1, NORMAL: 0 }, Scenes: { Events: { SHUTDOWN: "shutdown" } } },
+}));
 import {
   EVOLUTION_SIGNATURES,
   FX_MIXEL_BASES,
@@ -23,6 +27,7 @@ import {
   mixelMaxLevel,
   thunderSignatureFrame,
 } from "../src/gfx/gen-fx";
+import { ADD_ALPHA_CAP, addAlphaClamp } from "../src/systems/FxSystem";
 import { LIGHT_EDGE_STEPS, lightEdgeAlphaFor, vignetteSteps } from "../src/gfx/textures";
 
 const TEXTURES_TS = readFileSync(new URL("../src/gfx/textures.ts", import.meta.url), "utf8");
@@ -143,6 +148,27 @@ describe("K2: Gewittersiegel-Signatur in Zielgroesse (128x128, Draw-Scale 1)", (
         }
       }
     }
+  });
+});
+
+describe("K4: ADD-Alpha-Boden/-Deckel (FxSystem + ParticleSystem)", () => {
+  const FX_TS = readFileSync(new URL("../src/systems/FxSystem.ts", import.meta.url), "utf8");
+
+  it("addAlphaClamp klemmt in [0, 0.8], NaN -> 0", () => {
+    expect(ADD_ALPHA_CAP).toBe(0.8);
+    expect(addAlphaClamp(0.9)).toBe(0.8);
+    expect(addAlphaClamp(0.95)).toBe(0.8);
+    expect(addAlphaClamp(0.5)).toBe(0.5);
+    expect(addAlphaClamp(0)).toBe(0);
+    expect(addAlphaClamp(-1)).toBe(0);
+    expect(addAlphaClamp(Number.NaN)).toBe(0);
+    expect(addAlphaClamp(0.95, 0.6)).toBe(0.6); // Deckel injizierbar (Tests/LOD)
+  });
+
+  it("beide Pools klemmen ADD-alphaFrom (Quelltext-Guard, bossFx ausgenommen)", () => {
+    expect((FX_TS.match(/if \(additive\) alphaFrom = addAlphaClamp\(alphaFrom\);/g) ?? []).length).toBe(2);
+    // Boss-FX (NORMAL) laufen VOR dem Deckel und sind nicht geklemmt:
+    expect(FX_TS).toMatch(/if \(bossFx\) alphaFrom = Math\.max\(alphaFrom, BOSS_FX_ALPHA_FLOOR\);\s*\n\s*\/\/ K4/);
   });
 });
 
