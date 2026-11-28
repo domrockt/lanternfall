@@ -4,8 +4,24 @@ export function enemyHpScale(elapsedSeconds: number, tier: number): number {
   const t = Math.max(0, elapsedSeconds);
   // M6-Balance: flacherer Frühverlauf (Bot soll bis 20–28 min kommen), im
   // Endgame weiterhin deutlich skalierend.
-  return 1 + t / 480 + tier * 0.10 + Math.pow(t / 900, 1.35) * 0.50;
+  const base = 1 + t / 480 + tier * 0.10 + Math.pow(t / 900, 1.35) * 0.50;
+  // M10-Endgame (Lane m10-balance-endgame): ab Minute 18 (zwei Minuten vor dem
+  // Golem-Boss) wird die HP-Kurve über 240 s auf max. −25 % entlastet. Befund
+  // Nachher-r1/r2: der Masse-Deckel allein verschiebt die Todeschwelle nicht
+  // sicher — die Dichte am Spieler wird von der Spawn-Ankunftsrate bestimmt,
+  // die nur über schnellere Kills (niedrigere HP) gesenkt wird. Minute 0–18
+  // bleibt bitgleich (Relief startet exakt bei t = 1080 s mit 0). Boss-HP
+  // kommt aus src/data/bosses und ist davon nicht berührt.
+  const relief = HP_RELIEF_MAX * Math.min(1, Math.max(0, (t - HP_RELIEF_START_S) / HP_RELIEF_RAMP_S));
+  return base * (1 - relief);
 }
+
+/** Max. HP-Entlastung im Endgame (−25 % ab Minute 22). */
+export const HP_RELIEF_MAX = 0.25;
+/** Start der HP-Entlastung: Minute 18 = 1080 s. */
+export const HP_RELIEF_START_S = 1080;
+/** Rampe auf den vollen Reliefwert: 240 s (voll ab Minute 22). */
+export const HP_RELIEF_RAMP_S = 240;
 
 export function enemyDamageScale(elapsedSeconds: number): number {
   const t = Math.max(0, elapsedSeconds);

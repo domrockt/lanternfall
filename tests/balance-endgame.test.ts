@@ -1,5 +1,8 @@
 import { describe, expect, it } from "vitest";
 import {
+  HP_RELIEF_MAX,
+  HP_RELIEF_RAMP_S,
+  HP_RELIEF_START_S,
   LATE_GAME_ACTIVE_CAP,
   LATE_GAME_START_MINUTE,
   maxActiveEnemies,
@@ -51,13 +54,39 @@ describe("M10 Endgame-Balance: maxActiveEnemies-Late-Deckel", () => {
   });
 
   it("Restliche Skalierungshebel sind unveraendert (Regression)", () => {
-    // HP-/Schadenskurven und Spawnraten-Faktor bleiben bewusst unangetastet:
-    // der Late-Deckel ist der einzige Hebel dieser Lane.
-    expect(enemyHpScale(0, 0)).toBe(1);
-    expect(enemyHpScale(20 * 60, 4)).toBeCloseTo(1 + 1200 / 480 + 0.4 + Math.pow(1200 / 900, 1.35) * 0.5, 10);
+    // Schadenskurve und Spawnraten-Faktor bleiben bewusst unangetastet.
     expect(enemyDamageScale(30 * 60)).toBeCloseTo(1 + 1800 / 5000 + Math.pow(1800 / 5000, 2) * 0.35, 10);
     expect(spawnRateFactor(640, 360)).toBe(1);
     expect(spawnRateFactor(960, 540)).toBeCloseTo(Math.sqrt(1.5) * 0.85, 10);
+  });
+});
+
+describe("M10 Endgame-Balance: enemyHpScale-Late-Relief", () => {
+  const baseHp = (t: number, tier: number) => 1 + t / 480 + tier * 0.10 + Math.pow(t / 900, 1.35) * 0.5;
+
+  it("Minute 0–18 bleibt bitgleich zur M6-Kurve (Relief startet exakt bei t=1080 mit 0)", () => {
+    for (const t of [0, 300, 600, 900, 1079]) {
+      expect(enemyHpScale(t, 4), `t=${t}`).toBeCloseTo(baseHp(t, 4), 10);
+    }
+    expect(enemyHpScale(1080, 4)).toBeCloseTo(baseHp(1080, 4), 10);
+    expect(HP_RELIEF_START_S).toBe(1080);
+  });
+
+  it("Rampe 240 s auf −25 %, danach konstant (deterministisch)", () => {
+    expect(HP_RELIEF_MAX).toBe(0.25);
+    expect(HP_RELIEF_RAMP_S).toBe(240);
+    // Mitte der Rampe (Minute 20): −12,5 %.
+    expect(enemyHpScale(1200, 4)).toBeCloseTo(baseHp(1200, 4) * 0.875, 10);
+    // Volles Relief ab Minute 22.
+    for (const t of [1320, 1500, 1800]) {
+      expect(enemyHpScale(t, 4), `t=${t}`).toBeCloseTo(baseHp(t, 4) * 0.75, 10);
+    }
+    // Relief korrigiert nur nach unten: nie ueber der Basis, nie unter Basis·(1−HP_RELIEF_MAX).
+    for (let t = 0; t <= 1800; t += 7) {
+      const hp = enemyHpScale(t, 4);
+      expect(hp).toBeLessThanOrEqual(baseHp(t, 4) + 1e-9);
+      expect(hp).toBeGreaterThanOrEqual(baseHp(t, 4) * (1 - HP_RELIEF_MAX) - 1e-9);
+    }
   });
 });
 
