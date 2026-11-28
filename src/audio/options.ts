@@ -72,15 +72,21 @@ export function loadOptions(storage: StorageLike | null | undefined): Options {
     const raw = storage.getItem(OPTIONS_KEY);
     if (!raw) return { ...DEFAULT_OPTIONS };
     const parsed = JSON.parse(raw) as Partial<Options>;
+    // Guard: nicht-numerische/NaN-Felder fallen auf den Feld-Default zurück
+    // (statt über clampVolume auf 0 zu rutschen), korrupte Booleans auf Default.
+    const num = (v: unknown, fallback: number): number => {
+      const n = Number(v);
+      return Number.isFinite(n) ? n : fallback;
+    };
+    const bool = (v: unknown, fallback: boolean): boolean =>
+      typeof v === "boolean" ? v : fallback;
     return {
-      music: clampVolume(Number(parsed.music ?? DEFAULT_OPTIONS.music)),
-      sfx: clampVolume(Number(parsed.sfx ?? DEFAULT_OPTIONS.sfx)),
-      shake: typeof parsed.shake === "boolean" ? parsed.shake : DEFAULT_OPTIONS.shake,
-      damageNumbers: typeof parsed.damageNumbers === "boolean"
-        ? parsed.damageNumbers
-        : DEFAULT_OPTIONS.damageNumbers,
-      muted: typeof parsed.muted === "boolean" ? parsed.muted : DEFAULT_OPTIONS.muted,
-      scale: clampScale(Number(parsed.scale ?? DEFAULT_OPTIONS.scale)),
+      music: clampVolume(num(parsed.music, DEFAULT_OPTIONS.music)),
+      sfx: clampVolume(num(parsed.sfx, DEFAULT_OPTIONS.sfx)),
+      shake: bool(parsed.shake, DEFAULT_OPTIONS.shake),
+      damageNumbers: bool(parsed.damageNumbers, DEFAULT_OPTIONS.damageNumbers),
+      muted: bool(parsed.muted, DEFAULT_OPTIONS.muted),
+      scale: clampScale(num(parsed.scale, DEFAULT_OPTIONS.scale)),
     };
   } catch {
     return { ...DEFAULT_OPTIONS };
