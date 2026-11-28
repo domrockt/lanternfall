@@ -196,3 +196,127 @@ export function shotVisualsDistinct(): boolean {
   const cores = new Set(list.map((v) => v.core));
   return keys.size === 4 && shapes.size === 4 && cores.size === 4;
 }
+
+// ---------------------------------------------------------------------------
+// Boss-Lure-Fairness (M10-boss-lure-fair)
+// Reine Regeln für Verfolgungs-/Aggro-Verhalten, bewusst in dieser Datei
+// (Claim der Lane), damit BossSystem.ts dünn bleibt und alles unit-testbar
+// ist. KEINE Balance-Werte: Boss-HP/Grundtempo/Kontaktschaden stehen in
+// src/data/bosses.ts und bleiben unverändert (Boss-Dauern 20-60 s,
+// Beleg shots/balance-main.json + docs/lanes/m10-boss-lure-fair.md).
+// ---------------------------------------------------------------------------
+
+/** Radius der Spawn-Zone (px); halbe kurze View-Seite (640x360 → 320). */
+export const BOSS_LEASH_RADIUS = 320;
+/** Toleranz (px), innerhalb derer der Spieler die Zone noch "bewohnt". */
+export const BOSS_LEASH_RELEASE_SLACK = 40;
+/** Anteil, mit dem die Bewegung zur Zone zurückgemischt wird (0..1). */
+export const BOSS_LEASH_BLEND = 0.55;
+/** Ab dieser Spielerentfernung gilt der Boss als abgedriftet (px). */
+export const BOSS_CATCHUP_DIST = 360;
+/** So lange (s) jenseits von BOSS_CATCHUP_DIST, bevor Catch-up greift. */
+export const BOSS_CATCHUP_AFTER_S = 2;
+/** Verfolgungs-Faktor während des Catch-up (nur bis ENGAGE_DIST aktiv). */
+export const BOSS_CATCHUP_SPEED_MUL = 1.2;
+/** Obere Gesamttempo-Grenze während Catch-up (px/s, unter Mira-Tempo 62). */
+export const BOSS_CATCHUP_MAX_SPEED = 60;
+/** Catch-up endet, wenn der Boss wieder so nah ist (px). */
+export const BOSS_CATCHUP_ENGAGE_DIST = 220;
+/** Mindest-Schadensfenster (s), ab dem ein Zielwechsel fair ist. */
+export const BOSS_MIN_DAMAGE_WINDOW_S = 0.3;
+/** Boss gilt bis zu dieser View-Marge (px) als sichtbar. */
+export const BOSS_ONSCREEN_MARGIN = 48;
+/** Zusätzliche Klemme (px) beim Sichtbarkeits-Clamp um den Flächentrand. */
+export const BOSS_VIEW_CLAMP_MARGIN = 2;
+
+/** Sichtbarer Weltbereich (Kamera worldView). */
+export interface ViewRect {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+/**
+ * Klemmt den Mittelpunkt einer (Schadens-)Fläche in den sichtbaren
+ * Weltbereich: Warnfläche und Trefferfläche liegen komplett im View, auch
+ * wenn die Kamera an der Weltkante geklemmt ist. Rein geometrisch, ohne
+ * Änderung von Schaden/Radius/Warnzeit.
+ */
+export function clampPointToView(
+  x: number, y: number, radius: number, view: ViewRect,
+): { x: number; y: number } {
+  const m = radius + BOSS_VIEW_CLAMP_MARGIN;
+  if (view.width < 2 * m || view.height < 2 * m) {
+    return { x: view.x + view.width / 2, y: view.y + view.height / 2 };
+  }
+  return {
+    x: Math.min(Math.max(x, view.x + m), view.x + view.width - m),
+    y: Math.min(Math.max(y, view.y + m), view.y + view.height - m),
+  };
+}
+
+/**
+ * Sanfter Leash: Der Boss verlässt die Spawn-Zone nicht dauerhaft. Solange
+ * der Spieler die Zone (fast) noch bewohnt, wird die Bewegung anteilig zur
+ * Zone zurückgemischt; hat der Spieler die Arena selbst verlassen, wird der
+ * Leash gelöst (der Boss muss mitkommen, sonst stockt der Kampf).
+ */
+export function bossLeashSteer(
+  bossX: number, bossY: number, spawnX: number, spawnY: number,
+  playerX: number, playerY: number, moveX: number, moveY: number,
+): { mx: number; my: number; leashed: boolean } {
+  const dx = bossX - spawnX;
+  const dy = bossY - spawnY;
+  const dSpawn = Math.hypot(dx, dy);
+  if (dSpawn <= BOSS_LEASH_RADIUS || dSpawn === 0) {
+    return { mx: moveX, my: moveY, leashed: false };
+  }
+  const dPlayer = Math.hypot(playerX - spawnX, playerY - spawnY);
+  if (dPlayer > BOSS_LEASH_RADIUS + BOSS_LEASH_RELEASE_SLACK) {
+    return { mx: moveX, my: moveY, leashed: false };
+  }
+  const keep = 1 - BOSS_LEASH_BLEND;
+  return {
+    mx: moveX * keep + (-dx / dSpawn) * BOSS_LEASH_BLEND,
+    my: moveY * keep + (-dy / dSpawn) * BOSS_LEASH_BLEND,
+    leashed: true,
+  };
+}
+
+/**
+ * Catch-up-Tempo: Ein Boss, das länger als BOSS_CATCHUP_AFTER_S weiter als
+ * BOSS_CATCHUP_DIST vom Spieler entfernt ist, holt deterministisch auf
+ * (Faktor auf dem Grundtempo, hart geklemmt unter dem Spielertempo), bis er
+ * wieder in Engagement-Distanz ist. `farSeconds` akkumuliert das System.
+ */
+export function bossCatchupSpeed(
+  baseSpeed: number, sprintMul: number, distToPlayer: number, farSeconds: number,
+): number {
+  const engaged = distToPlayer <= BOSS_CATCHUP_ENGAGE_DIST;
+  const chasing = distToPlayer > BOSS_CATCHUP_DIST && farSeconds >= BOSS_CATCHUP_AFTER_S;
+  if (!chasing || engaged) return baseSpeed * sprintMul;
+  return Math.min(baseSpeed * sprintMul * BOSS_CATCHUP_SPEED_MUL, BOSS_CATCHUP_MAX_SPEED);
+}
+
+/**
+ * Zielwechsel-Regel: Ein Angriff darf nur umgeplant werden, wenn das
+ * Schadensfenster (Telegraph + Wirkzeit) mindestens fair lang bleibt.
+ * Kurze Fenster (< 0,3 s) dürfen nicht (mehr) aufs Ziel gelegt werden.
+ */
+export function canRetargetAttack(windowS: number): boolean {
+  return windowS >= BOSS_MIN_DAMAGE_WINDOW_S;
+}
+
+/** Kürzester Telegraph aller Boss-Angriffe (Guard-Datenquelle). */
+export function minBossAttackTelegraph(): number {
+  let min = Number.POSITIVE_INFINITY;
+  for (const phases of Object.values(BOSS_ATTACKS)) {
+    for (const phase of phases) {
+      for (const attack of phase) {
+        if (attack.telegraph < min) min = attack.telegraph;
+      }
+    }
+  }
+  return min;
+}

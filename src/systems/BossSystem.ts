@@ -5,7 +5,9 @@ import { BOSSES } from "../data/bosses";
 import { ENEMIES } from "../data/enemies";
 import type { EnemyDef } from "../data/types";
 import type { Rng } from "../logic/rng";
-import { attacksFor, bossHpColorIndex, bossPhase, nextBossAttack } from "../logic/bosses";
+import { attacksFor, bossHpColorIndex, bossPhase, nextBossAttack,
+  bossCatchupSpeed, bossLeashSteer, clampPointToView, isPointInView,
+  BOSS_CATCHUP_DIST, BOSS_ONSCREEN_MARGIN, type ViewRect } from "../logic/bosses";
 import type { EnemyPool, EnemyRuntime } from "./EnemyPool";
 import type { EnemyProjectilePool } from "./EnemyProjectiles";
 import type { HazardSystem } from "./Hazards";
@@ -23,6 +25,11 @@ interface BossAgent {
   timer: number;
   pending: PendingAction[];
   phase: number;
+  /** Spawn-Zone (Leash-Anker) dieses Bosses. */
+  spawnX: number;
+  spawnY: number;
+  /** Sekunden in Folge jenseits der Catch-up-Distanz (M10-boss-lure-fair). */
+  farSeconds: number;
 }
 
 export interface BossInfo {
@@ -228,7 +235,7 @@ export class BossSystem {
     enemy.bossPhase = 1;
     enemy.sprite.setDepth(9);
     enemy.aura.setVisible(false);
-    this.bosses.push({ enemy, uid: enemy.uid, timer: 1.2, pending: [], phase: 1 });
+    this.bosses.push({ enemy, uid: enemy.uid, timer: 1.2, pending: [], phase: 1, spawnX: x, spawnY: y, farSeconds: 0 });
     this.scene.events.emit("bossWarn", { index, name: boss.name });
     this.camera.shake(260, 0.004);
     return enemy;
@@ -282,20 +289,51 @@ export class BossSystem {
         mx = -ny * 0.6;
         my = nx * 0.6;
       }
-      // Grundtempo aus src/data/bosses.ts (<= 90 % Spielertempo). Ausnahme ist
-      // nur die finale Phase des Endbosses: kurzfristiger Verfolgungs-Sprint,
-      // die Gefahr bleibt primär an Mechaniken gebunden.
-      const speed = boss.speed * (boss.bossIndex === 5 && phase === 3 ? 1.25 : 1);
+      // M10-boss-lure-fair: sanfter Leash — die Spawn-Zone wird nicht dauerhaft
+      // verlassen, solange der Spieler sie noch bewohnt (reine Regel in logic).
+      const steer = bossLeashSteer(
+        boss.x, boss.y, agent.spawnX, agent.spawnY, playerX, playerY, mx, my,
+      );
+      mx = steer.mx;
+      my = steer.my;
+      // M10-boss-lure-fair: Catch-up — ein abgedrifteter Boss (AutoPlay/500+
+      // Gegner) holt deterministisch auf, bis er wieder im Kampf steht. Das
+      // Grundtempo aus src/data/bosses.ts bleibt unverändert (kein Balance-
+      // Eingriff; der Faktor greift nur jenseits der Drift-Schwelle).
+      agent.farSeconds = dist > BOSS_CATCHUP_DIST ? agent.farSeconds + dt : 0;
+      const speed = bossCatchupSpeed(
+        boss.speed,
+        boss.bossIndex === 5 && phase === 3 ? 1.25 : 1,
+        dist,
+        agent.farSeconds,
+      );
       boss.x += mx * speed * dt;
       boss.y += my * speed * dt;
       boss.x = Phaser.Math.Clamp(boss.x, 20, 4096 - 20);
       boss.y = Phaser.Math.Clamp(boss.y, 20, 4096 - 20);
 
-      agent.timer -= dt;
-      if (agent.timer <= 0) {
-        agent.timer = this.launch(agent, playerX, playerY);
+      // M10-boss-lure-fair: keine Angriffe ohne Sichtbarkeit — solange der
+      // Boss außerhalb des Views steht, wird der Angriffs-Timer angehalten
+      // (Telegraph und Schadensfläche wären sonst unsichtbar). Die Bewegung
+      // läuft weiter; der Catch-up holt den Boss zurück ins Bild.
+      if (isPointInView(boss.x, boss.y, this.viewRect(), BOSS_ONSCREEN_MARGIN)) {
+        agent.timer -= dt;
+        if (agent.timer <= 0) {
+          agent.timer = this.launch(agent, playerX, playerY);
+        }
       }
     }
+  }
+
+  /** Sichtbarer Weltbereich (Kamera worldView) als flaches Rect. */
+  private viewRect(): ViewRect {
+    const v = this.camera.worldView;
+    return { x: v.x, y: v.y, width: v.width, height: v.height };
+  }
+
+  /** Klemmt eine Schadensfläche in den sichtbaren Bereich (reine Regel). */
+  private clampInView(x: number, y: number, radius: number): { x: number; y: number } {
+    return clampPointToView(x, y, radius, this.viewRect());
   }
 
   /** Startet einen Boss-Angriff; liefert die Pause bis zum nächsten Angriff. */
@@ -310,9 +348,12 @@ export class BossSystem {
     switch (attack.kind) {
       case "jump_slam": {
         // Landepunkt vor dem Spieler markieren, Boss springt sichtbar dorthin.
-        const lx = playerX + (boss.x - playerX) * 0.12;
-        const ly = playerY + (boss.y - playerY) * 0.12;
-        this.hazards.spawnCircle(lx, ly, {
+        // M10-boss-lure-fair: an geklemmter Weltkante bleibt die Warnfläche
+        // im View (Klemme ändert weder Schaden noch Warnzeit).
+        const lx0 = playerX + (boss.x - playerX) * 0.12;
+        const ly0 = playerY + (boss.y - playerY) * 0.12;
+        const cl = this.clampInView(lx0, ly0, r);
+        this.hazards.spawnCircle(cl.x, cl.y, {
           warn: attack.telegraph, linger: 0.12, damage, radius: r,
           source: `boss${index}:jump`, color: 25,
         });
@@ -325,9 +366,12 @@ export class BossSystem {
       case "poison_puddles": {
         for (let i = 0; i < 3; i++) {
           const a = this.rng.next() * Math.PI * 2;
-          const px = playerX + Math.cos(a) * (28 + i * 22);
-          const py = playerY + Math.sin(a) * (28 + i * 22);
-          this.hazards.spawnCircle(px, py, {
+          const p = this.clampInView(
+            playerX + Math.cos(a) * (28 + i * 22),
+            playerY + Math.sin(a) * (28 + i * 22),
+            r,
+          );
+          this.hazards.spawnCircle(p.x, p.y, {
             warn: attack.telegraph, linger: 4.5, tick: 0.6, damage,
             radius: r, activeTexture: "puddle_poison", source: `boss${index}:poison`,
           });
@@ -389,7 +433,8 @@ export class BossSystem {
         for (let i = 0; i < 5; i++) {
           const a = this.rng.next() * Math.PI * 2;
           const d = 20 + this.rng.next() * 95;
-          this.hazards.spawnCircle(playerX + Math.cos(a) * d, playerY + Math.sin(a) * d, {
+          const p = this.clampInView(playerX + Math.cos(a) * d, playerY + Math.sin(a) * d, r);
+          this.hazards.spawnCircle(p.x, p.y, {
             warn: attack.telegraph, linger: 0.1, damage, radius: r, source: `boss${index}:stone`, color: 25,
           });
         }
@@ -428,7 +473,10 @@ export class BossSystem {
         const count = 8;
         for (let i = 0; i < count; i++) {
           const a = (i / count) * Math.PI * 2 + this.rng.next() * 0.1;
-          this.hazards.spawnCircle(playerX + Math.cos(a) * 98, playerY + Math.sin(a) * 98, {
+          const p = this.clampInView(
+            playerX + Math.cos(a) * 98, playerY + Math.sin(a) * 98, r,
+          );
+          this.hazards.spawnCircle(p.x, p.y, {
             warn: attack.telegraph, linger: 0.3, damage, radius: r, source: `boss${index}:thornring`, color: 25,
           });
         }

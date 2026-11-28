@@ -1,0 +1,536 @@
+{
+  "tag": "after",
+  "generatedAt": "2026-11-28T03:58:52.538Z",
+  "matrix": {
+    "bosses": 6,
+    "seeds": [
+      101,
+      202,
+      404
+    ],
+    "simSecondsPerBoss": 30,
+    "timeScale": 3,
+    "crowd": 500
+  },
+  "thresholds": {
+    "leashRadius": 320,
+    "catchupAfterS": 2,
+    "viewMargin": 8
+  },
+  "totals": {
+    "runs": 18,
+    "damageWithoutVisibility": 0,
+    "leashViolations": 0,
+    "meanOffscreenFraction": 0.03,
+    "maxConsecOffscreenS": 2.6,
+    "maxDistPlayer": 377.8,
+    "hazardTriggers": 179
+  },
+  "jsErrors": 0,
+  "perSeed": [
+    {
+      "seed": 101,
+      "bosses": [
+        {
+          "samples": 83,
+          "distPlayer": {
+            "mean": 193,
+            "max": 317.6
+          },
+          "distSpawn": {
+            "mean": 737.3,
+            "max": 1470
+          },
+          "offscreenFraction": 0.19,
+          "maxConsecOffscreenS": 1.9,
+          "driftEvents": 0,
+          "leashViolations": 0,
+          "maxLeashViolationS": 0,
+          "hazardTriggers": 11,
+          "damageWithoutVisibility": 0,
+          "noVisDetail": [],
+          "seed": 101,
+          "index": 0,
+          "spawn": {
+            "x": 2192,
+            "y": 2036
+          },
+          "simCovered": 29.5,
+          "diag": []
+        },
+        {
+          "samples": 83,
+          "distPlayer": {
+            "mean": 113.4,
+            "max": 208.8
+          },
+          "distSpawn": {
+            "mean": 482.8,
+            "max": 896.4
+          },
+          "offscreenFraction": 0,
+          "maxConsecOffscreenS": 0,
+          "driftEvents": 0,
+          "leashViolations": 0,
+          "maxLeashViolationS": 0,
+          "hazardTriggers": 0,
+          "damageWithoutVisibility": 0,
+          "noVisDetail": [],
+          "seed": 101,
+          "index": 1,
+          "spawn": {
+            "x": 1030,
+            "y": 3583
+          },
+          "simCovered": 29.3,
+          "diag": []
+        },
+        {
+          "samples": 83,
+          "distPlayer": {
+            "mean": 77.3,
+            "max": 86.2
+          },
+          "distSpawn": {
+            "mean": 72.4,
+            "max": 89.8
+          },
+          "offscreenFraction": 0,
+          "maxConsecOffscreenS": 0,
+          "driftEvents": 0,
+          "leashViolations": 0,
+          "maxLeashViolationS": 0,
+          "hazardTriggers": 1,
+          "damageWithoutVisibility": 0,
+          "noVisDetail": [],
+          "seed": 101,
+          "index": 2,
+          "spawn": {
+            "x": 331,
+            "y": 4066
+          },
+          "simCovered": 29.5,
+          "diag": []
+        },
+        {
+          "samples": 83,
+          "distPlayer": {
+            "mean": 85.5,
+            "max": 127
+          },
+          "distSpawn": {
+            "mean": 180.9,
+            "max": 211.8
+          },
+          "offscreenFraction": 0,
+          "maxConsecOffscreenS": 0,
+          "driftEvents": 0,
+          "leashViolations": 0,
+          "maxLeashViolationS": 0,
+          "hazardTriggers": 11,
+          "damageWithoutVisibility": 0,
+          "noVisDetail": [],
+          "seed": 101,
+          "index": 3,
+          "spawn": {
+            "x": 450,
+            "y": 3977
+          },
+          "simCovered": 29.5,
+          "diag": []
+        },
+        {
+          "samples": 83,
+          "distPlayer": {
+            "mean": 84.3,
+            "max": 109.2
+          },
+          "distSpawn": {
+            "mean": 87.3,
+            "max": 177
+          },
+          "offscreenFraction": 0,
+          "maxConsecOffscreenS": 0,
+          "driftEvents": 0,
+          "leashViolations": 0,
+          "maxLeashViolationS": 0,
+          "hazardTriggers": 2,
+          "damageWithoutVisibility": 0,
+          "noVisDetail": [],
+          "seed": 101,
+          "index": 4,
+          "spawn": {
+            "x": 231,
+            "y": 4066
+          },
+          "simCovered": 29.5,
+          "diag": []
+        },
+        {
+          "samples": 83,
+          "distPlayer": {
+            "mean": 85.6,
+            "max": 122.1
+          },
+          "distSpawn": {
+            "mean": 59.7,
+            "max": 73.1
+          },
+          "offscreenFraction": 0,
+          "maxConsecOffscreenS": 0,
+          "driftEvents": 0,
+          "leashViolations": 0,
+          "maxLeashViolationS": 0,
+          "hazardTriggers": 32,
+          "damageWithoutVisibility": 0,
+          "noVisDetail": [],
+          "seed": 101,
+          "index": 5,
+          "spawn": {
+            "x": 300,
+            "y": 4066
+          },
+          "simCovered": 29.4,
+          "diag": []
+        }
+      ],
+      "jsErrors": 0
+    },
+    {
+      "seed": 202,
+      "bosses": [
+        {
+          "samples": 83,
+          "distPlayer": {
+            "mean": 159.4,
+            "max": 224.2
+          },
+          "distSpawn": {
+            "mean": 664.7,
+            "max": 1392.1
+          },
+          "offscreenFraction": 0,
+          "maxConsecOffscreenS": 0,
+          "driftEvents": 0,
+          "leashViolations": 0,
+          "maxLeashViolationS": 0,
+          "hazardTriggers": 15,
+          "damageWithoutVisibility": 0,
+          "noVisDetail": [],
+          "seed": 202,
+          "index": 0,
+          "spawn": {
+            "x": 2119,
+            "y": 2166
+          },
+          "simCovered": 29.4,
+          "diag": []
+        },
+        {
+          "samples": 83,
+          "distPlayer": {
+            "mean": 131.6,
+            "max": 251.4
+          },
+          "distSpawn": {
+            "mean": 562.2,
+            "max": 778.6
+          },
+          "offscreenFraction": 0,
+          "maxConsecOffscreenS": 0,
+          "driftEvents": 0,
+          "leashViolations": 0,
+          "maxLeashViolationS": 0,
+          "hazardTriggers": 0,
+          "damageWithoutVisibility": 0,
+          "noVisDetail": [],
+          "seed": 202,
+          "index": 1,
+          "spawn": {
+            "x": 3405,
+            "y": 1506
+          },
+          "simCovered": 29.6,
+          "diag": []
+        },
+        {
+          "samples": 83,
+          "distPlayer": {
+            "mean": 85.2,
+            "max": 109.5
+          },
+          "distSpawn": {
+            "mean": 75.2,
+            "max": 104.9
+          },
+          "offscreenFraction": 0,
+          "maxConsecOffscreenS": 0,
+          "driftEvents": 0,
+          "leashViolations": 0,
+          "maxLeashViolationS": 0,
+          "hazardTriggers": 1,
+          "damageWithoutVisibility": 0,
+          "noVisDetail": [],
+          "seed": 202,
+          "index": 2,
+          "spawn": {
+            "x": 4066,
+            "y": 1151
+          },
+          "simCovered": 29.4,
+          "diag": []
+        },
+        {
+          "samples": 83,
+          "distPlayer": {
+            "mean": 85.8,
+            "max": 127.4
+          },
+          "distSpawn": {
+            "mean": 112.8,
+            "max": 122.2
+          },
+          "offscreenFraction": 0,
+          "maxConsecOffscreenS": 0,
+          "driftEvents": 0,
+          "leashViolations": 0,
+          "maxLeashViolationS": 0,
+          "hazardTriggers": 16,
+          "damageWithoutVisibility": 0,
+          "noVisDetail": [],
+          "seed": 202,
+          "index": 3,
+          "spawn": {
+            "x": 3957,
+            "y": 1026
+          },
+          "simCovered": 29.4,
+          "diag": []
+        },
+        {
+          "samples": 83,
+          "distPlayer": {
+            "mean": 85,
+            "max": 126.5
+          },
+          "distSpawn": {
+            "mean": 113.2,
+            "max": 137.7
+          },
+          "offscreenFraction": 0,
+          "maxConsecOffscreenS": 0,
+          "driftEvents": 0,
+          "leashViolations": 0,
+          "maxLeashViolationS": 0,
+          "hazardTriggers": 2,
+          "damageWithoutVisibility": 0,
+          "noVisDetail": [],
+          "seed": 202,
+          "index": 4,
+          "spawn": {
+            "x": 3945,
+            "y": 944
+          },
+          "simCovered": 29.5,
+          "diag": []
+        },
+        {
+          "samples": 83,
+          "distPlayer": {
+            "mean": 81.5,
+            "max": 86.1
+          },
+          "distSpawn": {
+            "mean": 22.8,
+            "max": 38.8
+          },
+          "offscreenFraction": 0,
+          "maxConsecOffscreenS": 0,
+          "driftEvents": 0,
+          "leashViolations": 0,
+          "maxLeashViolationS": 0,
+          "hazardTriggers": 32,
+          "damageWithoutVisibility": 0,
+          "noVisDetail": [],
+          "seed": 202,
+          "index": 5,
+          "spawn": {
+            "x": 4066,
+            "y": 899
+          },
+          "simCovered": 29.5,
+          "diag": []
+        }
+      ],
+      "jsErrors": 0
+    },
+    {
+      "seed": 404,
+      "bosses": [
+        {
+          "samples": 83,
+          "distPlayer": {
+            "mean": 245.8,
+            "max": 377.8
+          },
+          "distSpawn": {
+            "mean": 753.4,
+            "max": 1483.3
+          },
+          "offscreenFraction": 0.27,
+          "maxConsecOffscreenS": 2.6,
+          "driftEvents": 0,
+          "leashViolations": 0,
+          "maxLeashViolationS": 0,
+          "hazardTriggers": 15,
+          "damageWithoutVisibility": 0,
+          "noVisDetail": [],
+          "seed": 404,
+          "index": 0,
+          "spawn": {
+            "x": 2008,
+            "y": 2186
+          },
+          "simCovered": 29.5,
+          "diag": []
+        },
+        {
+          "samples": 83,
+          "distPlayer": {
+            "mean": 142.8,
+            "max": 273.5
+          },
+          "distSpawn": {
+            "mean": 589,
+            "max": 846.2
+          },
+          "offscreenFraction": 0,
+          "maxConsecOffscreenS": 0,
+          "driftEvents": 0,
+          "leashViolations": 0,
+          "maxLeashViolationS": 0,
+          "hazardTriggers": 0,
+          "damageWithoutVisibility": 0,
+          "noVisDetail": [],
+          "seed": 404,
+          "index": 1,
+          "spawn": {
+            "x": 3266,
+            "y": 1034
+          },
+          "simCovered": 29.6,
+          "diag": []
+        },
+        {
+          "samples": 83,
+          "distPlayer": {
+            "mean": 85.7,
+            "max": 125.7
+          },
+          "distSpawn": {
+            "mean": 93.1,
+            "max": 123.1
+          },
+          "offscreenFraction": 0,
+          "maxConsecOffscreenS": 0,
+          "driftEvents": 0,
+          "leashViolations": 0,
+          "maxLeashViolationS": 0,
+          "hazardTriggers": 1,
+          "damageWithoutVisibility": 0,
+          "noVisDetail": [],
+          "seed": 404,
+          "index": 2,
+          "spawn": {
+            "x": 4066,
+            "y": 849
+          },
+          "simCovered": 29.5,
+          "diag": []
+        },
+        {
+          "samples": 83,
+          "distPlayer": {
+            "mean": 85,
+            "max": 109.5
+          },
+          "distSpawn": {
+            "mean": 46.4,
+            "max": 51.9
+          },
+          "offscreenFraction": 0,
+          "maxConsecOffscreenS": 0,
+          "driftEvents": 0,
+          "leashViolations": 0,
+          "maxLeashViolationS": 0,
+          "hazardTriggers": 6,
+          "damageWithoutVisibility": 0,
+          "noVisDetail": [],
+          "seed": 404,
+          "index": 3,
+          "spawn": {
+            "x": 4066,
+            "y": 769
+          },
+          "simCovered": 29.5,
+          "diag": []
+        },
+        {
+          "samples": 83,
+          "distPlayer": {
+            "mean": 84.8,
+            "max": 125.3
+          },
+          "distSpawn": {
+            "mean": 88.1,
+            "max": 194.4
+          },
+          "offscreenFraction": 0,
+          "maxConsecOffscreenS": 0,
+          "driftEvents": 0,
+          "leashViolations": 0,
+          "maxLeashViolationS": 0,
+          "hazardTriggers": 2,
+          "damageWithoutVisibility": 0,
+          "noVisDetail": [],
+          "seed": 404,
+          "index": 4,
+          "spawn": {
+            "x": 4065,
+            "y": 781
+          },
+          "simCovered": 29.5,
+          "diag": []
+        },
+        {
+          "samples": 83,
+          "distPlayer": {
+            "mean": 85.5,
+            "max": 126.6
+          },
+          "distSpawn": {
+            "mean": 133.2,
+            "max": 148.3
+          },
+          "offscreenFraction": 0,
+          "maxConsecOffscreenS": 0,
+          "driftEvents": 0,
+          "leashViolations": 0,
+          "maxLeashViolationS": 0,
+          "hazardTriggers": 32,
+          "damageWithoutVisibility": 0,
+          "noVisDetail": [],
+          "seed": 404,
+          "index": 5,
+          "spawn": {
+            "x": 3946,
+            "y": 644
+          },
+          "simCovered": 29.5,
+          "diag": []
+        }
+      ],
+      "jsErrors": 0
+    }
+  ]
+}
