@@ -144,3 +144,11 @@ wie K1): min Paar-Distanz **0,310** (Ziel 0,15) — PASS; 477/900 XP-Sounds im B
   und im Commit genannt.
 - Belege grundsätzlich nach `~/games/.evidence/m10-pickup-sfx-distinct/`; nur Abnahme-Bilder
   nach `shots/abnahme/`.
+
+## Review (2026-11-28)
+
+Reviewer-Subagent über Lane-Diff (merge-base f71c3be..HEAD): **PASS** — Tests 2× grün (1669),
+tsc OK, WAV-Bitgleich empirisch per sha256 bestätigt (Stream-Alignment korrekt), planPlay-Pickup-Pfad
+und pickupDampGain-Mathematik geprüft, Musik/Mute unangetastet, keine Secrets/Temp-Dateien.
+Befund „tote WAVs" (sfx_xp/levelup/chest.wav unreferenziert): in gen_sfx.py dokumentiert,
+Löschen beim Merge.

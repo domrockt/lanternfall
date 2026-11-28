@@ -11995,6 +11995,11 @@
      "at": "2026-11-28T08:05:00Z",
      "by": "m10-pickup-sfx-distinct",
      "text": "done: Lane abgeschlossen, .lane-done committet. Abnahme PASS (Details Lane-Doku). Supervisor-Steer 08:05Z bezog sich auf fremde Karte #9196 (Fehlalarm, nie von dieser Lane angefasst); Verifikation einmalig: npm test 1669 gruen, min Distanz 0,310."
+    },
+    {
+     "at": "2026-11-28T08:20:00Z",
+     "by": "m10-pickup-sfx-distinct",
+     "text": "Reviewer-Subagent: PASS (alle Pruefpunkte belegt, npm test 2x gruen, WAV-Bitgleich empirisch, Mute/Musik unangetastet). Befund 'tote WAVs' in gen_sfx.py dokumentiert; Loeschen beim Merge."
     }
    ]
   },
@@ -12019,6 +12024,11 @@
      "at": "2026-11-28T08:05:00Z",
      "by": "m10-pickup-sfx-distinct",
      "text": "done: Lane abgeschlossen, .lane-done committet. Abnahme PASS (Details Lane-Doku). Supervisor-Steer 08:05Z bezog sich auf fremde Karte #9196 (Fehlalarm, nie von dieser Lane angefasst); Verifikation einmalig: npm test 1669 gruen, min Distanz 0,310."
+    },
+    {
+     "at": "2026-11-28T08:20:00Z",
+     "by": "m10-pickup-sfx-distinct",
+     "text": "Reviewer-Subagent: PASS (alle Pruefpunkte belegt, npm test 2x gruen, WAV-Bitgleich empirisch, Mute/Musik unangetastet). Befund 'tote WAVs' in gen_sfx.py dokumentiert; Loeschen beim Merge."
     }
    ]
   },
@@ -12043,6 +12053,11 @@
      "at": "2026-11-28T08:05:00Z",
      "by": "m10-pickup-sfx-distinct",
      "text": "done: Lane abgeschlossen, .lane-done committet. Abnahme PASS (Details Lane-Doku). Supervisor-Steer 08:05Z bezog sich auf fremde Karte #9196 (Fehlalarm, nie von dieser Lane angefasst); Verifikation einmalig: npm test 1669 gruen, min Distanz 0,310."
+    },
+    {
+     "at": "2026-11-28T08:20:00Z",
+     "by": "m10-pickup-sfx-distinct",
+     "text": "Reviewer-Subagent: PASS (alle Pruefpunkte belegt, npm test 2x gruen, WAV-Bitgleich empirisch, Mute/Musik unangetastet). Befund 'tote WAVs' in gen_sfx.py dokumentiert; Loeschen beim Merge."
     }
    ]
   },
@@ -12067,6 +12082,11 @@
      "at": "2026-11-28T08:05:00Z",
      "by": "m10-pickup-sfx-distinct",
      "text": "done: Lane abgeschlossen, .lane-done committet. Abnahme PASS (Details Lane-Doku). Supervisor-Steer 08:05Z bezog sich auf fremde Karte #9196 (Fehlalarm, nie von dieser Lane angefasst); Verifikation einmalig: npm test 1669 gruen, min Distanz 0,310."
+    },
+    {
+     "at": "2026-11-28T08:20:00Z",
+     "by": "m10-pickup-sfx-distinct",
+     "text": "Reviewer-Subagent: PASS (alle Pruefpunkte belegt, npm test 2x gruen, WAV-Bitgleich empirisch, Mute/Musik unangetastet). Befund 'tote WAVs' in gen_sfx.py dokumentiert; Loeschen beim Merge."
     }
    ]
   }

@@ -257,6 +257,11 @@ def sfx() -> None:
     # abgezweigt (verworfen).
     for _ in range(int(0.05 * SR)):
         rng.uniform(-1.0, 1.0)
+    # Legacy (m10-pickup-sfx-distinct): sfx_xp.wav, sfx_levelup.wav und
+    # sfx_chest.wav werden NICHT mehr erzeugt — die Pickup-Klasse schreibt nur
+    # noch sfx_pickup_*.wav (SFX_KEYS in src/audio/mixing.ts zeigt darauf).
+    # Die drei alten Dateien sind unreferenziert (Reviewer-Befund 28.11.) und
+    # werden beim Lane-Merge entfernt.
     # Evolution: große Sechs-Ton-Aufstieg mit Glow
     write_wav("sfx_evolution.wav", concat(
         tone(392, 392, 0.10, square, 0.16, duty=0.5, release=0.04),
