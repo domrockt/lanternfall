@@ -15175,21 +15175,33 @@
       "id": 11429,
       "title": "m10-telemetry-budget K1: Ist — Sampler-Overhead + Payload-Groesse (Vorher-Probe)",
       "description": "Deterministischer Probe scripts/m10-telemetry-budget.mjs: collect()/buildSample-Kosten (600-Frame-Puffer), JSON-Payload-Bytes je Sample, Samples+Kosten pro Minute. Kein Geraet noetig. Vorher-JSON nach ~/games/.evidence/m10-telemetry-budget/before.json. Akzeptanz: Zahlen belegt, Skript committed.",
-      "column": "doing",
+      "column": "review",
       "assignee": "gameplay-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T11:11:16Z",
+          "by": "build",
+          "text": "doing → review: K1: Probe scripts/m10-telemetry-budget.mjs (rolldown-Bundle, 5x5000 collect, Median). Vorher: 33.5us/collect, 334B/Sample, 12 Samples/min = 0.40ms/min + 3.9KB/min (tier-unabhaengig). Beleg ~/games/.evidence/m10-telemetry-budget/before.json. Build+telemetry-Suite gruen. Commit 5e336d00."
+        }
+      ],
       "created": "2026-11-28T11:07:56Z",
-      "updated": "2026-11-28T11:07:56Z"
+      "updated": "2026-11-28T11:11:16Z"
     },
     {
       "id": 11430,
       "title": "m10-telemetry-budget K2: Fix — Intervall/Puffer je Qualitaetsstufe",
       "description": "telemetryBudgetFor(quality): full=5s/600, reduced=10s/240, minimal=20s/120 (Intervall, Frame-Puffer, Pending-Deckel). Collector passt sich dynamisch an. Aktivierung (telemetryEnabled/installTelemetry) bitgleich unveraendert. Nachher-Probe zeigt gesenkte Sammelkosten. Akzeptanz: Kostenreduktion belegt, Aktivierung unveraendert.",
-      "column": "todo",
+      "column": "doing",
       "assignee": "gameplay-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T11:11:16Z",
+          "by": "build",
+          "text": "todo → doing"
+        }
+      ],
       "created": "2026-11-28T11:07:56Z",
-      "updated": "2026-11-28T11:07:56Z"
+      "updated": "2026-11-28T11:11:16Z"
     },
     {
       "id": 11431,
