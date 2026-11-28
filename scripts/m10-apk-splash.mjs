@@ -28,6 +28,14 @@ for (let n = 1; n <= STARTS; n++) {
     run.blocked = "DOM_SPIELT (dom_playing true vor Start) — kein Launch versucht";
     manifest.starts.push(run); continue;
   }
+  // Warm-up: die ERSTE /screenshot-Abfrage nach einem Launch dauert ~4,5 s (Bridge/adb kalt),
+  // danach ~420 ms Takt. Ein Wegwerf-Shot vor dem Launch waermt die Pipeline, damit Shot 1
+  // das native Starting-Window (erste 1-3 s) noch erwischt. Laut Versuch-2-Befund verpasst
+  // ein kalter erster Shot die native Phase (erstes Bild zeigt bereits WebView-Boot).
+  try {
+    const wu = await fetch(`${BRIDGE}/screenshot`, { method: "POST" });
+    if (wu.ok) await wu.json(); // Pfad interessiert nicht, nur Warmwerden
+  } catch { /* Warm-up darf scheitern */ }
   const t0 = Date.now();
   const lr = await fetch(`${BRIDGE}/launch`, { method: "POST" });
   run.launch = { status: lr.status, body: await lr.text(), t0 };

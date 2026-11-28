@@ -48,10 +48,24 @@ screenrecord liefert auf dem Redmi Pad nur Stümpfe → Screencaps).
 - Geplant: EIN verspäteter Retry (Briefing: „bei 409 später erneut versuchen, ein Versuch pro
   Karte") als Automation `aut_222d6287c001NnxHGjSYpIN42s` um 16:01:30Z — prüft `/status` und
   läuft nur, wenn die Sperre aufgehoben ist; sonst Befund notieren.
-- 15:54Z (Versuch 2, Resume): Session übernommen. Die zugehörige Auswertungs-Automation zeigte
-  auf die tote Session des Versuchs 1 → gelöscht; Ersatz `aut_222ddd4b2001CFPUw5YAaaD9vS`
-  pingt diese Session um 16:07:30Z. Messwerkzeug `~/tmp/m10-apk-splash-sight/measure.py`
-  (Boot-BG-Median zentral, Letterbox-Streifen, Laterne/Text-Anteil >90 Helligkeit) steht bereit.
+- 15:55Z (Versuch 3, Resume): Sperre kurz frei (`dom_playing=false`, user_idle 608 s) → Lauf
+  `coldstart-run2`: **Start 1 + 2 erfolgreich (je 13 Shots), Start 3 geblockt** (Dom begann
+  mitten im Lauf zu spielen, `dom_playing` kippte zwischen Start 2 und 3 auf true — korrekt
+  respektiert, kein Launch gegen die Sperre). Retry-Automationen (16:01Z/16:07Z) gelöscht, da
+  der Lauf direkt erfolgte.
+- Farbmessung run2 (`colors-run1.json`/`colors-run2.json` in .evidence): zwei Phasen —
+  **Phase A** t≈4,9–6,8 s: WebView-Boot „LADE MOOR …" mit kleiner Laterne + Fortschrittsbalken,
+  BG `#0a0e16` (Ziel `#0a0d14`, Δ ≤ 2/255 je Kanal), Letterbox `#06070c` (dunkler als BG →
+  sichtbarer Ton-Rand, Befund low), hellste Pixel `#b8c4c2` (Laterne, 0,2–0,4 % der Fläche).
+  **Phase B** t≥7,0 s: Titel-Screen, BG `#121923`, 3,5 % helle Pixel, hot `#fff8e6`.
+- **Befund K2-a:** Das native Starting-Window (windowBackground `lf_splash`: `#0a0d14` +
+  zentrierte Laterne, laut K1 statisch belegt) wurde in run2 NICHT eingefangen — der erste
+  Shot kam erst bei t≈4,9 s (kalte Bridge: erste `/screenshot`-Abfrage nach Launch dauert
+  ~4,5 s, danach ~420 ms Takt) und zeigte bereits die WebView-Bootphase.
+- Gegenmaßnahme (1 Edit-Iteration): Warm-up-Screencap vor jedem Launch in
+  `scripts/m10-apk-splash.mjs` — damit soll Shot 1 die ersten 1–3 s treffen. EIN verspäteter
+  Retry (Start 3 + natives Window) als Automation geplant; wenn wieder DOM_SPIELT: Befund
+  final notieren (2/3 Starts + statischer K1-Beleg).
 
 ## K3 — Urteil + Doku — #12947 (Gerüst, wird nach K2 gefüllt)
 
