@@ -1,0 +1,26 @@
+# Lane m10-worktree-unblock-shots — abgeschlossen (2026-11-28, Karte #13830)
+
+Ziel: Worktree-Blocker für board_move räumen (2× M shots/m10-passive-math-*.json +
+ungetrackte shots/merge-merge-m10-*-check-*.png.json).
+
+Ergebnis: Beide Blocker-Klassen waren zum Lane-Start (nach Briefing 17:56Z) bereits
+fremdseitig geräumt — Merge-Pipeline-Commit 64d8fbb0 (17:58:53Z, Kontroll-Screenshots
+fast-path) + Zurückstellen der Timestamp-Noise in Stashes. Verifiziert:
+
+- K1: passive-math-Shots unverändert ggü. HEAD, intakte JSON-Belege (Validierung OK,
+  referenziert in docs/lanes/m10-passive-math.md u. a.) → nichts committet, nichts
+  zurückgestellt.
+- K2: Kontroll-PNGs (960/1280) der 5 gemergten Lanes alle getrackt (2200f528, 24f73e1f,
+  9d153fc8, 32c0ec32, dfee53ae); png.json-Sidecars existieren nicht mehr auf Disk.
+- K3: panel-hz-pref-Shots, board.json-Dirt, Spielcode unangetastet; bewusst kein npm test
+  (würde die passive-math-Timestamps wieder neu schreiben).
+- K4: Nachweis in docs/lanes/m10-worktree-unblock-shots.md; git status --short -uall
+  enthält keine merge-merge-m10-*/passive-math-Einträge mehr; Rest nur Plugin-Noise
+  .opencode/board.json.
+
+Primärziel live verifiziert: board_add/board_move akzeptieren Züge wieder (Karte #13830:
+todo→doing→review). Karten #13283 und #13766–#13769 bereits durch Merge-Pipeline-Commits
+nach done geführt (f427115c u. a.).
+
+Commit: 50cfc78b „M10-m10-worktree-unblock-shots: #13830 Lane-Doku …“ (eine Karte = ein
+Commit, expliziter Pfad, kein add -A/add .). Kein Code/Build/Test betroffen (nur Doku).
