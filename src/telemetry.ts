@@ -3,7 +3,8 @@ import { GAME_SCALE, RENDER_SCALE } from "./config";
 
 /**
  * M10 Device-Telemetry (Lane m10-device-telemetry): echte Endgeraete-Zahlen von
- * Doms Android-Tablet, ohne adb. Alle 5 s wird ein Sample gesammelt und gepuffert
+ * Doms Android-Tablet, ohne adb. Ein Sample wird je Qualitaetsstufe gesammelt
+ * (M10-telemetry-budget: full 5 s, reduced 10 s, minimal 20 s) und gepuffert
  * an den Empfaenger auf dem Rig geschickt (`POST /t`, JSON-Liste).
  *
  * Grundaetze:
@@ -12,18 +13,46 @@ import { GAME_SCALE, RENDER_SCALE } from "./config";
  *   Desktop-Laeufen zu unterscheiden; vom Briefing ausdruecklich gewuenscht).
  * - Aktiv nur mit `?telemetry=1` ODER im APK-Build (Host 127.0.0.1 + Android-UA).
  *   Desktop-Spieler senden NICHTS.
- * - Sendefehler werden still geschluckt; nie mehr als 1 Request / 5 s; das Spiel
- *   darf durch Telemetry nie blockieren oder ruckeln.
+ * - Sendefehler werden still geschluckt; nie mehr als 1 Request je Sammel-Intervall
+ *   (5/10/20 s je Qualitaetsstufe); das Spiel darf durch Telemetry nie blockieren.
  * - Abschalten: `?telemetry=0` gewinnt ueber alles (auch im APK).
  */
 
 export const TELEMETRY_ENDPOINT = "http://10.10.50.185:5180/t";
 export const TELEMETRY_INTERVAL_MS = 5000;
 
-/** Ringpuffer fuer Frame-Dauern: 600 Eintraege = 10 s bei 60 FPS. */
-const FRAME_BUFFER_MAX = 600;
-/** Puffer-Deckel: 60 Samples = 5 min Rueckstand, aelteres wird fallen gelassen. */
-const PENDING_MAX = 60;
+/**
+ * M10-telemetry-budget: Sammel-Intervall, Frame-Puffer und Pending-Deckel je
+ * Qualitaetsstufe (= LOD-Level aus logic/lod.ts, kommt als readings.quality rein).
+ * Eigene Messkosten der Telemetry sollen sich nach dem Spielbudget richten:
+ * wer auf `minimal` spielt, dem soll der Sampler auch weniger Arbeit/Last
+ * machen. Werte (Vorher-Probe scripts/m10-telemetry-budget.mjs, Ist = 33.5 µs
+ * je collect(), 334 B je Sample):
+ * - `full`    = Ist-Verhalten bitleich (5 s / 600 / 60).
+ * - `reduced` = halber Takt, Puffer 240 (4 s @ 60 FPS reicht fuer p50/p95/max).
+ * - `minimal` = viertel Takt, Puffer 120 (2 s), Pending-Deckel 12 (2 min).
+ */
+export interface TelemetryBudget {
+  /** Sammel-/Sendetakt in ms. */
+  intervalMs: number;
+  /** Max. Frame-Dauern im Ringpuffer (Sortier-/Kopierkosten je Sample). */
+  frameBufferMax: number;
+  /** Max. zurueckgestellte Samples im Sendepuffer. */
+  pendingMax: number;
+}
+
+export const TELEMETRY_BUDGETS: Readonly<Record<"full" | "reduced" | "minimal", TelemetryBudget>> = {
+  full: { intervalMs: 5000, frameBufferMax: 600, pendingMax: 60 },
+  reduced: { intervalMs: 10000, frameBufferMax: 240, pendingMax: 24 },
+  minimal: { intervalMs: 20000, frameBufferMax: 120, pendingMax: 12 },
+};
+
+/** Budget je Qualitaetsstufe (pur, getestet). `null`/unbekannt → `full` (Ist). */
+export function telemetryBudgetFor(quality: string | null): TelemetryBudget {
+  if (quality === "reduced") return TELEMETRY_BUDGETS.reduced;
+  if (quality === "minimal") return TELEMETRY_BUDGETS.minimal;
+  return TELEMETRY_BUDGETS.full;
+}
 
 export interface TelemetryEnv {
   ua: string;
@@ -221,6 +250,8 @@ export function collectReadings(game: GameLike, frameMs: number[], nowMs: number
 
 export interface TelemetryOptions {
   endpoint?: string;
+  /** Fester Intervall-Override (Tests/Probes); sonst gilt das Qualitaets-Budget
+   * (TELEMETRY_BUDGETS, folgt readings.quality). */
   intervalMs?: number;
   /** Sendefunktion, test-injizierbar (Default: fetch mit keepalive). */
   send?: (url: string, body: string) => Promise<unknown>;
@@ -246,6 +277,8 @@ export class TelemetryCollector {
   private lastSentAtMs = -Infinity;
   private startedAtMs: number;
   private timer: ReturnType<typeof setInterval> | null = null;
+  /** Aktuelles Sammel-Budget (M10-telemetry-budget), folgt readings.quality. */
+  private budget: TelemetryBudget = telemetryBudgetFor(null);
 
   constructor(
     private game: GameLike,
@@ -256,16 +289,26 @@ export class TelemetryCollector {
     this.startedAtMs = (opts.now ?? Date.now)();
   }
 
+  /** Wirksames Intervall: Test-Override (opts.intervalMs) gewinnt, sonst Budget. */
+  private effectiveIntervalMs(): number {
+    return this.opts.intervalMs ?? this.budget.intervalMs;
+  }
+
   /** Frame-Dauer registrieren (Phaser-Step-Delta in ms). Deckel 2 s: echte
    * Frame-Hitches (z. B. Thermik-Drosselung auf dem Tablet) bleiben sichtbar. */
   recordFrame(deltaMs: number): void {
     if (!Number.isFinite(deltaMs) || deltaMs <= 0 || deltaMs > 2000) return;
     this.frameMs.push(deltaMs);
-    if (this.frameMs.length > FRAME_BUFFER_MAX) this.frameMs.shift();
+    if (this.frameMs.length > this.budget.frameBufferMax) this.frameMs.shift();
   }
 
   get pendingCount(): number {
     return this.pending.length;
+  }
+
+  /** Aktuelles Budget (fuer Tests/Probes). */
+  get currentBudget(): TelemetryBudget {
+    return this.budget;
   }
 
   collect(): TelemetrySample {
@@ -278,16 +321,44 @@ export class TelemetryCollector {
     );
   }
 
-  /** Beispiel sammeln und in den Sendepuffer stellen (Deckel beachten). */
+  /** Beispiel sammeln, Budget je Qualitaetsstufe nachziehen, Puffer-Deckel beachten. */
   sample(): TelemetrySample {
     const s = this.collect();
+    this.applyBudget(telemetryBudgetFor(s.quality));
     this.pending.push(s);
-    if (this.pending.length > PENDING_MAX) this.pending.shift();
+    if (this.pending.length > this.budget.pendingMax) this.pending.shift();
     return s;
   }
 
+  /** Budget wechseln: Frame-Puffer kuerzen, laufenden Timer neu takten. */
+  private applyBudget(next: TelemetryBudget): void {
+    if (next === this.budget) return;
+    const prevIntervalMs = this.effectiveIntervalMs();
+    this.budget = next;
+    if (this.frameMs.length > next.frameBufferMax) {
+      this.frameMs.splice(0, this.frameMs.length - next.frameBufferMax);
+    }
+    if (this.pending.length > next.pendingMax) {
+      this.pending.splice(0, this.pending.length - next.pendingMax);
+    }
+    if (this.timer && prevIntervalMs !== this.effectiveIntervalMs()) this.reschedule();
+  }
+
+  /** Laufenden Timer auf das wirksame Intervall umsetzen (nur ohne Override). */
+  private reschedule(): void {
+    if (!this.timer) return;
+    (this.opts.clearInterval ?? clearInterval)(this.timer);
+    this.timer = (this.opts.setInterval ?? setInterval)(
+      () => {
+        this.sample();
+        void this.flush();
+      },
+      this.effectiveIntervalMs(),
+    );
+  }
+
   canSend(nowMs: number): boolean {
-    return nowMs - this.lastSentAtMs >= (this.opts.intervalMs ?? TELEMETRY_INTERVAL_MS);
+    return nowMs - this.lastSentAtMs >= this.effectiveIntervalMs();
   }
 
   /**
@@ -317,7 +388,7 @@ export class TelemetryCollector {
         this.sample();
         void this.flush();
       },
-      this.opts.intervalMs ?? TELEMETRY_INTERVAL_MS,
+      this.effectiveIntervalMs(),
     );
     this.game.events.on("step", (_time: unknown, delta: unknown) => {
       this.recordFrame(Number(delta));

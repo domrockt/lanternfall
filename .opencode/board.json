@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 11538,
+  "next": 11542,
   "cards": [
     {
       "id": 1,
@@ -15348,6 +15348,95 @@
       "notes": [],
       "created": "2026-11-28T10:47:57Z",
       "updated": "2026-11-28T10:47:57Z"
+    },
+    {
+      "id": 11538,
+      "title": "m10-telemetry-budget K1: Ist — Sampler-Overhead + Payload-Groesse (Vorher-Probe)",
+      "description": "Deterministischer Probe scripts/m10-telemetry-budget.mjs: collect()/buildSample-Kosten (600-Frame-Puffer), JSON-Payload-Bytes je Sample, Samples+Kosten pro Minute. Kein Geraet noetig. Vorher-JSON nach ~/games/.evidence/m10-telemetry-budget/before.json. Akzeptanz: Zahlen belegt, Skript committed.",
+      "column": "done",
+      "assignee": "gameplay-dev",
+      "notes": [
+        {
+          "at": "2026-11-28T11:11:16Z",
+          "by": "build",
+          "text": "doing → review: K1: Probe scripts/m10-telemetry-budget.mjs (rolldown-Bundle, 5x5000 collect, Median). Vorher: 33.5us/collect, 334B/Sample, 12 Samples/min = 0.40ms/min + 3.9KB/min (tier-unabhaengig). Beleg ~/games/.evidence/m10-telemetry-budget/before.json. Build+telemetry-Suite gruen. Commit 5e336d00."
+        },
+        {
+          "at": "2026-11-28T11:19:34+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #11429, Merge branch m10-telemetry-budget"
+        }
+      ],
+      "created": "2026-11-28T11:07:56Z",
+      "updated": "2026-11-28T11:11:16Z"
+    },
+    {
+      "id": 11539,
+      "title": "m10-telemetry-budget K2: Fix — Intervall/Puffer je Qualitaetsstufe",
+      "description": "telemetryBudgetFor(quality): full=5s/600, reduced=10s/240, minimal=20s/120 (Intervall, Frame-Puffer, Pending-Deckel). Collector passt sich dynamisch an. Aktivierung (telemetryEnabled/installTelemetry) bitgleich unveraendert. Nachher-Probe zeigt gesenkte Sammelkosten. Akzeptanz: Kostenreduktion belegt, Aktivierung unveraendert.",
+      "column": "done",
+      "assignee": "gameplay-dev",
+      "notes": [
+        {
+          "at": "2026-11-28T11:11:16Z",
+          "by": "build",
+          "text": "todo → doing"
+        },
+        {
+          "at": "2026-11-28T11:13:10Z",
+          "by": "build",
+          "text": "doing → review: K2: telemetryBudgetFor + TELEMETRY_BUDGETS (full/reduced/minimal = 5s/600/60, 10s/240/24, 20s/120/12). Collector: Budget folgt sample.quality, Puffer-/Pending-Deckel dynamisch, Timer-Reschedule. Aktivierung (telemetryEnabled/installTelemetry) unveraendert. Nachher-Probe: reduced 13.4us/collect + 0.081ms/min (-80%), minimal 6.5us + 0.019ms/min (-95%); Payload 1.97/0.99 KB/min. Belege ~/games/.evidence/m10-telemetry-budget/after-*.json. tsc+build+telemetry-Suite gruen. Commit dd53f444."
+        },
+        {
+          "at": "2026-11-28T11:19:34+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #11430, Merge branch m10-telemetry-budget"
+        }
+      ],
+      "created": "2026-11-28T11:07:56Z",
+      "updated": "2026-11-28T11:13:10Z"
+    },
+    {
+      "id": 11540,
+      "title": "m10-telemetry-budget K3: Tests telemetry-budget.test.ts (Budget-Matrix + Aktivierungsmatrix gruen)",
+      "description": "tests/telemetry-budget.test.ts: Budget-Matrix je Tier (Intervall/Puffer/Deckel), dynamische Anpassung bei Stufenwechsel, Tests: telemetry.test.ts bleibt komplett gruen. Akzeptanz: npx vitest run tests/telemetry-budget.test.ts tests/telemetry.test.ts gruen.",
+      "column": "done",
+      "assignee": "gameplay-dev",
+      "notes": [
+        {
+          "at": "2026-11-28T11:13:10Z",
+          "by": "build",
+          "text": "todo → doing"
+        },
+        {
+          "at": "2026-11-28T11:19:34+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #11540, Merge branch m10-telemetry-budget (doing-Karte der gemergten Lane)"
+        }
+      ],
+      "created": "2026-11-28T11:07:56Z",
+      "updated": "2026-11-28T11:13:10Z"
+    },
+    {
+      "id": 11541,
+      "title": "m10-telemetry-budget K4: Nachher-JSON + Lane-Doku + .lane-done",
+      "description": "Nachher-JSON nach ~/games/.evidence/m10-telemetry-budget/after.json, docs/lanes/m10-telemetry-budget.md mit Vorher/Nachher-Tabelle + offenen Punkten, .lane-done committet. Akzeptanz: Payload/Interval je Tier belegt, Suite gruen, lane-done vorhanden.",
+      "column": "done",
+      "assignee": "gameplay-dev",
+      "notes": [
+        {
+          "at": "2026-11-28T11:15:09Z",
+          "by": "build",
+          "text": "todo → doing"
+        },
+        {
+          "at": "2026-11-28T11:19:34+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #11541, Merge branch m10-telemetry-budget (doing-Karte der gemergten Lane)"
+        }
+      ],
+      "created": "2026-11-28T11:07:56Z",
+      "updated": "2026-11-28T11:15:09Z"
     }
   ]
 }
