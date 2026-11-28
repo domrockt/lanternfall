@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 9472,
+  "next": 9568,
   "cards": [
     {
       "id": 1,
@@ -11739,16 +11739,21 @@
       "id": 9196,
       "title": "m10-props-wiring K4: art-director-Urteil >= 4/5 + Lane-Doku + .lane-done",
       "description": "art-director prueft Prop-Vielfalt auf den After-Shots. Befund mit Wirkprobe-Zahlen in docs/lanes/m10-props-wiring.md. Abnahme: Note >= 4/5, .lane-done committet",
-      "column": "doing",
+      "column": "blocked",
       "notes": [
         {
           "at": "2026-11-28T05:45:00Z",
           "by": "build",
           "text": "todo → doing: K4 startet: art-director-Urteil zu Prop-Vielfalt auf After-Shots, Lane-Doku, .lane-done."
+        },
+        {
+          "at": "2026-11-28T07:16:27Z",
+          "by": "build",
+          "text": "doing → blocked: Supervisor-Steer 28.11.: Karte gehoert zur m10-props-wiring-Lane, nicht m10-gamepad-stick-feel (war vor der Lane-Buchung in doing; von dieser Lane nie bearbeitet). Grund fuer blocked: art-director-Urteil ausstehend — bitte in der Props-Lane weiterbehandeln."
         }
       ],
       "created": "2026-11-28T05:39:50Z",
-      "updated": "2026-11-28T05:45:00Z"
+      "updated": "2026-11-28T07:16:27Z"
     },
     {
       "id": 9197,
@@ -11973,6 +11978,42 @@
       ],
       "created": "2026-11-28T06:51:26Z",
       "updated": "2026-11-28T06:51:34Z"
+    },
+    {
+      "id": 9564,
+      "title": "m10-gamepad-stick-feel K1: Vorher-Messung Stick-Feel (Rauschen/Kreis/Half-Push durch Gamepad.ts)",
+      "description": "Skript scripts/m10-gamepad-stick.mjs treibt synthetische Stick-Streams (Stillstand+Rauschen, Kreis, Half-Push, Sektorgrenzen-Sweep) durch den ECHTEN Pfad readNavigatorGamepad → InputState.update. AK: JSON-Beleg mit Fehlbewegungs-Quote + Dither-Events existiert (shots/m10-gamepad-stick-before.json bzw. ~/games/.evidence/), Baseline committet bevor K2 beginnt.",
+      "column": "doing",
+      "notes": [],
+      "created": "2026-11-28T07:13:30Z",
+      "updated": "2026-11-28T07:13:30Z"
+    },
+    {
+      "id": 9565,
+      "title": "m10-gamepad-stick-feel K2: Deadzone + Richtungs-Snapping in Gamepad.ts fixen",
+      "description": "Wirksame radiale Deadzone mit Hysterese + 8-Richtungs-Snapping + Einheitsvektor-Ausgabe in src/input/Gamepad.ts (read*-Pfad, snapshotFromPad bleibt roh). InputState.ts NICHT anfassen (belegt). AK: npx tsc --noEmit grün, gamepad-nav-Tests unverändert grün.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T07:13:30Z",
+      "updated": "2026-11-28T07:13:30Z"
+    },
+    {
+      "id": 9566,
+      "title": "m10-gamepad-stick-feel K3: tests/gamepad-stick-feel.test.ts",
+      "description": "Unit-Tests: Deadzone wirksam (Rauschen im Stillstand → exakt 0), 8-Richtungs-Konsistenz (Stick- und D-Pad-Einheitsvektoren identisch), kein Doppel-Event am Sektorwechsel, Hysterese-Release. AK: npx vitest run tests/gamepad-stick-feel.test.ts grün.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T07:13:30Z",
+      "updated": "2026-11-28T07:13:30Z"
+    },
+    {
+      "id": 9567,
+      "title": "m10-gamepad-stick-feel K4: After-Messung + Doku + Lane-Abschluss",
+      "description": "After-Lauf des Mess-Skripts, Vergleich gegen Before-Baseline, docs/lanes/m10-gamepad-stick-feel.md (Zahlen vorher/nachher), npm test + build grün, .lane-done. AK: Fehlbewegungs-Quote < 5 % bei Rauschen, 0 Events im Stillstand.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T07:13:30Z",
+      "updated": "2026-11-28T07:13:30Z"
     }
   ]
 }
