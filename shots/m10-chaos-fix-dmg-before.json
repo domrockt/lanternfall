@@ -1,0 +1,86 @@
+{
+  "tag": "before",
+  "jsErrors": [],
+  "scenarios": {
+    "m25": {
+      "frames": [
+        {
+          "labels": 2,
+          "labelPairsOverlapping": 0,
+          "labelsInvolved": [],
+          "maxChars": 6,
+          "maxWidthPx": 56,
+          "widestLabel": "10350!",
+          "occludedSprites": 0,
+          "enemiesOnScreen": 273,
+          "enemiesTotal": 300,
+          "targetEnemies": 300
+        },
+        {
+          "labels": 2,
+          "labelPairsOverlapping": 0,
+          "labelsInvolved": [],
+          "maxChars": 6,
+          "maxWidthPx": 56,
+          "widestLabel": "10350!",
+          "occludedSprites": 0,
+          "enemiesOnScreen": 273,
+          "enemiesTotal": 300,
+          "targetEnemies": 300
+        },
+        {
+          "labels": 4,
+          "labelPairsOverlapping": 0,
+          "labelsInvolved": [],
+          "maxChars": 6,
+          "maxWidthPx": 56,
+          "widestLabel": "13990!",
+          "occludedSprites": 2,
+          "enemiesOnScreen": 273,
+          "enemiesTotal": 300,
+          "targetEnemies": 300
+        }
+      ]
+    },
+    "stress500": {
+      "frames": [
+        {
+          "labels": 6,
+          "labelPairsOverlapping": 0,
+          "labelsInvolved": [],
+          "maxChars": 6,
+          "maxWidthPx": 56,
+          "widestLabel": "23890!",
+          "occludedSprites": 11,
+          "enemiesOnScreen": 363,
+          "enemiesTotal": 405,
+          "targetEnemies": 500
+        },
+        {
+          "labels": 6,
+          "labelPairsOverlapping": 0,
+          "labelsInvolved": [],
+          "maxChars": 6,
+          "maxWidthPx": 56,
+          "widestLabel": "46964!",
+          "occludedSprites": 13,
+          "enemiesOnScreen": 431,
+          "enemiesTotal": 494,
+          "targetEnemies": 500
+        },
+        {
+          "labels": 6,
+          "labelPairsOverlapping": 0,
+          "labelsInvolved": [],
+          "maxChars": 7,
+          "maxWidthPx": 66,
+          "widestLabel": "101266!",
+          "occludedSprites": 12,
+          "enemiesOnScreen": 429,
+          "enemiesTotal": 503,
+          "targetEnemies": 500
+        }
+      ]
+    }
+  }
+}
