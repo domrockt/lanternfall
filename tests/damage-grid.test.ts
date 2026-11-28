@@ -79,7 +79,7 @@ describe("M10 Damage-Grid: Grid-Offset bei Kollision (B4: '184526!' ueberlappt '
     expect(slot).toEqual({ x: 300, y: 180, key: gridCellKey(300, 180) });
   });
 
-  it("belegter Slot: Umlauf um ganze Zellen, deterministisch", () => {
+  it("belegter Slot: Umlauf um ganze Zellen, deterministisch, nie nach oben", () => {
     const occupied = new Set([gridCellKey(100, 100)]);
     const a = pickGridSlot(100, 100, occupied);
     const b = pickGridSlot(100, 100, occupied);
@@ -91,7 +91,24 @@ describe("M10 Damage-Grid: Grid-Offset bei Kollision (B4: '184526!' ueberlappt '
     expect(Number.isInteger(dx)).toBe(true);
     expect(Number.isInteger(dy)).toBe(true);
     expect(Math.max(Math.abs(dx), Math.abs(dy))).toBe(1);
-    expect(a.key).toBe(`${Math.round(100 / DAMAGE_GRID_CELL_W) - 1},${Math.round(100 / DAMAGE_GRID_CELL_H) - 1}`);
+    expect(dy).toBeGreaterThanOrEqual(0); // nie ueber das Anker-Sprite
+    expect(a.key).toBe(`${Math.round(100 / DAMAGE_GRID_CELL_W) - 1},${Math.round(100 / DAMAGE_GRID_CELL_H)}`);
+  });
+
+  it("Spirale erzeugt nie einen Versatz nach oben (dy < 0)", () => {
+    // Der natuerliche Slot plus alle Zellen darunter/daneben sind belegt:
+    // trotz freier Zellen oberhalb muss die Spirale dy >= 0 wahren.
+    const bx = Math.round(300 / DAMAGE_GRID_CELL_W);
+    const by = Math.round(200 / DAMAGE_GRID_CELL_H);
+    const occupied = new Set<string>();
+    for (let dy = 0; dy <= DAMAGE_GRID_MAX_CELLS; dy++) {
+      for (let dx = -DAMAGE_GRID_MAX_CELLS; dx <= DAMAGE_GRID_MAX_CELLS; dx++) {
+        occupied.add(`${bx + dx},${by + dy}`);
+      }
+    }
+    const slot = pickGridSlot(300, 200, occupied);
+    const dy = (slot.y - 200) / DAMAGE_GRID_CELL_H;
+    expect(dy).toBeGreaterThanOrEqual(0); // Sättigungs-Fallback ist dy = 0
   });
 
   it("Cluster-Repro: 12 Labels in 3 Gegner-Trauben ueberlappen nie", () => {
@@ -120,6 +137,22 @@ describe("M10 Damage-Grid: Grid-Offset bei Kollision (B4: '184526!' ueberlappt '
     }
     expect(pairs).toBe(0);
     expect(occupied.size).toBe(12); // jeder Label hat seinen eigenen Slot
+  });
+
+  it("Anker-Sprite bleibt frei: Umlauf verschiebt nie nach oben (y nie < Basis)", () => {
+    const baseX = 300;
+    const baseY = 150;
+    for (let n = 1; n <= 6; n++) {
+      const occupied = new Set<string>();
+      const placed: Array<{ x: number; y: number; w: number; h: number }> = [];
+      for (let i = 0; i < n; i++) {
+        const rect = critRect(baseX, baseY);
+        const slot = pickGridSlot(baseX, baseY, occupied, rect.w, rect.h, placed);
+        occupied.add(slot.key);
+        placed.push({ ...critRect(slot.x, slot.y) });
+        expect(slot.y).toBeGreaterThanOrEqual(baseY); // never above the anchor
+      }
+    }
   });
 
   it("Spirale bleibt begrenzt: bei Volllage eigene Key + natuerliche Position", () => {

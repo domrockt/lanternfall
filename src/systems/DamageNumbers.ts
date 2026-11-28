@@ -89,12 +89,14 @@ export function gridCellKey(screenX: number, screenY: number): string {
  * Freier Grid-Slot für ein Label an der natürlichen Bildschirmposition:
  * unbelegt -> Position bleibt exakt am Gegner; belegt -> Umlauf um ganze
  * Zellen in fester Spiralen-Reihenfolge (deterministisch, kein Flackern,
- * gleiche Eingaben => gleicher Slot). Mit `placed` (Rects bereits sichtbarer
- * Labels, inkl. Sink-Drift) wird zusätzlich je Kandidat geprüft, dass das
- * neue Label-Rect kein bestehendes schneidet — Zellen-Belegung allein reicht
- * nicht, weil natürliche Positionen innerhalb benachbarter Zellen dicht
- * beieinander liegen können. Im Sättigungsfall (nichts frei im Radius)
- * natürliche Position mit eigenem Schlüssel.
+ * gleiche Eingaben => gleicher Slot). Die Spirale nutzt nur dy >= 0 (seitlich
+ * oder nach unten): ein Versatz nach oben würde wieder über das
+ * Anker-Sprite-Zentrum rutschen (genau der B4-Defekt). Mit `placed` (Rects
+ * bereits sichtbarer Labels, inkl. Sink-Drift) wird zusätzlich je Kandidat
+ * geprüft, dass das neue Label-Rect kein bestehendes schneidet —
+ * Zellen-Belegung allein reicht nicht, weil natürliche Positionen innerhalb
+ * benachbarter Zellen dicht beieinander liegen können. Im Sättigungsfall
+ * (nichts frei im Radius) natürliche Position mit eigenem Schlüssel.
  */
 export function pickGridSlot(
   baseScreenX: number,
@@ -108,6 +110,7 @@ export function pickGridSlot(
   const by = Math.round(baseScreenY / DAMAGE_GRID_CELL_H);
   for (let r = 0; r <= DAMAGE_GRID_MAX_CELLS; r++) {
     for (let dy = -r; dy <= r; dy++) {
+      if (dy < 0) continue; // nie nach oben versetzen (Anker-Sprite bleibt frei)
       for (let dx = -r; dx <= r; dx++) {
         if (Math.max(Math.abs(dx), Math.abs(dy)) !== r) continue;
         const k = `${bx + dx},${by + dy}`;
