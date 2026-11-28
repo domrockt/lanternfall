@@ -21,6 +21,13 @@ import { PAL } from "../palette";
  *
  * Warnlogik/Draw-Pfad in Hazards.ts bleiben bitgleich (Puls, Depth, Blend) — reine Optik.
  * Nicht-Telegraph-Nutzung von "ring_burst" (Impact-Ring, kurzlebig) ist bewusst unveraendert.
+ *
+ * Polish-Lane m10-hazard-disc-polish (2026-11-28, Nachbesserungen aus der art-director-Abnahme
+ * von 3fa01eb):
+ *   - K2a: 2-px-Uebergangsband (25-%-Fringe aus DISC_FILL_I) zwischen Kontur und 50-%-Checker —
+ *     keine harte Checker-Kante am Innenrand.
+ *   - K2b: Kontur via round(d)-Band (round(d) ∈ {r-1, r}) — radial konstant 2 px, kein
+ *     1/2-px-Wechselschlag an Bogen-Flachstellen.
  */
 
 /** Fuellung: dunkler Warnton — mit Tint dunkler Ton der Gefahr-Farbe (hellt nie auf). */
@@ -46,9 +53,11 @@ export function discSide(r: number): number {
 
 /**
  * Reine Rasterung der Warn-Disc: mask[y * side + x] = Palette-Index oder MASK_CLEAR.
- * - d in (r-2, r]: 2-px-Konturband (DISC_CONTOUR_I)
- * - d <= r-2 und (x+y) gerade: Dither-Fuellung (DISC_FILL_I)
- * Kein Alpha-Verlauf, keine Zwischentöne. Für Vitest ohne Phaser testbar.
+ * - round(d) ∈ {r-1, r}: 2-px-Konturband (DISC_CONTOUR_I) — radial konstant 2 px (K2b),
+ * - round(d) ∈ {r-3, r-2}: Uebergangsband, 25-%-Fringe (x und y gerade) statt harter
+ *   Checker-Kante am Innenrand (K2a),
+ * - sonst Fuellung: 50-%-Schachbrett (x+y) gerade.
+ * Kein Alpha-Verlauf, keine Zwischentoene, nur 2 Palettenindizes. Für Vitest ohne Phaser testbar.
  */
 export function discMask(r: number): Uint8Array {
   const side = discSide(r);
@@ -56,11 +65,13 @@ export function discMask(r: number): Uint8Array {
   const mask = new Uint8Array(side * side).fill(MASK_CLEAR);
   for (let y = 0; y < side; y++) {
     for (let x = 0; x < side; x++) {
-      const d = Math.hypot(x - c, y - c);
-      if (d > r) continue;
+      const di = Math.round(Math.hypot(x - c, y - c));
+      if (di > r) continue;
       const i = y * side + x;
-      if (d > r - 2) {
+      if (di >= r - 1) {
         mask[i] = DISC_CONTOUR_I;
+      } else if (di >= r - 3) {
+        if (x % 2 === 0 && y % 2 === 0) mask[i] = DISC_FILL_I;
       } else if ((x + y) % 2 === 0) {
         mask[i] = DISC_FILL_I;
       }
@@ -70,8 +81,9 @@ export function discMask(r: number): Uint8Array {
 }
 
 /**
- * Reine Rasterung des Warn-Rings (Rand-Puls): durchgehendes 2-px-Band am Radius,
- * sonst transparent. Mit Tint = volle Gefahr-Farbe, Draw-Scale 1.
+ * Reine Rasterung des Warn-Rings (Rand-Puls): round(d)-Band am Radius — radial konstant 2 px
+ * an jeder Bogenstelle (kein 1/2-px-Wechselschlag), sonst transparent.
+ * Mit Tint = volle Gefahr-Farbe, Draw-Scale 1.
  */
 export function ringMask(r: number): Uint8Array {
   const side = discSide(r);
@@ -79,8 +91,8 @@ export function ringMask(r: number): Uint8Array {
   const mask = new Uint8Array(side * side).fill(MASK_CLEAR);
   for (let y = 0; y < side; y++) {
     for (let x = 0; x < side; x++) {
-      const d = Math.hypot(x - c, y - c);
-      if (d > r - 2 && d <= r) mask[y * side + x] = DISC_CONTOUR_I;
+      const di = Math.round(Math.hypot(x - c, y - c));
+      if (di === r || di === r - 1) mask[y * side + x] = DISC_CONTOUR_I;
     }
   }
   return mask;

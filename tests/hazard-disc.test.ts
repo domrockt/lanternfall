@@ -42,8 +42,8 @@ vi.stubGlobal("document", {
 import { HazardSystem } from "../src/systems/Hazards";
 import {
   BEAM_RIM_W, BEAM_W, DISC_CONTOUR_I, DISC_FILL_I, MASK_CLEAR,
-  applyMask, beamMask, beamRimMask, discMask, discSide, quantizedBeamLength,
-  quantizedRadius, ringMask,
+  applyMask, beamMask, beamRimMask, discMask, discSide,
+  quantizedBeamLength, quantizedRadius, ringMask,
 } from "../src/gfx/hazardDisc";
 import { PAL, C } from "../src/palette";
 
@@ -88,12 +88,20 @@ describe("hazardDisc: gebackene Telegraph-Texturen sind gerastert, nicht milchig
         if (pi === DISC_CONTOUR_I && x >= c) band.push(x);
       }
       expect(band.length, `r=${r} Kontur-Pixel je Achse`).toBe(2);
-      // Kontur ringfoermig: in 16 Richtungen je ein Kontur-Pixel nahe r.
+      // Kontur ringfoermig: in 16 Richtungen je ein Kontur-Pixel nahe r-1 (round(d)-Band:
+      // die zwei Schichten round(d)=r-1/r liegen pixelgenau, der Idealtyp-Pixel kann zwischen
+      // ihnen liegen — daher 3x3-Nachbarschaft statt exaktem Pixel).
       for (let k = 0; k < 16; k++) {
         const a = (k / 16) * Math.PI * 2;
         const x = Math.round(c + Math.cos(a) * (r - 1));
         const y = Math.round(c + Math.sin(a) * (r - 1));
-        expect(mask[y * side + x], `r=${r} winkel ${k}`).toBe(DISC_CONTOUR_I);
+        let near = false;
+        for (let dy = -1; dy <= 1; dy++) {
+          for (let dx = -1; dx <= 1; dx++) {
+            if (mask[(y + dy) * side + (x + dx)] === DISC_CONTOUR_I) near = true;
+          }
+        }
+        expect(near, `r=${r} winkel ${k}`).toBe(true);
       }
       // Band-Kontrast: Kontur deutlich heller als Fuellung (lesbar als Gefahr-Rand).
       expect(lum(DISC_CONTOUR_I) - lum(DISC_FILL_I)).toBeGreaterThanOrEqual(20);
@@ -210,6 +218,63 @@ describe("Hazards.ts nutzt den Bake mit Draw-Scale 1 (Draw-Pfad sonst bitgleich)
     imageCalls.length = 0;
     hz.spawnBeam(10, 10, 210, 110, { warn: 1, damage: 1, radius: 18, color: 26 });
     expect(imageCalls[0].calls.find(([m]) => m === "setTint")?.[1]).toBe(PAL[26]);
+  });
+});
+
+describe("K2: Uebergangsband quantisiert + Ringkontur radial konstant 2 px", () => {
+  it("Innenkante: 25-%-Fringe ausschliesslich auf dem (gerade, gerade)-Raster, danach feste Kontur", () => {
+    for (const r of [8, 30, 60, 160]) {
+      const side = discSide(r);
+      const mask = discMask(r);
+      const c = (side - 1) / 2;
+      let cells = 0, fill = 0, offGrid = 0;
+      for (let y = 0; y < side; y++) {
+        for (let x = 0; x < side; x++) {
+          const di = Math.round(Math.hypot(x - c, y - c));
+          if (di === r - 2 || di === r - 3) {
+            cells++;
+            if (mask[y * side + x] === DISC_FILL_I) {
+              fill++;
+              if (x % 2 !== 0 || y % 2 !== 0) offGrid++;
+            }
+          } else if (di === r - 1) {
+            // Direkt ausserhalb des Bands: Kontur lueckenlos (harte Kante ist ins Band gewandert).
+            expect(mask[y * side + x], `r=${r} round(d)=r-1`).toBe(DISC_CONTOUR_I);
+          }
+        }
+      }
+      expect(offGrid, `r=${r} Fringe off-grid`).toBe(0);
+      const share = fill / cells;
+      expect(share, `r=${r} Fringe-Dichte`).toBeGreaterThan(0.1);
+      expect(share, `r=${r} Fringe-Dichte`).toBeLessThan(0.4);
+    }
+  });
+
+  it("Kein 1/2-px-Wechselschlag: beide round(d)-Schichten (r-1 und r) rundum geschlossen", () => {
+    for (const r of [8, 30, 45, 60, 90, 160]) {
+      const side = discSide(r);
+      const c = (side - 1) / 2;
+      for (const [name, mask] of [["ring", ringMask(r)], ["disc", discMask(r)]] as const) {
+        for (const layer of [r - 1, r]) {
+          let closed = 0;
+          for (let k = 0; k < 360; k++) {
+            const a = (k * Math.PI) / 180;
+            let hit = false;
+            for (const t of [layer - 0.4, layer, layer + 0.4]) {
+              const x = Math.round(c + Math.cos(a) * t);
+              const y = Math.round(c + Math.sin(a) * t);
+              const idx = y * side + x;
+              if (idx >= 0 && idx < mask.length && mask[idx] === DISC_CONTOUR_I) {
+                hit = true;
+                break;
+              }
+            }
+            if (hit) closed++;
+          }
+          expect(closed, `${name} r=${r} Schicht round(d)=${layer}`).toBe(360);
+        }
+      }
+    }
   });
 });
 
