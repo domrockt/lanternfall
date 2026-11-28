@@ -22,7 +22,7 @@ const browser = await chromium.launch({
 });
 
 // Siegel-relevante Texturen (Boden-Siegel + Halo + Kettenblitz + Funken).
-const FX_KEYS = ["fx_seal", "fx_halo", "fx_bolt", "fx_star"];
+const FX_KEYS = ["fx_seal_thunder", "fx_halo", "fx_bolt", "fx_star"];
 
 const SNAP = (FX_KEYS) => {
   const scene = window.__game.scene.getScene("run");
@@ -76,7 +76,7 @@ const PROBE = (FX_KEYS) => {
   // Farb-Stufen der fx_seal-Textur: exakte Paletten-Treffer + Ink-Rand-Anteil.
   const pal = [0x06070c,0x0a0e16,0x101724,0x17202e,0x1e2a3a,0x2a3547,0x3a4a5c,0x4e5f6e,0x6b7c86,0x8fa0a6,0xb8c4c2,0xd9ddcd,0xf2edd8,0xfff8e6,0x2b1410,0x4d2214,0x7a331a,0xa84a21,0xcf6b26,0xef9130,0xffb84d,0xffd77a,0xffeeb0,0x3d1220,0x7a1f2e,0xb8303f,0xe4574d,0xd8572f,0x8a8f7c,0x59743a,0x86983f,0xa9b063];
   const hex = (v) => "#" + v.toString(16).padStart(6, "0");
-  const tex = window.__game.textures.get("fx_seal");
+  const tex = window.__game.textures.get("fx_seal_thunder");
   if (tex) {
     const src = tex.source[0];
     const cv = document.createElement("canvas");

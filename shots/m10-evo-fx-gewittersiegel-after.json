@@ -1,0 +1,1832 @@
+{
+  "generatedAt": "2026-11-28T02:37:23.141Z",
+  "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+  "valid": true,
+  "errors": [],
+  "configs": {
+    "640": {
+      "series": [
+        {
+          "t": 0,
+          "counts": {},
+          "alpha": {},
+          "scale": {},
+          "frames": {},
+          "aliveEnemies": 20,
+          "kills": 0
+        },
+        {
+          "t": 0.21,
+          "counts": {
+            "fx_seal_thunder": 3
+          },
+          "alpha": {
+            "fx_seal_thunder": 0.59
+          },
+          "scale": {
+            "fx_seal_thunder": 0.94
+          },
+          "frames": {
+            "fx_seal_thunder": "fx_seal_thunder"
+          },
+          "aliveEnemies": 20,
+          "kills": 0
+        },
+        {
+          "t": 0.52,
+          "counts": {
+            "fx_seal_thunder": 3,
+            "fx_star": 1
+          },
+          "alpha": {
+            "fx_seal_thunder": 0.94,
+            "fx_star": 0.18
+          },
+          "scale": {
+            "fx_seal_thunder": 0.97,
+            "fx_star": 0.69
+          },
+          "frames": {
+            "fx_seal_thunder": "fx_seal_thunder_2",
+            "fx_star": "fx_star"
+          },
+          "aliveEnemies": 19,
+          "kills": 1
+        },
+        {
+          "t": 0.72,
+          "counts": {
+            "fx_seal_thunder": 25,
+            "fx_bolt": 100,
+            "fx_halo": 3,
+            "fx_star": 44
+          },
+          "alpha": {
+            "fx_seal_thunder": 0.88,
+            "fx_bolt": 0.67,
+            "fx_halo": 0.47,
+            "fx_star": 0.45
+          },
+          "scale": {
+            "fx_seal_thunder": 1,
+            "fx_bolt": 1.61,
+            "fx_halo": 0.49,
+            "fx_star": 1.41
+          },
+          "frames": {
+            "fx_seal_thunder": "fx_seal_thunder_3",
+            "fx_bolt": "fx_bolt_2",
+            "fx_halo": "fx_halo@2",
+            "fx_star": "fx_star"
+          },
+          "aliveEnemies": 24,
+          "kills": 20
+        },
+        {
+          "t": 0.92,
+          "counts": {
+            "fx_seal_thunder": 22,
+            "fx_bolt": 96
+          },
+          "alpha": {
+            "fx_seal_thunder": 1,
+            "fx_bolt": 0.27
+          },
+          "scale": {
+            "fx_seal_thunder": 0.91,
+            "fx_bolt": 1.61
+          },
+          "frames": {
+            "fx_seal_thunder": "fx_seal_thunder_3",
+            "fx_bolt": "fx_bolt_5"
+          },
+          "aliveEnemies": 24,
+          "kills": 20
+        },
+        {
+          "t": 1.12,
+          "counts": {
+            "fx_seal_thunder": 3,
+            "fx_star": 2
+          },
+          "alpha": {
+            "fx_seal_thunder": 0.91,
+            "fx_star": 0.73
+          },
+          "scale": {
+            "fx_seal_thunder": 0.98,
+            "fx_star": 0.83
+          },
+          "frames": {
+            "fx_seal_thunder": "fx_seal_thunder_4",
+            "fx_star": "fx_star"
+          },
+          "aliveEnemies": 24,
+          "kills": 20
+        },
+        {
+          "t": 1.33,
+          "counts": {
+            "fx_seal_thunder": 3
+          },
+          "alpha": {
+            "fx_seal_thunder": 0.8
+          },
+          "scale": {
+            "fx_seal_thunder": 1
+          },
+          "frames": {
+            "fx_seal_thunder": "fx_seal_thunder_4"
+          },
+          "aliveEnemies": 24,
+          "kills": 20
+        },
+        {
+          "t": 1.53,
+          "counts": {
+            "fx_seal_thunder": 6
+          },
+          "alpha": {
+            "fx_seal_thunder": 0.89
+          },
+          "scale": {
+            "fx_seal_thunder": 0.94
+          },
+          "frames": {
+            "fx_seal_thunder": "fx_seal_thunder"
+          },
+          "aliveEnemies": 24,
+          "kills": 20
+        },
+        {
+          "t": 1.85,
+          "counts": {
+            "fx_seal_thunder": 6
+          },
+          "alpha": {
+            "fx_seal_thunder": 0.82
+          },
+          "scale": {
+            "fx_seal_thunder": 0.9
+          },
+          "frames": {
+            "fx_seal_thunder": "fx_seal_thunder_2"
+          },
+          "aliveEnemies": 24,
+          "kills": 20
+        },
+        {
+          "t": 2.06,
+          "counts": {
+            "fx_seal_thunder": 25,
+            "fx_bolt": 98,
+            "fx_halo": 3,
+            "fx_star": 56
+          },
+          "alpha": {
+            "fx_seal_thunder": 0.85,
+            "fx_bolt": 0.87,
+            "fx_halo": 0.73,
+            "fx_star": 0.77
+          },
+          "scale": {
+            "fx_seal_thunder": 1,
+            "fx_bolt": 1.58,
+            "fx_halo": 0.38,
+            "fx_star": 2.27
+          },
+          "frames": {
+            "fx_seal_thunder": "fx_seal_thunder_3",
+            "fx_bolt": "fx_bolt_2",
+            "fx_halo": "fx_halo@2",
+            "fx_star": "fx_star"
+          },
+          "aliveEnemies": 42,
+          "kills": 40
+        },
+        {
+          "t": 2.26,
+          "counts": {
+            "fx_seal_thunder": 25,
+            "fx_bolt": 98,
+            "fx_halo": 3,
+            "fx_star": 4
+          },
+          "alpha": {
+            "fx_seal_thunder": 0.87,
+            "fx_bolt": 0.47,
+            "fx_halo": 0.21,
+            "fx_star": 0.08
+          },
+          "scale": {
+            "fx_seal_thunder": 1,
+            "fx_bolt": 1.58,
+            "fx_halo": 0.6,
+            "fx_star": 0.42
+          },
+          "frames": {
+            "fx_seal_thunder": "fx_seal_thunder_3",
+            "fx_bolt": "fx_bolt_5",
+            "fx_halo": "fx_halo@2_2",
+            "fx_star": "fx_star"
+          },
+          "aliveEnemies": 42,
+          "kills": 40
+        },
+        {
+          "t": 2.46,
+          "counts": {
+            "fx_seal_thunder": 3,
+            "fx_bolt": 60
+          },
+          "alpha": {
+            "fx_seal_thunder": 1,
+            "fx_bolt": 0.07
+          },
+          "scale": {
+            "fx_seal_thunder": 0.97,
+            "fx_bolt": 1.58
+          },
+          "frames": {
+            "fx_seal_thunder": "fx_seal_thunder_4",
+            "fx_bolt": "fx_bolt_6"
+          },
+          "aliveEnemies": 42,
+          "kills": 40
+        },
+        {
+          "t": 2.67,
+          "counts": {
+            "fx_seal_thunder": 3
+          },
+          "alpha": {
+            "fx_seal_thunder": 0.91
+          },
+          "scale": {
+            "fx_seal_thunder": 0.9
+          },
+          "frames": {
+            "fx_seal_thunder": "fx_seal_thunder_4"
+          },
+          "aliveEnemies": 43,
+          "kills": 40
+        },
+        {
+          "t": 2.87,
+          "counts": {
+            "fx_seal_thunder": 3,
+            "fx_star": 3
+          },
+          "alpha": {
+            "fx_seal_thunder": 0.8,
+            "fx_star": 0.69
+          },
+          "scale": {
+            "fx_seal_thunder": 0.88,
+            "fx_star": 2.05
+          },
+          "frames": {
+            "fx_seal_thunder": "fx_seal_thunder_4",
+            "fx_star": "fx_star"
+          },
+          "aliveEnemies": 42,
+          "kills": 41
+        },
+        {
+          "t": 3.07,
+          "counts": {
+            "fx_seal_thunder": 6
+          },
+          "alpha": {
+            "fx_seal_thunder": 0.89
+          },
+          "scale": {
+            "fx_seal_thunder": 0.94
+          },
+          "frames": {
+            "fx_seal_thunder": "fx_seal_thunder"
+          },
+          "aliveEnemies": 42,
+          "kills": 41
+        },
+        {
+          "t": 3.27,
+          "counts": {
+            "fx_seal_thunder": 6
+          },
+          "alpha": {
+            "fx_seal_thunder": 0.8
+          },
+          "scale": {
+            "fx_seal_thunder": 0.99
+          },
+          "frames": {
+            "fx_seal_thunder": "fx_seal_thunder_2"
+          },
+          "aliveEnemies": 42,
+          "kills": 41
+        },
+        {
+          "t": 3.48,
+          "counts": {
+            "fx_seal_thunder": 30,
+            "fx_bolt": 120,
+            "fx_halo": 3,
+            "fx_star": 58
+          },
+          "alpha": {
+            "fx_seal_thunder": 1,
+            "fx_bolt": 0.93,
+            "fx_halo": 0.81,
+            "fx_star": 0.89
+          },
+          "scale": {
+            "fx_seal_thunder": 1,
+            "fx_bolt": 0.9,
+            "fx_halo": 0.34,
+            "fx_star": 2.58
+          },
+          "frames": {
+            "fx_seal_thunder": "fx_seal_thunder_3",
+            "fx_bolt": "fx_bolt",
+            "fx_halo": "fx_halo@2",
+            "fx_star": "fx_star"
+          },
+          "aliveEnemies": 22,
+          "kills": 65
+        },
+        {
+          "t": 3.68,
+          "counts": {
+            "fx_seal_thunder": 30,
+            "fx_bolt": 120,
+            "fx_halo": 3,
+            "fx_star": 12
+          },
+          "alpha": {
+            "fx_seal_thunder": 0.8,
+            "fx_bolt": 0.5,
+            "fx_halo": 0.26,
+            "fx_star": 0.16
+          },
+          "scale": {
+            "fx_seal_thunder": 1,
+            "fx_bolt": 0.9,
+            "fx_halo": 0.59,
+            "fx_star": 0.62
+          },
+          "frames": {
+            "fx_seal_thunder": "fx_seal_thunder_3",
+            "fx_bolt": "fx_bolt_3",
+            "fx_halo": "fx_halo@2_2",
+            "fx_star": "fx_star"
+          },
+          "aliveEnemies": 22,
+          "kills": 65
+        },
+        {
+          "t": 3.99,
+          "counts": {
+            "fx_seal_thunder": 3
+          },
+          "alpha": {
+            "fx_seal_thunder": 0.97
+          },
+          "scale": {
+            "fx_seal_thunder": 0.89
+          },
+          "frames": {
+            "fx_seal_thunder": "fx_seal_thunder_4"
+          },
+          "aliveEnemies": 21,
+          "kills": 66
+        },
+        {
+          "t": 4.19,
+          "counts": {
+            "fx_seal_thunder": 3
+          },
+          "alpha": {
+            "fx_seal_thunder": 0.95
+          },
+          "scale": {
+            "fx_seal_thunder": 0.96
+          },
+          "frames": {
+            "fx_seal_thunder": "fx_seal_thunder_4"
+          },
+          "aliveEnemies": 21,
+          "kills": 66
+        },
+        {
+          "t": 4.39,
+          "counts": {
+            "fx_seal_thunder": 6
+          },
+          "alpha": {
+            "fx_seal_thunder": 0.82
+          },
+          "scale": {
+            "fx_seal_thunder": 1
+          },
+          "frames": {
+            "fx_seal_thunder": "fx_seal_thunder"
+          },
+          "aliveEnemies": 21,
+          "kills": 66
+        },
+        {
+          "t": 4.59,
+          "counts": {
+            "fx_seal_thunder": 6
+          },
+          "alpha": {
+            "fx_seal_thunder": 0.81
+          },
+          "scale": {
+            "fx_seal_thunder": 0.96
+          },
+          "frames": {
+            "fx_seal_thunder": "fx_seal_thunder"
+          },
+          "aliveEnemies": 21,
+          "kills": 66
+        },
+        {
+          "t": 4.79,
+          "counts": {
+            "fx_seal_thunder": 6,
+            "fx_star": 3
+          },
+          "alpha": {
+            "fx_seal_thunder": 0.88,
+            "fx_star": 0.31
+          },
+          "scale": {
+            "fx_seal_thunder": 1,
+            "fx_star": 1.04
+          },
+          "frames": {
+            "fx_seal_thunder": "fx_seal_thunder_2",
+            "fx_star": "fx_star"
+          },
+          "aliveEnemies": 20,
+          "kills": 67
+        },
+        {
+          "t": 5,
+          "counts": {
+            "fx_seal_thunder": 25,
+            "fx_bolt": 96,
+            "fx_halo": 3,
+            "fx_star": 55
+          },
+          "alpha": {
+            "fx_seal_thunder": 0.94,
+            "fx_bolt": 0.73,
+            "fx_halo": 0.56,
+            "fx_star": 0.54
+          },
+          "scale": {
+            "fx_seal_thunder": 1,
+            "fx_bolt": 1.6,
+            "fx_halo": 0.45,
+            "fx_star": 1.64
+          },
+          "frames": {
+            "fx_seal_thunder": "fx_seal_thunder_3",
+            "fx_bolt": "fx_bolt_2",
+            "fx_halo": "fx_halo@2",
+            "fx_star": "fx_star"
+          },
+          "aliveEnemies": 7,
+          "kills": 86
+        }
+      ],
+      "probe": {
+        "renderer": {
+          "generatedAt": "2026-11-28T02:37:08.748Z",
+          "context": "webgl1",
+          "version": "WebGL 1.0 (OpenGL ES 2.0 Chromium)",
+          "shadingLanguage": "WebGL GLSL ES 1.0 (OpenGL ES GLSL ES 1.0 Chromium)",
+          "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+          "vendor": "Google Inc. (Intel)",
+          "maxTextureSize": 16384,
+          "maxTextureImageUnits": 32,
+          "extensions": [
+            "ANGLE_instanced_arrays",
+            "EXT_blend_minmax",
+            "EXT_clip_control",
+            "EXT_color_buffer_half_float",
+            "EXT_depth_clamp",
+            "EXT_disjoint_timer_query",
+            "EXT_float_blend",
+            "EXT_frag_depth",
+            "EXT_polygon_offset_clamp",
+            "EXT_texture_compression_bptc",
+            "EXT_texture_compression_rgtc",
+            "EXT_texture_filter_anisotropic",
+            "EXT_texture_mirror_clamp_to_edge",
+            "EXT_sRGB",
+            "KHR_parallel_shader_compile",
+            "OES_element_index_uint",
+            "OES_fbo_render_mipmap",
+            "OES_standard_derivatives",
+            "OES_texture_float",
+            "OES_texture_float_linear",
+            "OES_texture_half_float",
+            "OES_texture_half_float_linear",
+            "OES_vertex_array_object",
+            "WEBGL_blend_func_extended",
+            "WEBGL_color_buffer_float",
+            "WEBGL_compressed_texture_astc",
+            "WEBGL_compressed_texture_etc",
+            "WEBGL_compressed_texture_etc1",
+            "WEBGL_compressed_texture_s3tc",
+            "WEBGL_compressed_texture_s3tc_srgb",
+            "WEBGL_debug_renderer_info",
+            "WEBGL_debug_shaders",
+            "WEBGL_depth_texture",
+            "WEBGL_draw_buffers",
+            "WEBGL_lose_context",
+            "WEBGL_multi_draw"
+          ],
+          "contextAttributes": {
+            "alpha": false,
+            "antialias": false,
+            "depth": true,
+            "desynchronized": false,
+            "failIfMajorPerformanceCaveat": false,
+            "powerPreference": "high-performance",
+            "premultipliedAlpha": true,
+            "preserveDrawingBuffer": false,
+            "stencil": true,
+            "xrCompatible": false
+          },
+          "precision": {
+            "fragmentHighp": {
+              "rangeMin": 127,
+              "rangeMax": 127,
+              "precision": 23
+            },
+            "fragmentMediump": {
+              "rangeMin": 127,
+              "rangeMax": 127,
+              "precision": 23
+            },
+            "vertexHighp": {
+              "rangeMin": 127,
+              "rangeMax": 127,
+              "precision": 23
+            }
+          },
+          "fps": {
+            "target": 60,
+            "limit": 60,
+            "cappedAt60": true
+          },
+          "powerPreference": "high-performance",
+          "canvas": {
+            "attrWidth": 640,
+            "attrHeight": 360,
+            "logicalWidth": 640,
+            "logicalHeight": 360,
+            "rendersDevicePixels": false
+          },
+          "textures": {
+            "count": 0,
+            "pixels": 0,
+            "approxBytes": 0,
+            "maxEdge": 0,
+            "oversized": []
+          }
+        },
+        "textures": {
+          "fx_seal_thunder": {
+            "sourceW": 64,
+            "sourceH": 64,
+            "frameW": 64,
+            "frameH": 64
+          },
+          "fx_halo": {
+            "sourceW": 24,
+            "sourceH": 24,
+            "frameW": 24,
+            "frameH": 24
+          },
+          "fx_bolt": {
+            "sourceW": 12,
+            "sourceH": 16,
+            "frameW": 12,
+            "frameH": 16
+          },
+          "fx_star": {
+            "sourceW": 9,
+            "sourceH": 9,
+            "frameW": 9,
+            "frameH": 9
+          }
+        },
+        "live": {
+          "fx_seal_thunder_4": {
+            "maxScaleX": 0.95,
+            "maxScaleY": 0.95,
+            "samples": [
+              {
+                "scaleX": 0.95,
+                "scaleY": 0.95,
+                "dispW": 61,
+                "dispH": 61,
+                "blend": 0,
+                "alpha": 0.8
+              },
+              {
+                "scaleX": 0.95,
+                "scaleY": 0.95,
+                "dispW": 61,
+                "dispH": 61,
+                "blend": 0,
+                "alpha": 0.8
+              },
+              {
+                "scaleX": 0.95,
+                "scaleY": 0.95,
+                "dispW": 61,
+                "dispH": 61,
+                "blend": 0,
+                "alpha": 0.8
+              }
+            ]
+          },
+          "fx_bolt_5": {
+            "maxScaleX": 1.599,
+            "maxScaleY": 1.599,
+            "samples": [
+              {
+                "scaleX": 0.606,
+                "scaleY": 0.606,
+                "dispW": 7,
+                "dispH": 10,
+                "blend": 0,
+                "alpha": 0.3
+              },
+              {
+                "scaleX": 0.516,
+                "scaleY": 0.516,
+                "dispW": 6,
+                "dispH": 8,
+                "blend": 0,
+                "alpha": 0.3
+              },
+              {
+                "scaleX": 0.308,
+                "scaleY": 0.308,
+                "dispW": 4,
+                "dispH": 5,
+                "blend": 0,
+                "alpha": 0.3
+              },
+              {
+                "scaleX": 0.297,
+                "scaleY": 0.297,
+                "dispW": 4,
+                "dispH": 5,
+                "blend": 0,
+                "alpha": 0.3
+              },
+              {
+                "scaleX": 0.448,
+                "scaleY": 0.448,
+                "dispW": 5,
+                "dispH": 7,
+                "blend": 0,
+                "alpha": 0.3
+              },
+              {
+                "scaleX": 0.23,
+                "scaleY": 0.23,
+                "dispW": 3,
+                "dispH": 4,
+                "blend": 0,
+                "alpha": 0.3
+              },
+              {
+                "scaleX": 1.007,
+                "scaleY": 1.007,
+                "dispW": 12,
+                "dispH": 16,
+                "blend": 0,
+                "alpha": 0.3
+              },
+              {
+                "scaleX": 1.575,
+                "scaleY": 1.575,
+                "dispW": 19,
+                "dispH": 25,
+                "blend": 0,
+                "alpha": 0.3
+              }
+            ]
+          },
+          "fx_seal_thunder_3": {
+            "maxScaleX": 0.656,
+            "maxScaleY": 0.656,
+            "samples": [
+              {
+                "scaleX": 0.656,
+                "scaleY": 0.656,
+                "dispW": 42,
+                "dispH": 42,
+                "blend": 0,
+                "alpha": 0.22
+              },
+              {
+                "scaleX": 0.656,
+                "scaleY": 0.656,
+                "dispW": 42,
+                "dispH": 42,
+                "blend": 0,
+                "alpha": 0.22
+              },
+              {
+                "scaleX": 0.656,
+                "scaleY": 0.656,
+                "dispW": 42,
+                "dispH": 42,
+                "blend": 0,
+                "alpha": 0.22
+              },
+              {
+                "scaleX": 0.656,
+                "scaleY": 0.656,
+                "dispW": 42,
+                "dispH": 42,
+                "blend": 0,
+                "alpha": 0.22
+              },
+              {
+                "scaleX": 0.656,
+                "scaleY": 0.656,
+                "dispW": 42,
+                "dispH": 42,
+                "blend": 0,
+                "alpha": 0.22
+              },
+              {
+                "scaleX": 0.656,
+                "scaleY": 0.656,
+                "dispW": 42,
+                "dispH": 42,
+                "blend": 0,
+                "alpha": 0.22
+              },
+              {
+                "scaleX": 0.656,
+                "scaleY": 0.656,
+                "dispW": 42,
+                "dispH": 42,
+                "blend": 0,
+                "alpha": 0.22
+              },
+              {
+                "scaleX": 0.656,
+                "scaleY": 0.656,
+                "dispW": 42,
+                "dispH": 42,
+                "blend": 0,
+                "alpha": 0.22
+              }
+            ]
+          },
+          "fx_bolt_6": {
+            "maxScaleX": 0.9,
+            "maxScaleY": 0.9,
+            "samples": [
+              {
+                "scaleX": 0.9,
+                "scaleY": 0.9,
+                "dispW": 11,
+                "dispH": 14,
+                "blend": 0,
+                "alpha": 0.06
+              },
+              {
+                "scaleX": 0.9,
+                "scaleY": 0.9,
+                "dispW": 11,
+                "dispH": 14,
+                "blend": 0,
+                "alpha": 0.06
+              },
+              {
+                "scaleX": 0.9,
+                "scaleY": 0.9,
+                "dispW": 11,
+                "dispH": 14,
+                "blend": 0,
+                "alpha": 0.06
+              },
+              {
+                "scaleX": 0.9,
+                "scaleY": 0.9,
+                "dispW": 11,
+                "dispH": 14,
+                "blend": 0,
+                "alpha": 0.06
+              },
+              {
+                "scaleX": 0.9,
+                "scaleY": 0.9,
+                "dispW": 11,
+                "dispH": 14,
+                "blend": 0,
+                "alpha": 0.06
+              },
+              {
+                "scaleX": 0.9,
+                "scaleY": 0.9,
+                "dispW": 11,
+                "dispH": 14,
+                "blend": 0,
+                "alpha": 0.06
+              },
+              {
+                "scaleX": 0.9,
+                "scaleY": 0.9,
+                "dispW": 11,
+                "dispH": 14,
+                "blend": 0,
+                "alpha": 0.06
+              },
+              {
+                "scaleX": 0.9,
+                "scaleY": 0.9,
+                "dispW": 11,
+                "dispH": 14,
+                "blend": 0,
+                "alpha": 0.06
+              }
+            ]
+          },
+          "fx_halo@2_2": {
+            "maxScaleX": 0.7,
+            "maxScaleY": 0.7,
+            "samples": [
+              {
+                "scaleX": 0.7,
+                "scaleY": 0.7,
+                "dispW": 34,
+                "dispH": 34,
+                "blend": 0,
+                "alpha": 0
+              },
+              {
+                "scaleX": 0.7,
+                "scaleY": 0.7,
+                "dispW": 34,
+                "dispH": 34,
+                "blend": 0,
+                "alpha": 0
+              }
+            ]
+          }
+        },
+        "colors": {
+          "width": 64,
+          "height": 64,
+          "opaque": 1983,
+          "inkPixels": 0,
+          "greyPixels": 0,
+          "edgeOpaquePixels": 0,
+          "edgeSample": [],
+          "histogram": {
+            "pal4": 427,
+            "pal11": 49,
+            "pal3": 662,
+            "pal2": 845
+          }
+        },
+        "errors": [],
+        "liveCounts": {
+          "fx_seal_thunder_4": 3,
+          "fx_bolt_5": 58,
+          "fx_seal_thunder_3": 19,
+          "fx_bolt_6": 38,
+          "fx_halo@2_2": 2
+        }
+      }
+    },
+    "960x540": {
+      "series": [
+        {
+          "t": 0,
+          "counts": {},
+          "alpha": {},
+          "scale": {},
+          "frames": {},
+          "aliveEnemies": 20,
+          "kills": 0
+        },
+        {
+          "t": 0.21,
+          "counts": {
+            "fx_seal_thunder": 3
+          },
+          "alpha": {
+            "fx_seal_thunder": 0.59
+          },
+          "scale": {
+            "fx_seal_thunder": 0.96
+          },
+          "frames": {
+            "fx_seal_thunder": "fx_seal_thunder"
+          },
+          "aliveEnemies": 20,
+          "kills": 0
+        },
+        {
+          "t": 0.5,
+          "counts": {
+            "fx_seal_thunder": 3,
+            "fx_star": 1
+          },
+          "alpha": {
+            "fx_seal_thunder": 0.94,
+            "fx_star": 0.18
+          },
+          "scale": {
+            "fx_seal_thunder": 0.95,
+            "fx_star": 0.69
+          },
+          "frames": {
+            "fx_seal_thunder": "fx_seal_thunder_2",
+            "fx_star": "fx_star"
+          },
+          "aliveEnemies": 19,
+          "kills": 1
+        },
+        {
+          "t": 0.71,
+          "counts": {
+            "fx_seal_thunder": 25,
+            "fx_bolt": 100,
+            "fx_halo": 3,
+            "fx_star": 44
+          },
+          "alpha": {
+            "fx_seal_thunder": 0.86,
+            "fx_bolt": 0.67,
+            "fx_halo": 0.47,
+            "fx_star": 0.45
+          },
+          "scale": {
+            "fx_seal_thunder": 1,
+            "fx_bolt": 1.61,
+            "fx_halo": 0.49,
+            "fx_star": 1.41
+          },
+          "frames": {
+            "fx_seal_thunder": "fx_seal_thunder_3",
+            "fx_bolt": "fx_bolt_2",
+            "fx_halo": "fx_halo@2",
+            "fx_star": "fx_star"
+          },
+          "aliveEnemies": 24,
+          "kills": 20
+        },
+        {
+          "t": 0.91,
+          "counts": {
+            "fx_seal_thunder": 22,
+            "fx_bolt": 62
+          },
+          "alpha": {
+            "fx_seal_thunder": 1,
+            "fx_bolt": 0.2
+          },
+          "scale": {
+            "fx_seal_thunder": 0.91,
+            "fx_bolt": 1.61
+          },
+          "frames": {
+            "fx_seal_thunder": "fx_seal_thunder_3",
+            "fx_bolt": "fx_bolt_5"
+          },
+          "aliveEnemies": 24,
+          "kills": 20
+        },
+        {
+          "t": 1.11,
+          "counts": {
+            "fx_seal_thunder": 3,
+            "fx_star": 2
+          },
+          "alpha": {
+            "fx_seal_thunder": 0.91,
+            "fx_star": 0.56
+          },
+          "scale": {
+            "fx_seal_thunder": 0.98,
+            "fx_star": 0.67
+          },
+          "frames": {
+            "fx_seal_thunder": "fx_seal_thunder_4",
+            "fx_star": "fx_star"
+          },
+          "aliveEnemies": 24,
+          "kills": 20
+        },
+        {
+          "t": 1.32,
+          "counts": {
+            "fx_seal_thunder": 3
+          },
+          "alpha": {
+            "fx_seal_thunder": 0.8
+          },
+          "scale": {
+            "fx_seal_thunder": 1
+          },
+          "frames": {
+            "fx_seal_thunder": "fx_seal_thunder_4"
+          },
+          "aliveEnemies": 24,
+          "kills": 20
+        },
+        {
+          "t": 1.52,
+          "counts": {
+            "fx_seal_thunder": 6
+          },
+          "alpha": {
+            "fx_seal_thunder": 0.89
+          },
+          "scale": {
+            "fx_seal_thunder": 0.94
+          },
+          "frames": {
+            "fx_seal_thunder": "fx_seal_thunder"
+          },
+          "aliveEnemies": 24,
+          "kills": 20
+        },
+        {
+          "t": 1.8,
+          "counts": {
+            "fx_seal_thunder": 6
+          },
+          "alpha": {
+            "fx_seal_thunder": 0.78
+          },
+          "scale": {
+            "fx_seal_thunder": 0.94
+          },
+          "frames": {
+            "fx_seal_thunder": "fx_seal_thunder_2"
+          },
+          "aliveEnemies": 24,
+          "kills": 20
+        },
+        {
+          "t": 2,
+          "counts": {
+            "fx_seal_thunder": 25,
+            "fx_bolt": 98,
+            "fx_halo": 3,
+            "fx_star": 56
+          },
+          "alpha": {
+            "fx_seal_thunder": 1,
+            "fx_bolt": 0.97,
+            "fx_halo": 0.86,
+            "fx_star": 0.94
+          },
+          "scale": {
+            "fx_seal_thunder": 1,
+            "fx_bolt": 1.62,
+            "fx_halo": 0.32,
+            "fx_star": 2.73
+          },
+          "frames": {
+            "fx_seal_thunder": "fx_seal_thunder_3",
+            "fx_bolt": "fx_bolt",
+            "fx_halo": "fx_halo@2",
+            "fx_star": "fx_star"
+          },
+          "aliveEnemies": 43,
+          "kills": 39
+        },
+        {
+          "t": 2.21,
+          "counts": {
+            "fx_seal_thunder": 25,
+            "fx_bolt": 98,
+            "fx_halo": 3,
+            "fx_star": 13
+          },
+          "alpha": {
+            "fx_seal_thunder": 0.82,
+            "fx_bolt": 0.53,
+            "fx_halo": 0.3,
+            "fx_star": 0.2
+          },
+          "scale": {
+            "fx_seal_thunder": 1,
+            "fx_bolt": 1.62,
+            "fx_halo": 0.57,
+            "fx_star": 0.73
+          },
+          "frames": {
+            "fx_seal_thunder": "fx_seal_thunder_3",
+            "fx_bolt": "fx_bolt_4",
+            "fx_halo": "fx_halo@2_2",
+            "fx_star": "fx_star"
+          },
+          "aliveEnemies": 42,
+          "kills": 40
+        },
+        {
+          "t": 2.41,
+          "counts": {
+            "fx_seal_thunder": 22,
+            "fx_bolt": 60
+          },
+          "alpha": {
+            "fx_seal_thunder": 0.98,
+            "fx_bolt": 0.1
+          },
+          "scale": {
+            "fx_seal_thunder": 0.99,
+            "fx_bolt": 1.62
+          },
+          "frames": {
+            "fx_seal_thunder": "fx_seal_thunder_3",
+            "fx_bolt": "fx_bolt_6"
+          },
+          "aliveEnemies": 42,
+          "kills": 40
+        },
+        {
+          "t": 2.61,
+          "counts": {
+            "fx_seal_thunder": 3
+          },
+          "alpha": {
+            "fx_seal_thunder": 0.96
+          },
+          "scale": {
+            "fx_seal_thunder": 0.92
+          },
+          "frames": {
+            "fx_seal_thunder": "fx_seal_thunder_4"
+          },
+          "aliveEnemies": 43,
+          "kills": 40
+        },
+        {
+          "t": 2.82,
+          "counts": {
+            "fx_seal_thunder": 3,
+            "fx_star": 3
+          },
+          "alpha": {
+            "fx_seal_thunder": 0.82,
+            "fx_star": 0.77
+          },
+          "scale": {
+            "fx_seal_thunder": 0.88,
+            "fx_star": 2.26
+          },
+          "frames": {
+            "fx_seal_thunder": "fx_seal_thunder_4",
+            "fx_star": "fx_star"
+          },
+          "aliveEnemies": 42,
+          "kills": 41
+        },
+        {
+          "t": 3.02,
+          "counts": {
+            "fx_seal_thunder": 6
+          },
+          "alpha": {
+            "fx_seal_thunder": 0.84
+          },
+          "scale": {
+            "fx_seal_thunder": 0.91
+          },
+          "frames": {
+            "fx_seal_thunder": "fx_seal_thunder"
+          },
+          "aliveEnemies": 42,
+          "kills": 41
+        },
+        {
+          "t": 3.22,
+          "counts": {
+            "fx_seal_thunder": 6
+          },
+          "alpha": {
+            "fx_seal_thunder": 0.76
+          },
+          "scale": {
+            "fx_seal_thunder": 1
+          },
+          "frames": {
+            "fx_seal_thunder": "fx_seal_thunder_2"
+          },
+          "aliveEnemies": 42,
+          "kills": 41
+        },
+        {
+          "t": 3.42,
+          "counts": {
+            "fx_seal_thunder": 6
+          },
+          "alpha": {
+            "fx_seal_thunder": 1
+          },
+          "scale": {
+            "fx_seal_thunder": 1
+          },
+          "frames": {
+            "fx_seal_thunder": "fx_seal_thunder_2"
+          },
+          "aliveEnemies": 42,
+          "kills": 41
+        },
+        {
+          "t": 3.63,
+          "counts": {
+            "fx_seal_thunder": 30,
+            "fx_bolt": 120,
+            "fx_halo": 3,
+            "fx_star": 16
+          },
+          "alpha": {
+            "fx_seal_thunder": 0.81,
+            "fx_bolt": 0.53,
+            "fx_halo": 0.3,
+            "fx_star": 0.21
+          },
+          "scale": {
+            "fx_seal_thunder": 1,
+            "fx_bolt": 0.9,
+            "fx_halo": 0.57,
+            "fx_star": 0.77
+          },
+          "frames": {
+            "fx_seal_thunder": "fx_seal_thunder_3",
+            "fx_bolt": "fx_bolt_3",
+            "fx_halo": "fx_halo@2_2",
+            "fx_star": "fx_star"
+          },
+          "aliveEnemies": 22,
+          "kills": 65
+        },
+        {
+          "t": 3.93,
+          "counts": {
+            "fx_seal_thunder": 3,
+            "fx_star": 1
+          },
+          "alpha": {
+            "fx_seal_thunder": 0.93,
+            "fx_star": 0.12
+          },
+          "scale": {
+            "fx_seal_thunder": 0.88,
+            "fx_star": 0.53
+          },
+          "frames": {
+            "fx_seal_thunder": "fx_seal_thunder_4",
+            "fx_star": "fx_star"
+          },
+          "aliveEnemies": 21,
+          "kills": 66
+        },
+        {
+          "t": 4.13,
+          "counts": {
+            "fx_seal_thunder": 3
+          },
+          "alpha": {
+            "fx_seal_thunder": 0.99
+          },
+          "scale": {
+            "fx_seal_thunder": 0.94
+          },
+          "frames": {
+            "fx_seal_thunder": "fx_seal_thunder_4"
+          },
+          "aliveEnemies": 21,
+          "kills": 66
+        },
+        {
+          "t": 4.34,
+          "counts": {
+            "fx_seal_thunder": 6
+          },
+          "alpha": {
+            "fx_seal_thunder": 0.85
+          },
+          "scale": {
+            "fx_seal_thunder": 0.99
+          },
+          "frames": {
+            "fx_seal_thunder": "fx_seal_thunder"
+          },
+          "aliveEnemies": 21,
+          "kills": 66
+        },
+        {
+          "t": 4.54,
+          "counts": {
+            "fx_seal_thunder": 6
+          },
+          "alpha": {
+            "fx_seal_thunder": 0.81
+          },
+          "scale": {
+            "fx_seal_thunder": 0.98
+          },
+          "frames": {
+            "fx_seal_thunder": "fx_seal_thunder"
+          },
+          "aliveEnemies": 21,
+          "kills": 66
+        },
+        {
+          "t": 4.74,
+          "counts": {
+            "fx_seal_thunder": 6,
+            "fx_star": 3
+          },
+          "alpha": {
+            "fx_seal_thunder": 0.86,
+            "fx_star": 0.4
+          },
+          "scale": {
+            "fx_seal_thunder": 0.98,
+            "fx_star": 1.27
+          },
+          "frames": {
+            "fx_seal_thunder": "fx_seal_thunder_2",
+            "fx_star": "fx_star"
+          },
+          "aliveEnemies": 20,
+          "kills": 67
+        },
+        {
+          "t": 4.94,
+          "counts": {
+            "fx_seal_thunder": 25,
+            "fx_bolt": 96,
+            "fx_halo": 3,
+            "fx_star": 55
+          },
+          "alpha": {
+            "fx_seal_thunder": 0.98,
+            "fx_bolt": 0.8,
+            "fx_halo": 0.64,
+            "fx_star": 0.65
+          },
+          "scale": {
+            "fx_seal_thunder": 1,
+            "fx_bolt": 1.6,
+            "fx_halo": 0.41,
+            "fx_star": 1.95
+          },
+          "frames": {
+            "fx_seal_thunder": "fx_seal_thunder_3",
+            "fx_bolt": "fx_bolt_2",
+            "fx_halo": "fx_halo@2",
+            "fx_star": "fx_star"
+          },
+          "aliveEnemies": 7,
+          "kills": 86
+        }
+      ],
+      "probe": {
+        "renderer": {
+          "generatedAt": "2026-11-28T02:37:16.183Z",
+          "context": "webgl1",
+          "version": "WebGL 1.0 (OpenGL ES 2.0 Chromium)",
+          "shadingLanguage": "WebGL GLSL ES 1.0 (OpenGL ES GLSL ES 1.0 Chromium)",
+          "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+          "vendor": "Google Inc. (Intel)",
+          "maxTextureSize": 16384,
+          "maxTextureImageUnits": 32,
+          "extensions": [
+            "ANGLE_instanced_arrays",
+            "EXT_blend_minmax",
+            "EXT_clip_control",
+            "EXT_color_buffer_half_float",
+            "EXT_depth_clamp",
+            "EXT_disjoint_timer_query",
+            "EXT_float_blend",
+            "EXT_frag_depth",
+            "EXT_polygon_offset_clamp",
+            "EXT_texture_compression_bptc",
+            "EXT_texture_compression_rgtc",
+            "EXT_texture_filter_anisotropic",
+            "EXT_texture_mirror_clamp_to_edge",
+            "EXT_sRGB",
+            "KHR_parallel_shader_compile",
+            "OES_element_index_uint",
+            "OES_fbo_render_mipmap",
+            "OES_standard_derivatives",
+            "OES_texture_float",
+            "OES_texture_float_linear",
+            "OES_texture_half_float",
+            "OES_texture_half_float_linear",
+            "OES_vertex_array_object",
+            "WEBGL_blend_func_extended",
+            "WEBGL_color_buffer_float",
+            "WEBGL_compressed_texture_astc",
+            "WEBGL_compressed_texture_etc",
+            "WEBGL_compressed_texture_etc1",
+            "WEBGL_compressed_texture_s3tc",
+            "WEBGL_compressed_texture_s3tc_srgb",
+            "WEBGL_debug_renderer_info",
+            "WEBGL_debug_shaders",
+            "WEBGL_depth_texture",
+            "WEBGL_draw_buffers",
+            "WEBGL_lose_context",
+            "WEBGL_multi_draw"
+          ],
+          "contextAttributes": {
+            "alpha": false,
+            "antialias": false,
+            "depth": true,
+            "desynchronized": false,
+            "failIfMajorPerformanceCaveat": false,
+            "powerPreference": "high-performance",
+            "premultipliedAlpha": true,
+            "preserveDrawingBuffer": false,
+            "stencil": true,
+            "xrCompatible": false
+          },
+          "precision": {
+            "fragmentHighp": {
+              "rangeMin": 127,
+              "rangeMax": 127,
+              "precision": 23
+            },
+            "fragmentMediump": {
+              "rangeMin": 127,
+              "rangeMax": 127,
+              "precision": 23
+            },
+            "vertexHighp": {
+              "rangeMin": 127,
+              "rangeMax": 127,
+              "precision": 23
+            }
+          },
+          "fps": {
+            "target": 60,
+            "limit": 60,
+            "cappedAt60": true
+          },
+          "powerPreference": "high-performance",
+          "canvas": {
+            "attrWidth": 640,
+            "attrHeight": 360,
+            "logicalWidth": 640,
+            "logicalHeight": 360,
+            "rendersDevicePixels": false
+          },
+          "textures": {
+            "count": 0,
+            "pixels": 0,
+            "approxBytes": 0,
+            "maxEdge": 0,
+            "oversized": []
+          }
+        },
+        "textures": {
+          "fx_seal_thunder": {
+            "sourceW": 64,
+            "sourceH": 64,
+            "frameW": 64,
+            "frameH": 64
+          },
+          "fx_halo": {
+            "sourceW": 24,
+            "sourceH": 24,
+            "frameW": 24,
+            "frameH": 24
+          },
+          "fx_bolt": {
+            "sourceW": 12,
+            "sourceH": 16,
+            "frameW": 12,
+            "frameH": 16
+          },
+          "fx_star": {
+            "sourceW": 9,
+            "sourceH": 9,
+            "frameW": 9,
+            "frameH": 9
+          }
+        },
+        "live": {
+          "fx_seal_thunder_4": {
+            "maxScaleX": 0.926,
+            "maxScaleY": 0.926,
+            "samples": [
+              {
+                "scaleX": 0.926,
+                "scaleY": 0.926,
+                "dispW": 59,
+                "dispH": 59,
+                "blend": 0,
+                "alpha": 0.83
+              },
+              {
+                "scaleX": 0.926,
+                "scaleY": 0.926,
+                "dispW": 59,
+                "dispH": 59,
+                "blend": 0,
+                "alpha": 0.83
+              },
+              {
+                "scaleX": 0.926,
+                "scaleY": 0.926,
+                "dispW": 59,
+                "dispH": 59,
+                "blend": 0,
+                "alpha": 0.83
+              }
+            ]
+          },
+          "fx_bolt_4": {
+            "maxScaleX": 1.6,
+            "maxScaleY": 1.6,
+            "samples": [
+              {
+                "scaleX": 0.32,
+                "scaleY": 0.32,
+                "dispW": 4,
+                "dispH": 5,
+                "blend": 0,
+                "alpha": 0.37
+              },
+              {
+                "scaleX": 0.508,
+                "scaleY": 0.508,
+                "dispW": 6,
+                "dispH": 8,
+                "blend": 0,
+                "alpha": 0.37
+              },
+              {
+                "scaleX": 0.217,
+                "scaleY": 0.217,
+                "dispW": 3,
+                "dispH": 3,
+                "blend": 0,
+                "alpha": 0.37
+              },
+              {
+                "scaleX": 0.385,
+                "scaleY": 0.385,
+                "dispW": 5,
+                "dispH": 6,
+                "blend": 0,
+                "alpha": 0.37
+              },
+              {
+                "scaleX": 0.257,
+                "scaleY": 0.257,
+                "dispW": 3,
+                "dispH": 4,
+                "blend": 0,
+                "alpha": 0.37
+              },
+              {
+                "scaleX": 0.531,
+                "scaleY": 0.531,
+                "dispW": 6,
+                "dispH": 8,
+                "blend": 0,
+                "alpha": 0.37
+              },
+              {
+                "scaleX": 0.608,
+                "scaleY": 0.608,
+                "dispW": 7,
+                "dispH": 10,
+                "blend": 0,
+                "alpha": 0.37
+              },
+              {
+                "scaleX": 1.155,
+                "scaleY": 1.155,
+                "dispW": 14,
+                "dispH": 18,
+                "blend": 0,
+                "alpha": 0.37
+              }
+            ]
+          },
+          "fx_seal_thunder_3": {
+            "maxScaleX": 0.641,
+            "maxScaleY": 0.641,
+            "samples": [
+              {
+                "scaleX": 0.641,
+                "scaleY": 0.641,
+                "dispW": 41,
+                "dispH": 41,
+                "blend": 0,
+                "alpha": 0.3
+              },
+              {
+                "scaleX": 0.641,
+                "scaleY": 0.641,
+                "dispW": 41,
+                "dispH": 41,
+                "blend": 0,
+                "alpha": 0.3
+              },
+              {
+                "scaleX": 0.641,
+                "scaleY": 0.641,
+                "dispW": 41,
+                "dispH": 41,
+                "blend": 0,
+                "alpha": 0.3
+              },
+              {
+                "scaleX": 0.641,
+                "scaleY": 0.641,
+                "dispW": 41,
+                "dispH": 41,
+                "blend": 0,
+                "alpha": 0.3
+              },
+              {
+                "scaleX": 0.641,
+                "scaleY": 0.641,
+                "dispW": 41,
+                "dispH": 41,
+                "blend": 0,
+                "alpha": 0.3
+              },
+              {
+                "scaleX": 0.641,
+                "scaleY": 0.641,
+                "dispW": 41,
+                "dispH": 41,
+                "blend": 0,
+                "alpha": 0.3
+              },
+              {
+                "scaleX": 0.641,
+                "scaleY": 0.641,
+                "dispW": 41,
+                "dispH": 41,
+                "blend": 0,
+                "alpha": 0.3
+              },
+              {
+                "scaleX": 0.641,
+                "scaleY": 0.641,
+                "dispW": 41,
+                "dispH": 41,
+                "blend": 0,
+                "alpha": 0.3
+              }
+            ]
+          },
+          "fx_bolt_6": {
+            "maxScaleX": 0.9,
+            "maxScaleY": 0.9,
+            "samples": [
+              {
+                "scaleX": 0.9,
+                "scaleY": 0.9,
+                "dispW": 11,
+                "dispH": 14,
+                "blend": 0,
+                "alpha": 0.13
+              },
+              {
+                "scaleX": 0.9,
+                "scaleY": 0.9,
+                "dispW": 11,
+                "dispH": 14,
+                "blend": 0,
+                "alpha": 0.13
+              },
+              {
+                "scaleX": 0.9,
+                "scaleY": 0.9,
+                "dispW": 11,
+                "dispH": 14,
+                "blend": 0,
+                "alpha": 0.13
+              },
+              {
+                "scaleX": 0.9,
+                "scaleY": 0.9,
+                "dispW": 11,
+                "dispH": 14,
+                "blend": 0,
+                "alpha": 0.13
+              },
+              {
+                "scaleX": 0.9,
+                "scaleY": 0.9,
+                "dispW": 11,
+                "dispH": 14,
+                "blend": 0,
+                "alpha": 0.13
+              },
+              {
+                "scaleX": 0.9,
+                "scaleY": 0.9,
+                "dispW": 11,
+                "dispH": 14,
+                "blend": 0,
+                "alpha": 0.13
+              },
+              {
+                "scaleX": 0.9,
+                "scaleY": 0.9,
+                "dispW": 11,
+                "dispH": 14,
+                "blend": 0,
+                "alpha": 0.13
+              },
+              {
+                "scaleX": 0.9,
+                "scaleY": 0.9,
+                "dispW": 11,
+                "dispH": 14,
+                "blend": 0,
+                "alpha": 0.13
+              }
+            ]
+          },
+          "fx_halo@2_2": {
+            "maxScaleX": 0.662,
+            "maxScaleY": 0.662,
+            "samples": [
+              {
+                "scaleX": 0.662,
+                "scaleY": 0.662,
+                "dispW": 32,
+                "dispH": 32,
+                "blend": 1,
+                "alpha": 0.09
+              },
+              {
+                "scaleX": 0.662,
+                "scaleY": 0.662,
+                "dispW": 32,
+                "dispH": 32,
+                "blend": 0,
+                "alpha": 0.09
+              },
+              {
+                "scaleX": 0.662,
+                "scaleY": 0.662,
+                "dispW": 32,
+                "dispH": 32,
+                "blend": 0,
+                "alpha": 0.09
+              }
+            ]
+          }
+        },
+        "colors": {
+          "width": 64,
+          "height": 64,
+          "opaque": 1983,
+          "inkPixels": 0,
+          "greyPixels": 0,
+          "edgeOpaquePixels": 0,
+          "edgeSample": [],
+          "histogram": {
+            "pal4": 427,
+            "pal11": 49,
+            "pal3": 662,
+            "pal2": 845
+          }
+        },
+        "errors": [],
+        "liveCounts": {
+          "fx_seal_thunder_4": 3,
+          "fx_bolt_4": 58,
+          "fx_seal_thunder_3": 19,
+          "fx_bolt_6": 38,
+          "fx_halo@2_2": 3
+        }
+      }
+    }
+  }
+}
