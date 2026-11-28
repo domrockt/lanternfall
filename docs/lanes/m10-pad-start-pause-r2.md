@@ -36,9 +36,13 @@ Toggle-Quellen ohne Dedup“ gilt. ESC-/Touch-Verhalten bleibt bitgleich.
 
 (offen)
 
-## K3 — verify-input
+## K3 — verify-input (Ergebnis)
 
-(offen)
+Genau EIN neuer Fall: „Gamepad: Start-Start-Zyklus togglet genau einmal (Pause stabil, Start setzt
+fort)“ — erster Start-Press pausiert; nach dem kompletten Press/Release-Zyklus muss die Pause noch
+an stehen (ein Doppel-Toggle hätte sie sofort aufgehoben); zweiter Start setzt fort. Ergebnis:
+**verify-input PASS 29/29**, 0 JS-Fehler, ESC-Fälle („ESC pausiert“, „ESC setzt fort“) grün.
+Beleg: `~/games/.evidence/m10-pad-start-pause-r2/m10-verify-input-padstart-after.json` + PNGs.
 
 ## K4 — Regressionstest
 

@@ -440,6 +440,20 @@ async function runGamepadSuite() {
   await pressButton(1);
   await waitState(page, "paused", false);
   check("Gamepad: B setzt Pause fort", (await state(page)).paused === false);
+  // M10-pad-start-pause (K3, genau ein neuer Fall): Start-Start-Zyklus.
+  // Start pausiert, die Pause muss den kompletten Press (inkl. Release)
+  // ueberstehen (ein Doppel-Toggle wuerde sie sofort wieder aufheben), und
+  // ein zweiter Start setzt fort — TV-Fernbedienung ohne ESC/Tastatur.
+  await pressButton(9);
+  const pausedByStart = await waitState(page, "paused", true);
+  const startPauseStable = (await state(page)).paused === true;
+  await pressButton(9);
+  const resumedByStart = await waitState(page, "paused", false);
+  check(
+    "Gamepad: Start-Start-Zyklus togglet genau einmal (Pause stabil, Start setzt fort)",
+    pausedByStart && startPauseStable && resumedByStart && (await state(page)).paused === false,
+    `pausiert=${pausedByStart} stabil=${startPauseStable} fortgesetzt=${resumedByStart}`,
+  );
   await pressButton(9);
   await pressButton(0);
   await waitState(page, "paused", false);
