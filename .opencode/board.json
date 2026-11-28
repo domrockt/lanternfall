@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 7238,
+  "next": 7258,
   "cards": [
     {
       "id": 1,
@@ -8520,6 +8520,70 @@
       "notes": [],
       "created": "2026-11-28T00:58:08Z",
       "updated": "2026-11-28T00:58:08Z"
+    },
+    {
+      "id": 7238,
+      "title": "@merge m10-4658-camera-width K1: Ist-Stand + Vorher-Messung",
+      "description": "Lane m10-4658-camera-width: camera.width-Leser bei gesenktem Massstab (Teiler 2/3). AE: BossSystem-Spawn-Ring in logischen Screen-Pixeln, GroundRenderer cameraWorldView/screenAnchoredX, tests/boss-camera-width.test.ts, Nachher-Messung unverändert 60 FPS; merge-base rc=0, Merge e0b4a01. Lane #6898.",
+      "column": "done",
+      "assignee": "merge",
+      "notes": [
+        {
+          "at": "2026-11-28T01:00:56Z",
+          "by": "build",
+          "text": "lane #6898-#6901, Merge e0b4a01 (merge-base --is-ancestor rc=0); main-Board-Karten neu angelegt, Lane-IDs kollidieren nicht (main hatte 6898-6901 noch frei)"
+        }
+      ],
+      "created": "2026-11-28T01:00:50Z",
+      "updated": "2026-11-28T01:00:56Z"
+    },
+    {
+      "id": 7239,
+      "title": "@merge m10-4658-camera-width K2: BossSystem camera.width-Leser + Tests",
+      "description": "Lane m10-4658-camera-width: camera.width-Leser bei gesenktem Massstab (Teiler 2/3). AE: BossSystem-Spawn-Ring in logischen Screen-Pixeln, GroundRenderer cameraWorldView/screenAnchoredX, tests/boss-camera-width.test.ts, Nachher-Messung unverändert 60 FPS; merge-base rc=0, Merge e0b4a01. Lane #6899.",
+      "column": "done",
+      "assignee": "merge",
+      "notes": [
+        {
+          "at": "2026-11-28T01:00:56Z",
+          "by": "build",
+          "text": "lane #6898-#6901, Merge e0b4a01 (merge-base --is-ancestor rc=0); main-Board-Karten neu angelegt, Lane-IDs kollidieren nicht (main hatte 6898-6901 noch frei)"
+        }
+      ],
+      "created": "2026-11-28T01:00:50Z",
+      "updated": "2026-11-28T01:00:56Z"
+    },
+    {
+      "id": 7240,
+      "title": "@merge m10-4658-camera-width K3: GroundRenderer cameraWorldView/screenAnchoredX",
+      "description": "Lane m10-4658-camera-width: camera.width-Leser bei gesenktem Massstab (Teiler 2/3). AE: BossSystem-Spawn-Ring in logischen Screen-Pixeln, GroundRenderer cameraWorldView/screenAnchoredX, tests/boss-camera-width.test.ts, Nachher-Messung unverändert 60 FPS; merge-base rc=0, Merge e0b4a01. Lane #6900.",
+      "column": "done",
+      "assignee": "merge",
+      "notes": [
+        {
+          "at": "2026-11-28T01:00:56Z",
+          "by": "build",
+          "text": "lane #6898-#6901, Merge e0b4a01 (merge-base --is-ancestor rc=0); main-Board-Karten neu angelegt, Lane-IDs kollidieren nicht (main hatte 6898-6901 noch frei)"
+        }
+      ],
+      "created": "2026-11-28T01:00:50Z",
+      "updated": "2026-11-28T01:00:56Z"
+    },
+    {
+      "id": 7241,
+      "title": "@merge m10-4658-camera-width K4: Nachher-Messung + Lane-Doku",
+      "description": "Lane m10-4658-camera-width: camera.width-Leser bei gesenktem Massstab (Teiler 2/3). AE: BossSystem-Spawn-Ring in logischen Screen-Pixeln, GroundRenderer cameraWorldView/screenAnchoredX, tests/boss-camera-width.test.ts, Nachher-Messung unverändert 60 FPS; merge-base rc=0, Merge e0b4a01. Lane #6901.",
+      "column": "done",
+      "assignee": "merge",
+      "notes": [
+        {
+          "at": "2026-11-28T01:00:56Z",
+          "by": "build",
+          "text": "lane #6898-#6901, Merge e0b4a01 (merge-base --is-ancestor rc=0); main-Board-Karten neu angelegt, Lane-IDs kollidieren nicht (main hatte 6898-6901 noch frei)"
+        }
+      ],
+      "created": "2026-11-28T01:00:50Z",
+      "updated": "2026-11-28T01:00:56Z"
     }
   ]
 }
