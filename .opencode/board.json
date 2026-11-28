@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 7642,
+  "next": 7643,
   "cards": [
     {
       "id": 1,
@@ -9688,6 +9688,15 @@
       ],
       "created": "2026-11-28T02:56:36Z",
       "updated": "2026-11-28T02:56:46Z"
+    },
+    {
+      "id": 7642,
+      "title": "m10-evo-fx-winter Merge-Fix: fremde Test-Assertionen folgen drawScale + Palette-Fixture regenerieren",
+      "description": "Nach Merge 1f6bcd7 (m10-evo-fx-winter × phoenix/soulpyre): 1) tests/evo-fx-phoenix.test.ts + tests/evo-fx-soulpyre.test.ts erwarten eternal_winter.drawScale noch als undefined — Assertion folgt dem neuen Zielgroessen-Pfad (drawScale [1,1], 128x128-Bake), Muster aus Commit 0b3b563 („Test-Assertion folgt drawScale, minimal“). 2) tests/fixtures/palette-fx-guard.json veraltet (neue FX-Sets ring_frost/winter-Signatur): scripts/m10-palette-fx-guard.mjs neu laufen lassen, Fixture committen. Abnahme: npx vitest run tests/evo-fx-phoenix.test.ts tests/evo-fx-soulpyre.test.ts tests/palette-compliance.test.ts grün, danach Suite grün.",
+      "column": "doing",
+      "notes": [],
+      "created": "2026-11-28T02:57:37Z",
+      "updated": "2026-11-28T02:57:37Z"
     }
   ]
 }
