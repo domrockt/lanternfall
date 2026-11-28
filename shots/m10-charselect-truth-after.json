@@ -1,0 +1,151 @@
+{
+  "phase": "after",
+  "generated": "2026-11-28T02:22:23.906Z",
+  "viewport": "960x540 (Canvas 480x270 @2x)",
+  "data": {
+    "characters": {
+      "mira": {
+        "id": "mira",
+        "name": "Mira Ashwick",
+        "title": "Laternen-Hexe",
+        "hp": 250,
+        "speed": 62,
+        "armor": 1,
+        "startWeapon": "ember",
+        "mods": {
+          "areaPct": 10,
+          "regen": 1
+        }
+      },
+      "kael": {
+        "id": "kael",
+        "name": "Bruder Kael",
+        "title": "Eisen-Mönch",
+        "hp": 130,
+        "speed": 59,
+        "armor": 2,
+        "startWeapon": "flail",
+        "mods": {
+          "moveSpeedPct": -5,
+          "maxHpPct": 25,
+          "maxHpFlat": 90,
+          "regen": 1.5,
+          "xpPct": -25
+        }
+      }
+    },
+    "weaponNames": {
+      "ember": "Glutfunke",
+      "flail": "Kettenflegel",
+      "frost": "Frostnova",
+      "thorn": "Dornensalve",
+      "storm": "Sturmrune",
+      "lantern": "Geisterlaterne"
+    }
+  },
+  "displayLines": [
+    {
+      "text": "WÄHLE DEINEN CHARAKTER",
+      "x": 320,
+      "y": 16
+    },
+    {
+      "text": "SEED 1 · PFEILE/MAUS = WAHL",
+      "x": 320,
+      "y": 32
+    },
+    {
+      "text": "Mira Ashwick",
+      "x": 208,
+      "y": 193
+    },
+    {
+      "text": "LATERNEN-HEXE",
+      "x": 208,
+      "y": 205
+    },
+    {
+      "text": "HP        250",
+      "x": 116,
+      "y": 219
+    },
+    {
+      "text": "TEMPO     62",
+      "x": 116,
+      "y": 229
+    },
+    {
+      "text": "RÜSTUNG   1",
+      "x": 116,
+      "y": 239
+    },
+    {
+      "text": "+10% FLÄCHENWIRKUNG",
+      "x": 208,
+      "y": 249
+    },
+    {
+      "text": "START: GLUTFUNKE",
+      "x": 136,
+      "y": 259
+    },
+    {
+      "text": "NOCH KEIN LAUF",
+      "x": 208,
+      "y": 273
+    },
+    {
+      "text": "Bruder Kael",
+      "x": 432,
+      "y": 193
+    },
+    {
+      "text": "EISEN-MÖNCH",
+      "x": 432,
+      "y": 205
+    },
+    {
+      "text": "HP        130",
+      "x": 340,
+      "y": 219
+    },
+    {
+      "text": "TEMPO     59",
+      "x": 340,
+      "y": 229
+    },
+    {
+      "text": "RÜSTUNG   2",
+      "x": 340,
+      "y": 239
+    },
+    {
+      "text": "+25% MAX-HP / -5% TEMPO",
+      "x": 432,
+      "y": 249
+    },
+    {
+      "text": "START: KETTENFLEGEL",
+      "x": 360,
+      "y": 259
+    },
+    {
+      "text": "NOCH KEIN LAUF",
+      "x": 432,
+      "y": 273
+    },
+    {
+      "text": "ZURÜCK",
+      "x": 166,
+      "y": 339
+    },
+    {
+      "text": "START (ENTER)",
+      "x": 360,
+      "y": 339
+    }
+  ],
+  "jsErrors": [],
+  "deviations": [],
+  "deviationCount": 0
+}
