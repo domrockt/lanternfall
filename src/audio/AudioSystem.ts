@@ -2,10 +2,11 @@ import Phaser from "phaser";
 import { getSettings, setSettings } from "./settings";
 import {
   effectiveVolume, newMixerState, notePlayed, releaseVoice, planPlay,
-  activeVolumeSum, limiterGain, pickupDampGain, PRIORITY, PICKUP_SFX_IDS,
-  EVOLUTION_SFX_IDS, SFX_CONFIG, SFX_KEYS, WEAPON_SFX_IDS,
+  activeVolumeSum, limiterGain, pickupDampGain, audioBudgetFor, PRIORITY,
+  PICKUP_SFX_IDS, EVOLUTION_SFX_IDS, SFX_CONFIG, SFX_KEYS, WEAPON_SFX_IDS,
   type MixerState, type SoundRequest,
 } from "./mixing";
+import { QUALITY } from "../config";
 import type { WeaponAnyId } from "../data/types";
 import { acquireVoiceSlot } from "../logic/voice-pool";
 
@@ -65,8 +66,11 @@ export class AudioSystem {
       pickup: (PICKUP_SFX_IDS as readonly string[]).includes(id),
     };
     // Fairness: Prio >= 2 verdrängt bei vollem Budget die älteste niederpriorere
-    // Stimme; Rate-Deckel (24/s) und Budget bleiben harte Grenzen.
-    const plan = planPlay(this.mixer, req);
+    // Stimme; Rate-Deckel und Voice-Budget bleiben harte Grenzen. Beide Deckel
+    // folgen der Qualitaetsstufe (M10-audio-quality-budget): QUALITY wird vom
+    // Laufzeit-Regler (config.ts) gesetzt; HIGH bleibt bitgleich zum alten Verhalten.
+    const budget = audioBudgetFor(QUALITY);
+    const plan = planPlay(this.mixer, req, budget);
     if (!plan.allow) return false;
     if (plan.evict) this.evictVoice(plan.evict.id);
     const voice = this.acquireVoice(id, cfg.maxVoices);
