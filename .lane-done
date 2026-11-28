@@ -1,0 +1,25 @@
+Lane m10-audio-alloc-fix abgeschlossen (M10, 2026-11-28).
+
+Bedarf (aus m10-run-cpu-budget, "Offene Bedarfe"): AudioSystem-SFX-Allokationen als größter
+verbleibender Allokations-Rest im Run-Loop (~141 B/Frame Phaser-WebAudio onended je SFX).
+Area war bewusst nur src/audio/AudioSystem.ts (mixing.ts wartet auf m10-thermal-tier-types).
+
+Ergebnis (scripts/m10-audio-alloc.mjs, CDP Sampling-Heap 512 B, play-Subtree-Attribution,
+Chaos-Lauf Seed 1 / Minute 25 / 500 Gegner / 20 s, je ~322 erlaubte Plays):
+- SFX-Pfad gesamt: 218 -> 89 B/Play (-59 %), 55-61 -> 24 B/Frame.
+- AudioSystem-Anteil (Area): 77 -> 3 B/Play (-96 %). Abnahmetor "<= 50 % der Vorher-Allokationen"
+  (vor dem Fix festgelegt) auf beiden Metriken erfüllt. 0 JS-Fehler, Renderer iGPU (RPL-S).
+
+Fix (Commit 71d44521): wiederverwendete req/noteOpts-Objekte, planPlay-Frühcheck (erste drei Checks
+ohne Seiteneffekte — bitgleich), permanente complete/stop-Listener je Stimme statt 2x once je Play
+(EE3-Wrapper-Churn 42 B/Play entfällt), Voice-Fabrik-Closure gecacht, PICKUP_IDS-Set, sfxVolume-Cache.
+
+Tests: tests/audio-alloc.test.ts 6/6 friert die Hebel ein (Objekt-Reuse, Listener-Batching, Frühcheck-
+Äquivalenz-Grid, Freigabe/Verdrängung, Settings-Cache). Suite 2295/2295, build rc=0, tsc grün.
+
+Belege: ~/games/.evidence/m10-audio-alloc-fix/m10-audio-alloc-{before,after}.json
+Offene Reste (fremd): mixing.ts planPlay-Interne (~46-52 B/Play), Phaser createBufferSource/onended
+(~23 B/Play, engine-seitig). Fremd-Dateien minimal angefasst: 4 Test-Mocks um on() ergänzt (begruendet
+in docs/lanes/m10-audio-alloc-fix.md).
+
+Commits: a9531aac (#12129), 71d44521 (#12130), c3cf13ca (#12131), <K4> (#12132).

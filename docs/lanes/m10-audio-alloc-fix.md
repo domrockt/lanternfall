@@ -110,4 +110,38 @@ Ehemalige Top-Sites weg: `play`-Frame-Selbstallokationen (76 B/Play) und EE3 `ad
 
 ## K4 — Regressionstest + Abschluss (Karte #12132)
 
-(kommt)
+`tests/audio-alloc.test.ts` (6 Tests, Suite **2295/2295**, build rc=0, tsc grün) friert die Hebel ein:
+
+1. **Play-Objekt-Reuse:** planPlay/notePlayed sehen über 12 Plays hinweg stets dasselbe req- bzw.
+   noteOpts-Objekt (Identität via Capture-Wrapper), Feld-Snapshots je Aufruf korrekt gesetzt —
+   "keine neuen Play-Objekte pro Stimme" ist damit guardet.
+2. **Listener-Batching:** genau 1 complete- + 1 stop-Listener je Stimme (`on`, permanent), auch nach
+   Wiederverwendung; Voice-Pool bleibt hart auf maxVoices begrenzt; weiterer Play bei vollem Pool
+   wird verworfen statt einen neuen Sound anzulegen.
+3. **planPlay-Frühcheck bitgleich:** über ein Grid aus (voices × lastPlayed × Cooldown-Grenzen):
+   verwirft der Frühcheck, wird planPlay nicht gerufen UND planPlay würde denselben Staat ebenfalls
+   verwerfen; ruft play() planPlay, übernimmt es das Urteil unverändert.
+4. **Freigabe/Verdrängung:** complete gibt die Stimme frei (Wiederverwendung ohne neues `sound.add`),
+   complete+stop-Doppel-Feuern wird nicht doppelt freigegeben, Verdrängung stoppt die älteste
+   niederpriorere Stimme und gibt sie im Mixer frei.
+5. **sfxVolume-Cache** folgt updateSettings() (0 → blockt, 0.8 → spielt wieder).
+
+## Lane-Abschluss
+
+- Commits: a9531aac (#12129 K1), 71d44521 (#12130 K2), c3cf13ca (#12131 K3), <K4> (#12132).
+- Belege ausschließlich `~/games/.evidence/m10-audio-alloc-fix/` (m10-audio-alloc-before/after.json);
+  `shots/m10-audio-alloc-*.json` sind Arbeitskopien (gitignored).
+- **Ergebnis:** SFX-Pfad-Allokationen 218 → 89 B/Play (−59 %, 24 B/Frame vorher 55-61); der
+  AudioSystem-Anteil (Area) 77 → 3 B/Play (−96 %). Abnahmekriterium (≤ 50 %, vor dem Fix
+  festgelegt) auf beiden Metriken erfüllt.
+- **Fremd-Dateien (minimal, begründet):** 4 Test-Mocks um `on: () => {}` ergänzt (audio-mix,
+  audio-mix-chaos, music-dawn, pickup-sfx-distinct) — die Mocks kannten nur `once`, der
+  Listener-Batching-Fix registriert permanente Listener via `on`; ohne Zeile lief die Voice-Fabrik
+  ins Catch (play() → false). Keine Testabsichten geändert.
+- **Offene Bedarfe (nicht diese Lane):**
+  - `src/audio/mixing.ts` planPlay-interne Allokationen (~46-52 B/Play: Filter-Arrays, Set,
+    Plan-Objekte, notePlayed-Pushes) — größter verbleibender Posten im SFX-Pfad; Pass sinnvoll,
+    sobald der wartende Konflikt mit m10-thermal-tier-types gelöst ist.
+  - Phaser-Engine-Churn je Play (`createBufferSource` + `source.onended` + `emit`, ~23 B/Play) —
+    engine-seitig, nur mit eigenem WebAudio-Pfad in AudioSystem hebelbar (hoher Risiko-Change).
+
