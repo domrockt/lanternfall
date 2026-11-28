@@ -270,32 +270,40 @@ def pale_shepherd(f: int) -> Grid:
     g.put(cx - 15, 19 - bob, 8)
     g.put(cx + 12, 20 - bob, 8)
 
-    # ── Kapuze mit Randlicht, darin das hage Gesicht ──
-    g.ellipse(cx, 16 - bob, 10, 10, 6)
-    g.ellipse(cx - 1, 15 - bob, 8, 8, 8)
-    g.rect(cx - 9, 12 - bob, 2, 8, 10)
-    g.ellipse(cx, 20 - bob, 6, 7, 2)         # Gesichtshoehle
-    # Wangenknochen: schmal, unten spitz zulaufend.
-    g.rect(cx - 4, 18 - bob, 9, 6, 9)
-    g.rect(cx - 3, 24 - bob, 7, 4, 9)
-    g.rect(cx - 2, 28 - bob, 5, 2, 9)
-    g.rect(cx - 4, 18 - bob, 2, 2, 11)       # Stirnlicht
-    g.put(cx - 4, 21 - bob, 11)
-    g.put(cx + 3, 21 - bob, 11)              # Wangenknochen-Kante
-    g.put(cx - 1, 23 - bob, 3)               # eingefallene Wange
-    g.put(cx + 2, 23 - bob, 3)
-    g.put(cx, 23 - bob, 8)                   # Nase
-    # Leere Augenhoehlen, Glut als Detail nach dem Shading.
-    g.rect(cx - 4, 20 - bob, 3, 3, 2)
-    g.rect(cx + 2, 20 - bob, 3, 3, 2)
-    # Langer, spitzer Kinnbart (oben breit, unten 1 px).
-    for j, bw in enumerate((7, 7, 6, 6, 5, 5, 4, 3, 2, 2, 1, 1)):
-        y = 26 + j - bob
+    # ── Kapuze und Schaedel: klare Stufen statt Matschflaeche ──
+    # 1) Kapuzen-Loose (6) mit 1-px-Randlicht (8) oben links.
+    g.ellipse(cx, 15 - bob, 11, 9, 6)
+    for rx, ry in ((cx - 8, 12), (cx - 7, 10), (cx - 5, 9), (cx - 2, 8),
+                   (cx + 1, 8), (cx + 4, 9)):
+        g.put(rx, ry - bob, 8)
+    # 2) Dunkle Augen-Hoehlung (5) — 1-2 px Saum zwischen Kapuze und Gesicht.
+    g.ellipse(cx, 16 - bob, 8, 7, 5)
+    # 3) Gesicht als klare Flaeche (9) mit 1-px-Stufen: Stirn, Brauen-Schatten,
+    #    Wangen ebene, Kiefer-Treppe — keine ueberlappenden Ellipsen mehr.
+    g.rect(cx - 4, 12 - bob, 9, 3, 9)            # Stirn
+    g.rect(cx - 4, 15 - bob, 9, 1, 6)            # Brauen-Schatten (Stufe)
+    g.rect(cx - 4, 16 - bob, 9, 4, 9)            # Mittelgesicht
+    g.rect(cx - 4, 17 - bob, 2, 1, 10)           # Wangenknochen licht (2 px Patch)
+    g.rect(cx + 3, 17 - bob, 2, 1, 10)
+    g.rect(cx + 3, 18 - bob, 2, 2, 6)            # rechte Wangen-Schattenseite
+    g.rect(cx - 1, 18 - bob, 2, 2, 8)            # Nase
+    g.put(cx - 1, 18 - bob, 11)                  # Nasenlicht 1 px
+    g.rect(cx - 3, 20 - bob, 7, 1, 9)            # Kiefer-Stufe 1
+    g.put(cx + 3, 20 - bob, 6)
+    g.rect(cx - 2, 21 - bob, 5, 1, 9)            # Kiefer-Stufe 2
+    g.put(cx + 2, 21 - bob, 6)
+    # Leere Augenhoehlen (3x2, klar vom Brauen-Schatten getrennt).
+    g.rect(cx - 4, 16 - bob, 3, 2, 2)
+    g.rect(cx + 2, 16 - bob, 3, 2, 2)
+    # Langer, spitzer Kinnbart (8) mit Licht- (10) und Schattenkante (6),
+    # klar vom Umhang getrennt (eigene Silhouette, keine Grau-Mischung).
+    for j, bw in enumerate((7, 7, 6, 6, 5, 5, 4, 3, 2, 2, 1)):
+        y = 23 + j - bob
         x0 = cx - bw // 2
-        g.rect(x0, y, bw, 1, 10)
-        g.put(x0, y, 11)
-        g.put(x0 + bw - 1, y, 8)
-    g.put(cx, 38 - bob, 11)
+        g.rect(x0, y, bw, 1, 8)
+        g.put(x0, y, 10)
+        g.put(x0 + bw - 1, y, 6)
+    g.put(cx, 34 - bob, 10)
 
     # ── Linker Arm haengt am Umhang ──
     g.rect(cx - 18, 32 - bob, 5, 15, 8)
@@ -347,8 +355,8 @@ def pale_shepherd(f: int) -> Grid:
     g.rect(cx + 3, 66, 8, 1, 8)
 
     details = []
-    details += eye_glow(cx - 3, 21 - bob, f)
-    details += eye_glow(cx + 2, 21 - bob, f)
+    details += eye_glow(cx - 4, 16 - bob, f)
+    details += eye_glow(cx + 2, 16 - bob, f)
     details += [(px0 + 8, 26 - bob, 11)]
     return finish(g, details)
 
