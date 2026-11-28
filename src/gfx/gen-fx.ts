@@ -263,12 +263,16 @@ export function thunderSealFrame(stage: number, size = 64): string[] {
     }
   }
   // Achteck-Außenring (1 px, gerade Segmente) + 8 gerade Zacken über den Ring.
+  // m10-evo-fx-form-polish (Dom 03:00Z): der Siegel-Kreis muss beim Auslösen als
+  // ANKÜNDIGUNG sichtbar sein — Anticipation/Dauer-Ring lantern(21) statt
+  // nightSlate(4) (auf Nachtboden unsichtbar, Sichtung thunder_seal-640.png);
+  // Impact bleibt glow(22). Grundfläche bleibt kühl-dunkel (2/3/4).
   const pts: [number, number][] = [];
   for (let i = 0; i < 8; i++) {
     const a = (i / 8) * Math.PI * 2 + Math.PI / 8;
     pts.push([c + Math.cos(a) * 21, c + Math.sin(a) * 21]);
   }
-  const ringCh = stage === 2 ? "m" : "4";
+  const ringCh = stage === 2 ? "m" : "l";
   for (let i = 0; i < 8; i++) {
     const a = (i / 8) * Math.PI * 2 + Math.PI / 8;
     const [ax, ay] = pts[i];
@@ -277,7 +281,7 @@ export function thunderSealFrame(stage: number, size = 64): string[] {
     // Zacken: gerade Strahlen von r=19 nach 27-29 (handgezeichnete Längenvarianz,
     // deterministisch über den Winkel; Impact: hell, sonst kühl dunkel).
     const tickR = 27 + (i % 3);
-    const tickCh = stage === 2 ? "d" : stage === 1 ? "l" : stage === 3 ? "b" : "4";
+    const tickCh = stage === 2 ? "d" : stage === 3 ? "b" : "l";
     line(c + Math.cos(a) * 19, c + Math.sin(a) * 19, c + Math.cos(a) * tickR, c + Math.sin(a) * tickR, tickCh);
   }
   // Blitz-Rune: gezackter Kernpfad durchs Zentrum, 1-px-Kern + 1-px Gelb-Kante.
@@ -842,15 +846,18 @@ export const EVOLUTION_SIGNATURES: Readonly<Record<string, EvoSignature>> = {
   // (vorher 32x32 @ 4,0–4,6 = 188/354 Ink-Pixel).
   thorn_storm: {
     evolution: "thorn_storm", baseWeapon: "thorn", shape: "splitter",
-    palette: [30, 31, 20], hitLifetime: 0.18, deathLifetime: 0.42,
+    palette: [31, 30, 24], hitLifetime: 0.18, deathLifetime: 0.42,
     hitCount: 5, deathCount: 11,
     drawScale: [1, 1],
   },
-  // Sturmrune + Wetzstein: weisser Blitz-Beam, extrem kurz.
+  // Sturmrune + Wetzstein: klarer Gelb-Weiß-Blitz, extrem kurz.
+  // m10-evo-fx-form-polish: in Zielgröße 96x96 gebacken (vorher 32x32 @ 3,2–4,6x
+  // mit ~60 % Ink-Pixeln).
   thunder_seal: {
     evolution: "thunder_seal", baseWeapon: "storm", shape: "beam",
     palette: [12, 9, 7], hitLifetime: 0.10, deathLifetime: 0.24,
     hitCount: 3, deathCount: 7,
+    drawScale: [1, 1],
   },
   // Geisterlaterne + Magnetamulett: helle Seelenwolke, langes Nachgluehen.
   // M10 m10-evo-fx-soulpyre: Signatur in Zielgroesse 96x96 gebacken, Draw-Scale 1
@@ -1478,7 +1485,13 @@ export function phoenixBurnFrame(stage: number, w = 64, h = 64): string[] {
   return rows.map((r) => r.join(""));
 }
 
-/** Treffer-/Todes-Signatur in Zielgröße (128x128, Draw-Scale 1): fette Flammen-Scherben ohne Ink-Rand. */
+/**
+ * Treffer-/Todes-Signatur in Zielgröße (128x128, Draw-Scale 1): fette Flammen-Scherben ohne Ink-Rand.
+ * m10-evo-fx-form-polish (Dom K1/K2): die Scherben werden INVERS gemappt (Membership je Pixel
+ * statt forward-rotiertem Sampling) — das alte Verfahren hinterließ systematische 1-px-Löcher
+ * (Flächendither, belegt im K1-Kontaktblatt). Füllung jetzt flächig, Feuer-Rampe unverändert
+ * (Kern 22 → 21 → 20 → 19 → 18), organische Taper-Form.
+ */
 export function phoenixSignatureFrame(kind: "hit" | "death", stage: number, size = 128): string[] {
   const rows: string[][] = Array.from({ length: size }, () => Array(size).fill("."));
   const c = (size - 1) / 2;
@@ -1492,23 +1505,30 @@ export function phoenixSignatureFrame(kind: "hit" | "death", stage: number, size
   for (let i = 0; i < shards; i++) {
     const a = variant * 0.37 + (i / shards) * Math.PI * 2 + stage * 0.13;
     const rr = base * spread;
-    const cx = c + Math.cos(a) * rr;
-    const cy = c + Math.sin(a) * rr;
-    for (let k = -Math.ceil(ln); k <= Math.ceil(ln); k++) {
-      const ak = Math.abs(k);
-      // Flamme: an der Basis breit, zur Spitze geflammt (Taper).
-      const wdt = Math.max(0, 11.5 * (1 - ak / ln) ** 0.8);
-      for (let s = -Math.ceil(wdt); s <= Math.ceil(wdt); s++) {
-        const px = cx + Math.cos(a) * k - Math.sin(a) * s;
-        const py = cy + Math.sin(a) * k + Math.cos(a) * s;
+    const ca = Math.cos(a);
+    const sa = Math.sin(a);
+    const cx = c + ca * rr;
+    const cy = c + sa * rr;
+    // Inverses Mapping: Membership je Pixel in Shard-Koordinaten (axial k, lateral s).
+    for (let y = 0; y < size; y++) {
+      for (let x = 0; x < size; x++) {
+        const rx = x - cx;
+        const ry = y - cy;
+        const k = rx * ca + ry * sa;
+        const ak = Math.abs(k);
+        if (ak > ln) continue;
+        const s = -rx * sa + ry * ca;
+        // Flamme: an der Basis breit, zur Spitze geflammt (Taper).
+        const wdt = Math.max(0, 11.5 * (1 - ak / ln) ** 0.8);
         const aS = Math.abs(s);
+        if (aS > wdt) continue;
         const rel = ak / ln;
         const idx = rel < 0.22 && aS < wdt * 0.5 ? 22
           : rel < 0.5 && aS < wdt * 0.75 ? 21
           : rel < 0.75 ? 20
           : rel < 0.92 ? 19
           : 18;
-        putPixel(rows, px, py, idx);
+        rows[y][x] = charOf(idx);
       }
     }
   }
@@ -1517,9 +1537,11 @@ export function phoenixSignatureFrame(kind: "hit" | "death", stage: number, size
   for (let dy = -coreR; dy <= coreR; dy++) {
     for (let dx = -coreR; dx <= coreR; dx++) {
       const d = Math.hypot(dx, dy);
-      if (d <= coreR) putPixel(rows, c + dx, c + dy, d < coreR * 0.45 ? 22 : d < coreR * 0.75 ? 21 : 20);
+      if (d <= coreR) rows[Math.round(c + dy)][Math.round(c + dx)] = charOf(d < coreR * 0.45 ? 22 : d < coreR * 0.75 ? 21 : 20);
     }
   }
+  // Überlappende Scherben können Einzelpixel-Lücken einschließen — füllen (K1).
+  fillEnclosedHoles(rows, 20);
   return rows.map((r) => r.join(""));
 }
 
@@ -1699,6 +1721,22 @@ export function wrathSignatureFrame(kind: "hit" | "death", stage: number, size =
     }
   }
   return rows.map((r) => r.join(""));
+}
+
+/** Registriert die 12 Signatur-Texturen (6 Hit + 6 Death, je 4 Frames). */
+
+/** Einzelne, voll umschlossene transparente Pixel füllen (K1: kein Flächendither). */
+function fillEnclosedHoles(rows: string[][], idx: number): void {
+  const h = rows.length;
+  const w = rows[0].length;
+  for (let y = 1; y < h - 1; y++) {
+    for (let x = 1; x < w - 1; x++) {
+      if (rows[y][x] !== ".") continue;
+      if (rows[y][x - 1] !== "." && rows[y][x + 1] !== "." && rows[y - 1][x] !== "." && rows[y + 1][x] !== ".") {
+        rows[y][x] = charOf(idx);
+      }
+    }
+  }
 }
 
 /** Registriert die 12 Signatur-Texturen (6 Hit + 6 Death, je 4 Frames). */
