@@ -68,8 +68,8 @@ wird nicht ausgefuehrt (nur bei negativem K1-Befund vorgesehen). HIGH-Bitgleichh
   `min(lodLimit, 10, 12) = min(lodLimit, 10)`.
 - In Vitest/Node bleibt `QUALITY` stets "high" (installRenderBudget ist
   passiv ohne window) — alle bestehenden Tests laufen auf bitgleichem
-  high-Pfad: `npx vitest run tests/damage-calm.test.ts tests/damage-grid.test.ts`
-  gruen (4 Dateien, siehe K4-Lauf unten: 25 bestanden).
+  high-Pfad: `npx vitest run tests/damage-calm.test.ts tests/damage-grid.test.ts
+  tests/damage-number-batch.test.ts` — 3 Dateien / 44 Tests bestanden.
 - Code-Aenderung in dieser Lane: keine (einzige Aenderung am Spiel:
   keine;scripts/m10-damage-label-quality.mjs ist Mess-Harness).
 
