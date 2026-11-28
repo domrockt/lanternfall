@@ -66,10 +66,11 @@ const RAMP_OF = {}; // alle Töne -> base
 for (const [b, [sh, mid, li]] of Object.entries(RAMPS)) {
   RAMP_OF[sh] = +b; RAMP_OF[mid] = +b; RAMP_OF[li] = +b;
 }
-const TONE_OF = {}; // Ton -> "sh" | "mid" | "li"
-for (const [b, [sh, mid, li]] of Object.entries(RAMPS)) {
-  TONE_OF[sh] = "sh"; TONE_OF[mid] = "mid"; TONE_OF[li] = "li";
-}
+// Licht-/Schattentöne nach SHADE-Semantik (lib.py): Licht = der li-Ton einer
+// Rampe (ein Ton kann mid der eigenen und li der Nachbar-Rampe sein — dann
+// zählt er als Licht, genau wie shade_edges ihn behandelt).
+const LIGHT_TONES = new Set(Object.values(RAMPS).map(([sh, mid, li]) => li));
+const SHADOW_TONES = new Set(Object.values(RAMPS).map(([sh]) => sh));
 const ACCENTS = new Set([13, 20, 21, 22]); // Glow/Gold-Akzente
 
 // --- WCAG ---
@@ -179,13 +180,13 @@ function analyze(key) {
       if (ACCENTS.has(idx)) accents++;
       const b = RAMP_OF[idx];
       if (b !== undefined) {
-        rampTones.add(`${b}:${TONE_OF[idx]}`);
-        if (TONE_OF[idx] === "li") {
+        rampTones.add(`${b}:${LIGHT_TONES.has(idx) ? "li" : SHADOW_TONES.has(idx) ? "sh" : "mid"}`);
+        if (LIGHT_TONES.has(idx)) {
           lightPx++;
           // Rim: oben oder links liegt Kontur (0) oder Transparenz
           const up = at(x, y - 1), lf = at(x - 1, y);
           if (up === 0 || up === null || lf === 0 || lf === null) rimLight++;
-        } else if (TONE_OF[idx] === "sh") shadowPx++;
+        } else if (SHADOW_TONES.has(idx)) shadowPx++;
       }
       comp[y][x] = 0;
     }

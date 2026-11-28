@@ -10997,10 +10997,21 @@
       "id": 8639,
       "title": "m10-icons-consistency K2: Zeichnen — Kontur/Lichtkante vereinfachen + Evolution prächtiger",
       "description": "In scripts/art/gen_icons.py: einheitliche Kantenregeln (keine 'vereiste' 2-px-Rampenbänder), Evolution-Icons prächtiger als Basis (Palette, binäres Alpha, keine Mixel), Regeneration von src/gfx/gen-icons.ts. NICHT heart/charm/boots erneut zeichnen (#7149 erledigt), kein Kontrast-Thema (m10-icon-contrast erledigt).",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T05:12:39Z",
+          "by": "build",
+          "text": "todo → doing: art-director-Muss-Liste aus Vorher-Kontaktbogen abwarten, dann nur belegte Mängel fixen."
+        },
+        {
+          "at": "2026-11-28T05:13:32Z",
+          "by": "build",
+          "text": "Baseline grün (tsc + icon-redraw/icon-contrast 28 Tests). art-director-Abnahme des Vorher-Kontaktbogens läuft; Muss-Liste steht aus."
+        }
+      ],
       "created": "2026-11-28T05:08:57Z",
-      "updated": "2026-11-28T05:08:57Z"
+      "updated": "2026-11-28T05:13:32Z"
     },
     {
       "id": 8640,

@@ -16,11 +16,22 @@ from lib import Grid, RAMPS, SHOTS, outline, shade_edges, emit_ts, save_sheet_pn
 # Evolutionen eine Rampe heller als ihre Basiswaffen (#320: "deutlich kraeftiger").
 EVO_BOOST = {
     "evo_phoenix": {18: 19, 19: 20, 20: 21, 21: 22},
-    "evo_wrath_pendulum": {23: 24, 24: 25, 25: 26, 26: 27},
-    "evo_eternal_winter": {6: 7, 8: 10, 9: 11, 10: 12, 12: 13},
-    "evo_thorn_storm": {28: 30, 29: 30, 30: 31},
     "evo_thunder_seal": {15: 16, 16: 17, 17: 18, 18: 19, 19: 20, 20: 21, 21: 22},
     "evo_soul_beacon": {5: 6, 6: 7, 7: 8, 8: 10, 12: 13},
+}
+
+# Icons, die FINAL gezeichnet sind (eigene Licht-/Schattenkanten, keine
+# normalize()-Neuberechnung): normalize/shade_edges legte sonst an JEDER
+# Materialregion ein uniformes 1-px-Rampenband an — die "vereiste" Lichtkante
+# aus #320. Die 6 Muss-Icons des art-director-Berichts (Vorher-Scan,
+# shots/m10-icons-consistency-before.json) setzen Kanten gezielt selbst.
+FINAL_DRAWN = {
+    "evo_thorn_storm",     # M1: Kontrast 2.32:1, 3 Toene, Eis-Band an jedem Arm
+    "evo_eternal_winter",  # M2: 6 Toene, Silhouette = Zwillings-Schneeflocke zu weapon_frost
+    "passive_hourglass",   # M3: 5 Komponenten, groesste 39%
+    "weapon_flail",        # M4: kein Lichtton, Kette abgerissen
+    "passive_whetstone",   # M5: Lichtband ueber die gesamte Breite ("Schneekappe")
+    "evo_wrath_pendulum",  # M6: 7 Toene, 0 Akzente, Kontrast 3.02:1 grenzwertig
 }
 
 
@@ -76,15 +87,15 @@ def special() -> dict[str, Grid]:
     for key in ("passive_heart", "passive_charm", "passive_boots", "passive_tome"):
         out[key] = from_rows(ICON_REDRAW_ROWS[key])
 
-    # Wetzstein: keilförmiger Stein mit Funken.
+    # Wetzstein: keilfoermiger Stein mit Funken. Lichtkante nur auf der
+    # oberen Schliffflaeche (#320/M5: kein durchgehendes "Schneekappen"-Band).
     g = Grid(16, 16)
     for i, (x, w) in enumerate(((3, 10), (2, 12), (2, 12), (3, 10), (4, 9), (4, 9), (5, 8), (5, 8))):
         y = 3 + i
         g.rect(x, y, w, 1, 11)
-        g.rect(x, y, 3, 1, 12)      # Licht oben-links
+        if i < 3:
+            g.rect(x, y, 3, 1, 12)     # Licht nur obere Flaeche (2 Ebenen: 12/11)
         g.rect(x + w - 3, y, 3, 1, 5)  # Schatten rechts
-    g.rect(3, 3, 8, 1, 12)
-    g.rect(3, 10, 8, 1, 5)
     g.rect(12, 1, 2, 2, 13)         # Funken
     g.put(14, 3, 13)
     g.rect(11, 12, 2, 2, 17)
@@ -110,19 +121,28 @@ def special() -> dict[str, Grid]:
     g.rect(5, 13, 2, 2, 20)
     out["evo_phoenix"] = outline(g, diagonal=True)
 
-    # Flegel: Kette oben-links, Metallkugel mit 2-px-Spikes unten-rechts.
+    # Flegel: Stiel, durchgehende Kette, Metallkugel mit Licht/Schatten und
+    # silbernem Spike-Burst (#320/M4: vorher kein Lichtton, Kette abgerissen).
     g = Grid(16, 16)
-    for i in range(5):
-        g.rect(2 + i, 2 + i, 2, 2, 5 if i % 2 else 8)
-    g.ellipse(10, 11, 3, 3, 8)
-    g.ellipse(9, 10, 2, 2, 9)
-    g.rect(10, 11, 2, 2, 5)
-    for dx, dy in ((10, 5), (10, 16), (4, 11), (16, 11)):
-        pass
-    g.rect(9, 6, 2, 2, 9)           # Spikes
-    g.rect(9, 14, 2, 2, 9)
-    g.rect(4, 10, 2, 2, 9)
-    g.rect(14, 10, 2, 2, 9)
+    g.rect(1, 1, 3, 2, 15)          # Stiel
+    g.rect(1, 1, 3, 1, 16)          # Stiel-Licht
+    # Kette als 4-connectes Treppenband mit Glanzpixeln (10).
+    chain = [(3, 3), (4, 3), (4, 4), (5, 4), (5, 5), (6, 5), (6, 6), (7, 6)]
+    for i, (x, y) in enumerate(chain):
+        g.put(x, y, 8 if i % 2 else 5)
+    for x, y in ((4, 3), (6, 5)):
+        g.put(x, y, 10)             # Kettenglanz
+    g.ellipse(10, 10, 3, 3, 8)      # Kugel (x7..13, y7..13)
+    g.rect(8, 8, 2, 1, 10)          # Kugel-Licht oben-links
+    g.put(8, 9, 10)
+    g.put(9, 8, 11)                 # hellster Glanz
+    g.rect(11, 11, 2, 2, 5)         # Kugel-Schatten unten-rechts
+    g.put(12, 10, 5)
+    # Spikes als silberner Burst (an der Kugel angesetzt)
+    g.rect(9, 5, 2, 2, 11)
+    g.rect(9, 14, 2, 2, 11)
+    g.rect(5, 9, 2, 2, 11)
+    g.rect(14, 9, 2, 2, 11)
     out["weapon_flail"] = outline(g, diagonal=True)
 
     # Dornenranke: 2-px-Zweig diagonal + 2x2-Knochendornen.
@@ -136,21 +156,48 @@ def special() -> dict[str, Grid]:
         g.rect(x + 1, y + 2, 2, 2, 10)
     out["weapon_thorn"] = outline(g, diagonal=True)
 
-    # Ewiger Winter: Schneekristall mit sechs 2-px-Armen + 2x2-Kern (13).
+    # Ewiger Winter: zentrale Eis-Edelstein-Bluete mit Goldkern und Glow-Spitzen
+    # (#320/M2: vorher 6 Toene, Silhouette = Zwillings-Schneeflocke zu weapon_frost).
     g = Grid(16, 16)
-    g.rect(7, 1, 2, 14, 10)          # senkrechter Arm 2 px
-    g.rect(1, 7, 14, 2, 10)          # waagerechter Arm 2 px
-    for t in range(6):
-        g.rect(2 + t, 2 + t, 2, 1, 9)  # Diagonale 1: 2 px breit
-        g.rect(3 + t, 2 + t, 1, 2, 9)
-        g.rect(13 - t, 2 + t, 2, 1, 9)  # Diagonale 2
-        g.rect(12 - t, 2 + t, 1, 2, 9)
-    g.rect(7, 1, 2, 2, 12)           # Armspitzen heller
-    g.rect(1, 7, 2, 2, 12)
-    g.rect(13, 7, 2, 2, 12)
-    g.rect(7, 13, 2, 2, 12)
-    g.rect(6, 6, 4, 4, 9)            # Kern
-    g.rect(7, 7, 2, 2, 13)           # Glow-Kern 2x2
+    # Rauten-Koerper (Eis 8/9/10, Kante 12)
+    g.rect(7, 3, 2, 1, 12)
+    g.rect(6, 4, 4, 1, 10)
+    g.rect(5, 5, 6, 1, 9)
+    g.rect(4, 6, 8, 1, 8)
+    g.rect(4, 7, 8, 1, 8)
+    g.rect(5, 8, 6, 1, 9)
+    g.rect(6, 9, 4, 1, 10)
+    g.rect(7, 10, 2, 1, 12)
+    # Facetten: Licht oben-links, Schatten unten-rechts (unterbrochen, kein Band)
+    g.rect(5, 5, 2, 1, 12)
+    g.rect(4, 6, 3, 1, 9)
+    g.put(11, 6, 10)
+    g.put(11, 7, 10)
+    g.put(10, 8, 10)
+    # Goldkern + Glow (praechtiger als die graue Basis-Frost-Flocke)
+    g.rect(7, 6, 2, 2, 20)
+    g.put(7, 6, 21)
+    g.put(8, 7, 13)
+    # Arme N/S/W/E mit Glow-Spitzen
+    g.rect(7, 1, 2, 2, 10)
+    g.rect(7, 1, 2, 1, 13)
+    g.rect(7, 11, 2, 2, 10)
+    g.put(7, 12, 13)
+    g.put(8, 12, 13)
+    g.rect(1, 6, 3, 2, 10)
+    g.put(1, 6, 13)
+    g.put(1, 7, 13)
+    g.rect(12, 6, 3, 2, 10)
+    g.rect(14, 6, 1, 2, 13)
+    # diagonale Eis-Splitter (2x2, am Koerper angesetzt)
+    g.rect(5, 3, 2, 2, 11)
+    g.put(5, 3, 12)
+    g.rect(9, 3, 2, 2, 11)
+    g.put(10, 3, 12)
+    g.rect(5, 9, 2, 2, 11)
+    g.put(5, 10, 12)
+    g.rect(9, 9, 2, 2, 11)
+    g.put(10, 10, 12)
     out["evo_eternal_winter"] = outline(g, diagonal=True)
 
     # Seelenleuchte: Laterne mit Flamme, Eisenrahmen 5/7/8, Glas 12/13.
@@ -189,37 +236,80 @@ def special() -> dict[str, Grid]:
     g.put(6, 8, 22)
     out["evo_thunder_seal"] = outline(g, diagonal=True)
 
-    # Zornpendel: Kette + Stachelkugel (bleibt).
+    # Zornpendel: goldene Kette, Karmesin-Kugel mit Licht/Glow und Stacheln
+    # (#320/M6: vorher 7 Toene, 0 Akzente, Kontrast 3.02:1 grenzwertig).
     g = Grid(16, 16)
-    for i in range(4):
-        g.rect(7, 1 + i * 2, 2, 1, 5)
-    g.ellipse(8, 11, 4, 3, 24)
-    g.ellipse(7, 10, 2, 2, 26)
-    g.rect(8, 11, 2, 2, 23)
-    for x, y in ((8, 6), (8, 16), (2, 11), (14, 11)):
-        pass
-    g.rect(7, 6, 2, 2, 26)          # Stacheln
-    g.rect(7, 14, 2, 2, 26)
-    g.rect(2, 10, 2, 2, 26)
-    g.rect(12, 10, 2, 2, 26)
+    for y, c in ((1, 20), (2, 21), (3, 20), (4, 21)):
+        g.rect(7, y, 2, 1, c)        # goldene Kettenglieder
+    g.put(7, 1, 13)                  # Kettenglanz
+    g.rect(7, 5, 2, 2, 26)           # Stachel oben (an Kette + Kugel)
+    g.ellipse(7, 10, 3, 3, 25)       # Kugel (Karmesin, x4..10 / y7..13)
+    g.rect(5, 8, 2, 1, 26)           # Kugel-Licht oben-links
+    g.put(5, 9, 26)
+    g.put(5, 8, 27)                  # hellste Kante
+    g.put(6, 9, 22)                  # Glow auf der Schulter
+    g.put(9, 12, 24)                 # Schatten unten-rechts
+    g.put(10, 11, 24)
+    g.put(10, 10, 24)
+    # Stacheln seitlich/unten (an der Kugel angesetzt)
+    g.rect(2, 9, 2, 2, 26)
+    g.rect(11, 9, 2, 2, 26)
+    g.rect(7, 13, 2, 2, 26)
     out["evo_wrath_pendulum"] = outline(g, diagonal=True)
 
-    # Dornensturm: acht 2-px-Dornen strahlen aus einem 4x4-Kern.
+    # Dornensturm: unregelmaessiger Dornball mit Gold-Beeren, Knochen-Splittern
+    # und Glow-Kern (#320/M1: vorher Kontrast 2.32:1, 3 Toene, Eis-Band an jedem Arm).
     g = Grid(16, 16)
-    dirs = [(0, -1), (0, 1), (-1, 0), (1, 0), (-1, -1), (1, -1), (-1, 1), (1, 1)]
-    for k, (dx, dy) in enumerate(dirs):
-        for r in range(2, 7):
-            x = 8 + dx * r
-            y = 8 + dy * r
-            w = 2 if dx == 0 else 1
-            h = 2 if dy == 0 else 1
-            g.rect(x - (1 if dx == 0 else 0), y - (1 if dy == 0 else 0), w + (1 if dx else 0), h + (1 if dy else 0), 30)
-            if r >= 5:
-                g.put(x, y, 31)
-    g.rect(6, 6, 4, 4, 31)           # Kern 4x4
-    g.rect(7, 7, 2, 2, 30)
-    g.put(6, 6, 31)
+    # Kern
+    g.rect(6, 6, 4, 4, 31)
+    g.rect(6, 6, 4, 1, 31)          # Kern-Oberkante hell
+    g.rect(6, 9, 4, 1, 30)          # Kern-Unterkante Schatten
+    g.rect(7, 7, 2, 2, 20)          # Gold-Beeren-Kern
+    g.put(7, 7, 21)
+    g.put(8, 8, 13)                 # Glow
+    # Arme: unregelmaessige Laengen, Licht nur an Oberkanten (kein Band)
+    g.rect(7, 2, 2, 4, 31)          # Nord (lang)
+    g.rect(7, 2, 2, 1, 31)
+    g.rect(7, 1, 2, 1, 20)          # Beere Nord
+    g.put(8, 1, 21)
+    g.rect(10, 7, 4, 2, 31)         # Ost
+    g.put(13, 7, 31)
+    g.put(14, 7, 10)                # Knochen-Splitter Ost
+    g.put(14, 8, 10)
+    g.rect(7, 10, 2, 3, 31)         # Sued (kuerzer)
+    g.rect(7, 13, 2, 1, 20)         # Beere Sued
+    g.rect(2, 7, 4, 2, 31)          # West
+    g.rect(2, 7, 1, 2, 31)
+    # Diagonal-Splitter (Sturm-Debris, 1 px)
+    for x, y, c in ((10, 6, 31), (11, 5, 31), (12, 4, 10), (11, 11, 31), (12, 12, 31)):
+        g.put(x, y, c)
     out["evo_thorn_storm"] = outline(g, diagonal=True)
+
+    # Sanduhr: durchgehende Silhouette — Rahmen (Deckel/Pfosten/Fuß) und Sand
+    # verbunden (#320/M3: vorher 5 Komponenten, groesste nur 39%). Rahmen in
+    # Fog 7 (16px-lesbar auf Panel), Licht 8 / Schatten 4.
+    g = Grid(16, 16)
+    g.rect(2, 2, 12, 1, 7)           # Deckel
+    g.rect(3, 2, 4, 1, 8)            # Deckel-Licht links
+    g.rect(11, 2, 2, 1, 4)           # Deckel-Schatten rechts
+    g.rect(2, 13, 12, 1, 7)          # Fuß
+    g.rect(11, 13, 2, 1, 4)          # Fuß-Schatten rechts
+    g.rect(2, 3, 1, 10, 8)           # Pfosten links (Lichtseite)
+    g.rect(13, 3, 1, 10, 4)          # Pfosten rechts (Schattenseite)
+    # Oberer Sand (Trichter), Oberflaeche als Lichtkante
+    g.rect(4, 3, 8, 1, 21)
+    g.rect(5, 4, 6, 1, 20)
+    g.rect(6, 5, 4, 1, 20)
+    g.rect(7, 6, 2, 1, 16)           # Trichter-Schatten
+    # Strom
+    g.rect(7, 7, 2, 2, 20)
+    g.put(7, 8, 13)                  # funkelndes Korn
+    # Unterer Sand (Huegel), bis auf die Pfosten reichend
+    g.rect(7, 9, 2, 1, 20)
+    g.rect(6, 10, 4, 1, 20)
+    g.rect(5, 11, 6, 1, 20)
+    g.rect(3, 12, 10, 1, 20)
+    out["passive_hourglass"] = outline(g, diagonal=True)
 
     return out
 
@@ -263,6 +353,8 @@ def build() -> dict[str, list[Grid]]:
             raise SystemExit(f"handdrawn icon {key} hat keine Rechteck-Vorlage")
     ordered = {k: data[k] for k in read_rects()}
     for key in ordered:
+        if key in FINAL_DRAWN:
+            continue  # final gezeichnet: eigene Kanten, kein normalize()-Re-Banding
         ordered[key] = [normalize(ordered[key][0], EVO_BOOST.get(key))]
     return ordered
 
