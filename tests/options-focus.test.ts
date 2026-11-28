@@ -22,7 +22,25 @@ vi.mock("phaser", () => {
     },
   };
 });
-import { BUTTON_PRESSED_ALPHA, menuButtonVisual, type ButtonVisualState } from "../src/ui/menu";
+// PixelText ersetzen: Die Verhaltens-Tests unten fahren das echte Wiring von
+// createMenuButton (pointerdown/up/out + setEnabled) gegen eine Fake-Scene;
+// nur der Font wird durch einen Aufzeichner ersetzt.
+const pixelTexts = vi.hoisted(() => [] as Array<{ value: string; colorIndex: number; setColorIndex: (i: number) => unknown }>);
+vi.mock("../src/gfx/font", () => {
+  class FakePixelText {
+    value: string;
+    colorIndex: number;
+    constructor(_scene: unknown, _x: number, _y: number, text = "", colorIndex = 13) {
+      this.value = text;
+      this.colorIndex = colorIndex;
+      pixelTexts.push(this);
+    }
+    setText(v: string): this { this.value = v; return this; }
+    setColorIndex(i: number): this { this.colorIndex = i; return this; }
+  }
+  return { PixelText: FakePixelText };
+});
+import { BUTTON_PRESSED_ALPHA, createMenuButton, menuButtonVisual, type ButtonVisualState, type MenuButton } from "../src/ui/menu";
 import { hoverRowAllowed } from "../src/ui/options-menu";
 
 // Palette-Indizes (src/palette.ts): lantern=21, bone=10.
@@ -96,23 +114,119 @@ describe("hoverRowAllowed – Zeilen-Hover-Guard beim Öffnen des Optionsmenüs"
   });
 });
 
-describe("Quelltext-Verankerung – Fixes sind verdrahtet", () => {
+describe("createMenuButton – Event-Lifecycle (echtes Wiring gegen Fake-Scene)", () => {
+  interface Handlers { [event: string]: () => void }
+  interface FakeObjects { alpha: number; outlineVisible: boolean; interactive: boolean }
+  /** Das zuletzt erzeugte (gemockte) Label-Objekt des Buttons. */
+  const label = () => pixelTexts[pixelTexts.length - 1];
+
+  function makeButton(): { button: MenuButton; handlers: Handlers; objs: FakeObjects; clicks: number[] } {
+    const handlers: Handlers = {};
+    const objs: FakeObjects = { alpha: 1, outlineVisible: false, interactive: true };
+    const clicks: number[] = [];
+    const scene = {
+      add: {
+        container: () => {
+          const c = {
+            x: 100, y: 50, list: [] as unknown[],
+            setDepth: () => c,
+            add: (_o: unknown) => c,
+          };
+          return c;
+        },
+        nineslice: () => ({
+          setAlpha: (a: number) => { objs.alpha = a; return undefined as never; },
+        }),
+        rectangle: () => {
+          const rect = {
+            setStrokeStyle: () => rect,
+            setVisible: (v: boolean) => { objs.outlineVisible = v; return rect; },
+          };
+          return rect;
+        },
+        zone: () => {
+          const z = {
+            setInteractive: () => { objs.interactive = true; return z; },
+            disableInteractive: () => { objs.interactive = false; return z; },
+            on: (ev: string, cb: () => void) => { handlers[ev] = cb; return z; },
+          };
+          return z;
+        },
+        existing: () => undefined,
+      },
+    };
+    const button = createMenuButton(
+      scene as unknown as Parameters<typeof createMenuButton>[0],
+      100, 50, 96, "TEST", () => clicks.push(1), {},
+    );
+    return { button, handlers, objs, clicks };
+  }
+
+  it("pointerdown setzt Pressed (dunkler + aktiv), pointerup löst ihn, Klick feuert sofort", () => {
+    const b = makeButton();
+    b.handlers["pointerdown"]();
+    expect(b.objs.alpha).toBe(BUTTON_PRESSED_ALPHA);
+    expect(b.objs.outlineVisible).toBe(true);
+    expect(label().colorIndex).toBe(LANTERN);
+    expect(b.clicks.length).toBe(1);
+    b.handlers["pointerup"]();
+    expect(b.objs.alpha).toBe(1);
+    b.handlers["pointerout"]();
+    expect(b.objs.outlineVisible).toBe(false);
+    expect(label().colorIndex).toBe(BONE);
+  });
+
+  it("setEnabled(false) während Pressed setzt den Zustand zurück (kein Stuck-Dunkel)", () => {
+    // Stuck-Pfad (Review-Befund): FORTSETZEN deaktiviert die Zone mitten im
+    // Pressed; eine deaktivierte Zone kriegt kein pointerup/pointerout mehr.
+    const b = makeButton();
+    b.handlers["pointerdown"]();
+    expect(b.objs.alpha).toBe(BUTTON_PRESSED_ALPHA);
+    b.button.setEnabled(false);
+    expect(b.objs.alpha).toBe(1);
+    expect(b.objs.outlineVisible).toBe(false);
+    expect(label().colorIndex).toBe(BONE);
+    expect(b.objs.interactive).toBe(false);
+  });
+
+  it("setEnabled(false) während Hover setzt ebenfalls zurück (kein Stuck-Aktiv)", () => {
+    const b = makeButton();
+    b.handlers["pointerover"]();
+    expect(b.objs.outlineVisible).toBe(true);
+    b.button.setEnabled(false);
+    expect(b.objs.outlineVisible).toBe(false);
+    expect(label().colorIndex).toBe(BONE);
+  });
+
+  it("setEnabled(true) nach dem Reset: interaktiv wieder hergestellt", () => {
+    const b = makeButton();
+    b.handlers["pointerover"]();
+    b.button.setEnabled(false);
+    b.button.setEnabled(true);
+    expect(b.objs.interactive).toBe(true);
+    expect(b.objs.outlineVisible).toBe(false);
+  });
+});
+
+describe("Quelltext-Verankerung – Guards sind verdrahtet (whitespace-tolerant)", () => {
   const menuSrc = readFileSync("src/ui/menu.ts", "utf8");
   const optionsSrc = readFileSync("src/ui/options-menu.ts", "utf8");
 
-  it("menu.ts: pointerdown setzt Pressed, pointerup/pointerout lösen ihn", () => {
-    expect(menuSrc).toMatch(/pointerdown[\s\S]{0,200}pressed = true/);
-    expect(menuSrc).toMatch(/pointerupoutside/);
-    expect(menuSrc).toMatch(/pointerout[\s\S]{0,120}pressed = false/);
-  });
-
   it("menu.ts: paint() nutzt die reine Matrixfunktion", () => {
-    expect(menuSrc).toMatch(/menuButtonVisual\(\{ focus, hover, pressed/);
+    expect(menuSrc).toMatch(/menuButtonVisual\(\s*\{\s*focus,\s*hover,\s*pressed/);
     expect(menuSrc).toMatch(/bg\.setAlpha\(v\.bgAlpha\)/);
   });
 
+  it("menu.ts: kein toter pointerupoutside-Handler (feuert in Phaser 3 nie)", () => {
+    expect(menuSrc).not.toMatch(/pointerupoutside/);
+  });
+
   it("options-menu.ts: open() merkt die Zeigerposition, pointerover fragt den Guard", () => {
-    expect(optionsSrc).toMatch(/this\.openPointer = \{ x: p\.x, y: p\.y \}/);
-    expect(optionsSrc).toMatch(/hoverRowAllowed\(pointer, this\.openPointer\)/);
+    expect(optionsSrc).toMatch(/openPointer\s*=\s*\{\s*x:\s*p\.x,\s*y:\s*p\.y\s*\}/);
+    expect(optionsSrc).toMatch(/hoverRowAllowed\(pointer,\s*this\.openPointer\)/);
+  });
+
+  it("options-menu.ts: close() koppelt den Guard an die Sichtbarkeit zurück", () => {
+    expect(optionsSrc).toMatch(/this\.openPointer\s*=\s*null/);
   });
 });

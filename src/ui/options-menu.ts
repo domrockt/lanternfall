@@ -140,6 +140,7 @@ export class OptionsMenu {
   close(): void {
     this.container.setVisible(false);
     this.setInputEnabled(false);
+    this.openPointer = null;
     this.onClose();
   }
 

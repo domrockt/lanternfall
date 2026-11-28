@@ -98,7 +98,6 @@ export function createMenuButton(
     onClick();
   });
   hit.on("pointerup", () => { pressed = false; paint(); });
-  hit.on("pointerupoutside", () => { pressed = false; paint(); });
 
   paint();
   return {
@@ -110,8 +109,19 @@ export function createMenuButton(
       paint();
     },
     setEnabled(value: boolean): void {
-      if (value) hit.setInteractive({ useHandCursor: true });
-      else hit.disableInteractive();
+      if (value) {
+        hit.setInteractive({ useHandCursor: true });
+      } else {
+        // M10-options-focus (Review-Befund): Eine deaktivierte Zone kriegt kein
+        // pointerout/pointerup mehr (Phaser nimmt sie aus _over). Pressed/Hover
+        // muessen hier zurueckgesetzt werden, sonst rendert der Knopf beim
+        // Re-Enable stuck aktiv (z. B. FORTSETZEN schliesst die Pause mitten
+        // im Pressed-Zustand).
+        pressed = false;
+        hover = false;
+        paint();
+        hit.disableInteractive();
+      }
     },
   };
 }
