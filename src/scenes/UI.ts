@@ -1318,31 +1318,54 @@ export class UI extends Phaser.Scene {
     if (!visible) return;
     for (const line of this.pauseLines) line.destroy();
     this.pauseLines = [];
+    // m10-ui-pause-quality K3 (art-director-Hebel 7): Namensspalte bricht um, bevor
+    // sie den Spalten-Puffer zur LV-Spalte unterschreiten wuerde. Puffer = 22 px,
+    // das Minimum der Zeilen 1-5 im Vorher-Scan (GEWITTERSIEGEL/PHOENIXSCHWARM);
+    // Zeile 6 (SEELENLEUCHTFEUER, 17 Zeichen) sass sonst mit 4 px an der LV und
+    // deren LV 8 mit 2 px an der Sanduhr-Icon-Kante. Zeilen 1-5 bleiben einzeilig
+    // und damit pixelgleich. Glyph-Vorschub 6 px (GLYPH_W 5 + 1), "LV n" = 23 px.
+    const PAUSE_NAME_LV_BUFFER_PX = 22;
+    // lvTextW 23 = "LV n" mit einstelligem Level (max. Stufe 8, GAME.md); bei
+    // zweistelligen Levels wuerde der Puffer stillschweigend schrumpfen.
+    const lvTextW = 23;
+    const colMaxChars = (nameX: number, lvRightX: number): number =>
+      Math.max(4, Math.floor((lvRightX - lvTextW - PAUSE_NAME_LV_BUFFER_PX - nameX + 1) / 6));
     const addRow = (
       name: string, level: number, color: number,
       x: number, levelRight: number, iconKey: string,
     ): void => {
       const icon = this.add.image(x + ox - 20, y - 4, iconKey).setOrigin(0, 0).setScale(1);
-      const left = new PixelText(this, x + ox, y, name, color);
+      const lines = slotNameLines(name, colMaxChars(x + ox, levelRight + ox));
+      const left = new PixelText(this, x + ox, y, lines[0], color);
+      const left2 = lines[1] ? new PixelText(this, x + ox, y + 10, lines[1], color) : null;
       // Feste rechte Spalte, damit alle "LV n" bündig stehen.
       const right = new PixelText(this, levelRight + ox, y, `LV ${level}`, color, "right");
-      this.pauseGroup.add([icon, left, right]);
+      this.pauseGroup.add(left2 ? [icon, left, left2, right] : [icon, left, right]);
       this.pauseLines.push(icon, left, right);
+      if (left2) this.pauseLines.push(left2);
     };
     const oy = Math.round((GAME_HEIGHT - 270) / 2);
+    // m10-ui-pause-quality K3: Zeilen-Pitch 15 -> 19 (+4 px Icon-Abstand). Vorher
+    // ueberlappten die 16-px-Icon-Frames aufeinanderfolgender Zeilen um 1 px Höhe
+    // (10 Overlaps je 16 px^2 im Vorher-Scan); mit 19 px bleiben 3 px Luft.
+    const PAUSE_ROW_PITCH = 19;
     let y = 76 + oy;
     for (const w of s.weapons) {
       const def = weaponDef(w.id);
       addRow(def?.name.toUpperCase() ?? w.id.toUpperCase(), w.level, C.bone, 84, 212,
         iconTextureKey(isEvolutionWeapon(w.id) ? "evolution" : "weapon", w.id));
-      y += 15;
+      y += PAUSE_ROW_PITCH;
     }
     y = 76 + oy;
     for (const p of s.passives) {
       const def = PASSIVES[p.id as keyof typeof PASSIVES];
-      addRow(def?.name.toUpperCase() ?? p.id.toUpperCase(), p.level, C.mist, 234, 386,
+      // m10-ui-pause-quality K2: C.mist (Index 8) erreicht auf dem Pause-Panel nur
+      // Kontrast 4.15 (Vorher-Scan m10-ui-pause-quality, beide Viewports) -> Build-Texte
+      // der Powerup-Spalte auf C.candleWhite (Index 12). Waffen-Spalte (C.bone, Index 10,
+      // Kontrast besteht) und Hinweiszeilen bleiben im gemeldeten Scope unangetastet.
+      addRow(def?.name.toUpperCase() ?? p.id.toUpperCase(), p.level, C.candleWhite, 234, 386,
         iconTextureKey("passive", p.id));
-      y += 15;
+      y += PAUSE_ROW_PITCH;
     }
     this.pauseWeaponHead.setText(`WAFFEN ${s.weapons.length}/6`);
     this.pausePassiveHead.setText(`POWERUPS ${s.passives.length}/6`);
