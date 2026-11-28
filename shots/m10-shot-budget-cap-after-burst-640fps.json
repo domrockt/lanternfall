@@ -1,0 +1,63 @@
+{
+  "tag": "shotcap-after-640",
+  "targetFps": 55,
+  "config": {
+    "viewport": {
+      "width": 640,
+      "height": 360
+    },
+    "dpr": 1,
+    "enemies": 500,
+    "weapons": true,
+    "particles": "default",
+    "ui": true,
+    "postfx": true,
+    "damping": true,
+    "seconds": 10
+  },
+  "measured": {
+    "fps": 60,
+    "fpsMin": 60,
+    "fpsBuckets": [
+      60.6,
+      60,
+      60,
+      60,
+      60,
+      60,
+      60,
+      60,
+      60
+    ],
+    "frames": 601,
+    "elapsedMs": 10011,
+    "worstFrameMs": 16.8,
+    "targetEnemies": 500
+  },
+  "state": {
+    "enemies": 500,
+    "sprites": 2093,
+    "visibleSprites": 881,
+    "projectiles": 58,
+    "enemyShots": 0,
+    "particles": 97,
+    "fx": 55,
+    "level": 30,
+    "kills": 2655,
+    "internal": [
+      640,
+      360
+    ],
+    "css": [
+      640,
+      360
+    ],
+    "dpr": 1
+  },
+  "setup": {
+    "particlesBefore": 100,
+    "fxBefore": 60,
+    "spritesScene": 2027
+  },
+  "jsErrors": []
+}
