@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 10138,
+  "next": 10157,
   "cards": [
     {
       "id": 1,
@@ -13076,6 +13076,71 @@
       ],
       "created": "2026-11-28T08:23:00Z",
       "updated": "2026-11-28T08:23:07Z"
+    },
+    {
+      "id": 10154,
+      "title": "m10-verify-outputs-hygiene K1: Befund E-4 reproduzieren",
+      "description": "Abnahmekriterium: git status vor Lauf sauber; verify-final-Lauf protokolliert; geänderte/neue Dateien unter shots/ (inkl. ignored) stehen in ~/games/.evidence/m10-verify-outputs-hygiene/k1-before.json und als Liste in docs/lanes/m10-verify-outputs-hygiene.md. Owner: Lead (Lane m10-verify-outputs-hygiene). Kontrolleure: reviewer.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T08:08:26Z",
+          "by": "general",
+          "text": "backlog → doing: K1 gestartet: Repro verify-final-Lauf"
+        },
+        {
+          "at": "2026-11-28T08:16:15Z",
+          "by": "general",
+          "text": "doing → review: K1: E-4 repro + Attribution korrigiert; Commit 3008c7a8; Belege ~/games/.evidence/m10-verify-outputs-hygiene/"
+        },
+        {
+          "at": "2026-11-28T08:18:09Z",
+          "by": "build",
+          "text": "review → done: lane #10008 done; reviewer PASS; Commit 3008c7a8"
+        }
+      ],
+      "created": "2026-11-28T08:08:24Z",
+      "updated": "2026-11-28T08:18:09Z"
+    },
+    {
+      "id": 10155,
+      "title": "m10-verify-outputs-hygiene K2: Outputs nach ~/games/.evidence/",
+      "description": "Abnahmekriterium: verify-final.mjs (und verify-robust.mjs, falls Outputs) schreiben timestamped Outputs nach ~/games/.evidence/ (untracked); kein Schreiben in shots/ mehr; verify:final bleibt 7/7 PASS. Kontrolleure: reviewer + test-auditor.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T08:16:15Z",
+          "by": "general",
+          "text": "backlog → review: K2: verify-final/verify-robust Outputs timestamped nach ~/games/.evidence/; verify:final 7/7 PASS, shots/ nach Lauf leer; Commit 10c220cd"
+        },
+        {
+          "at": "2026-11-28T08:18:13Z",
+          "by": "build",
+          "text": "review → done: lane #10009 done; reviewer PASS; verify:final 7/7 PASS, shots/ nach Lauf leer; Commit 10c220cd"
+        }
+      ],
+      "created": "2026-11-28T08:08:24Z",
+      "updated": "2026-11-28T08:18:13Z"
+    },
+    {
+      "id": 10156,
+      "title": "m10-verify-outputs-hygiene K3: Guard-Test + Nachher-Lauf",
+      "description": "Abnahmekriterium: tests/verify-outputs-hygiene.test.ts grün (Skript-Outputs greifen keine shots-Pfade an); nach verify-final-Lauf zeigt git status 0 Änderungen unter shots/; tsc + npm test + npm run build grün. Kontrolleure: test-auditor + reviewer.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T08:16:15Z",
+          "by": "general",
+          "text": "backlog → review: K3: Guard-Test 6/6 gruen, Nachher-Lauf sauber, 1704/1704 Tests + Build gruen; Commit 789523bf"
+        },
+        {
+          "at": "2026-11-28T08:18:13Z",
+          "by": "build",
+          "text": "review → done: lane #10010 done; test-auditor PASS (6/6, experientell) + reviewer PASS; Commit 789523bf"
+        }
+      ],
+      "created": "2026-11-28T08:08:24Z",
+      "updated": "2026-11-28T08:18:13Z"
     }
   ]
 }
