@@ -49,7 +49,7 @@ Setting: Ein verfluchtes Moor in einer endlosen Nacht. Die letzte Laterne muss b
 |---|---|---|
 | boots | Windstiefel | +8 % Bewegungstempo |
 | tome | Arkanes Buch | -8 % Abklingzeit |
-| heart | Eisenherz | +20 Max-HP, +0.2 HP/s Regeneration |
+| heart | Eisenherz | +20 Max-HP, +0.3 HP/s Regeneration |
 | charm | Magnetamulett | +25 % Aufsammelradius |
 | whetstone | Wetzstein | +10 % Schaden |
 | hourglass | Sanduhr | +10 % Effektdauer & Fläche |
@@ -167,7 +167,8 @@ erscheinen, Truhen droppen, mind. 1 Evolution erreichbar); Performance-Ziel erf�
 - **Alle 30 Gegner** aus der Tabelle sind datengetrieben implementiert (`implemented: true`, eigene Palettenfarbe) und live im Spawn-Pool: 10 Archetypen (`chaser`, `swarm`, `tank`, `ranged`, `charger`, `splitter`, `exploder`, `phaser`, `orbiter`, `summoner`). KI-Zustände als reine Logik in `src/logic/enemy-ai.ts` (Annäherung, Abstand halten, Anlauf/Sprint, Blink, Zündschnur, Beschwörung, Orbiter-Winkel); Phaser-Szenen bleiben dünn.
 - **30 eigene Platzhalter-Sprites** (24×24, 2 Frames, prozedural in `src/gfx/enemySprites.ts`): 1-px-Kontur, Lichtkante oben-links, 3 Palettentöne, eindeutige Silhouette (Unit-Test vergleicht alle 30 Masken), Flügel-Frame für Flieger. Elite-Gegner mit Leuchtrand, größerem Sprite und garantiertem großen XP-Kristall.
 - **Gegner-Projektile** (`EnemyProjectiles`, eigener Pool, nicht additiv, damit sie von Spieler-VFX unterscheidbar sind) und **Warnflächen** (`Hazards`: Telegraphen-Kreis, Area-Damage, Explosionen). Treffer laufen über eigene Schadenspfade; Exploder zünden nahe am Spieler, Splitter teilen sich beim Tod in 2 Kinder (max. 2 Generationen, kleinere HP/Radius).
-- **Wellen-Director:** Spawnrate, Mischung und Gegner-Cap zeitabhängig (`maxActiveEnemies`: 160 + 16/Minute, max. 500); Ring-Einkesselung und Schwarm-Ströme als Spezialwellen ab Minute 3, Elite-Packs ab Minute 8; ferne alte Gegner werden recycelt, Bosse/Elites nie. Cap-Recycling, Spawn-Ring und Mischung sind getestet.
+- **Wellen-Director:** Spawnrate, Mischung und Gegner-Cap zeitabhängig (`maxActiveEnemies`: 100 + 13/Minute,
+  mit der sichtbaren Fläche skaliert (M8), ab Minute 18 Late-Game-Deckel 200, hart max. 500); Ring-Einkesselung und Schwarm-Ströme als Spezialwellen ab Minute 3, Elite-Packs ab Minute 8; ferne alte Gegner werden recycelt, Bosse/Elites nie. Cap-Recycling, Spawn-Ring und Mischung sind getestet.
 - **6 Bosse** mit eigenen Daten, Sprites (40×40, Krone/Hörner/Sichel/Stab als Silhouette), eigener HP-Leiste unten, Warn-Banner/Namen und Mechanik-Sets. Phasenwechsel gibt es nur beim Endboss (Boss 5: 66 %/33 %, drei Phasen); die Bosse 0–4 bleiben in Phase 1 und wechseln nur ihre Angriffssets aus `src/logic/bosses.ts`: Sprung-Schockwelle/Giftpfützen, Skelett-Ringe + Knochen-Bumerang, Wolfrudel + Sichel, Stampfer + Steinregen-Markierungen, Teleport + kreuzende Feuerstrahlen, Endboss Dornenring + Phasenangriffe. Boss-Kontakt, Hazards, Projektile und Beschwörungen sind god-mode-sicher getestet.
 - **Endboss + Sieg:** Boss 6 erscheint exakt bei **30:00** (nicht mehr durch `RUN_LENGTH` abgeschnitten); nach seinem Tod läuft die **Morgendämmerung** (Gegner zerfallen, Gefahren/Projektile verschwinden, Spawns stoppen), nach 3,2 s Results mit Grund `dawn` und „DU HAST ÜBERLEBT“. Jeder Boss droppt eine Truhe.
 - **Wasser/Moor:** `terrain.ts` klassifiziert Tiles. Der Spieler läuft auf Wasser gemessen **37,2 px/s statt 62,0 px/s (Ratio 0,60, Ziel 0,60)**; Gegner im Wasser **8,3 px/s bei defSpeed 15**. Die logische Position liegt als Float in `posX/posY`, nur die Darstellung (`player`, Schatten, Licht) wird gerundet. Vorher rundete `updateVisuals()` die logische Position selbst, wodurch der Wasser-Slow effektiv auf 0 % fiel – behoben. Wasser-Slow-Logik ist unit-getestet, frame-genau mit `npm run verify:terrain` abgenommen (Spritzer ≥ 3).
@@ -355,6 +356,10 @@ kombiniert), `src/main.ts` (Worker-/Lifecycle-Skalierung + Menü-Skalierungsopti
   Boss-Dauern aus `bossDefeated`, plus Todes- und Waffen-Audit-Modus.
 - XP-Kurve `8 + 1.1·n²` (Level 25–40 bei 30 min statt Level 147), Charaktere differenziert (Mira Ember/250 HP/62 Tempo;
   Kael Flail/253 eff. HP/55,9 Tempo/Rüstung 2), Boss-Grundtempo 42–50 ≤ 90 % Spielertempo, Boss-HP für 20–60-s-Kämpfe.
+  **[Historischer M6-Tuning-Stand — nicht Spec]** (P3, `m10-charstats-spec-followup`): die Charakterwerte
+  widerrufen die Spec Z.34/35 nicht; seit `m10-charstats-spec-followup` gilt Spec als Quelle — Mira HP 90,
+  Kael HP 130 / +20 % Max-HP / 1 Rüstung / Tempo 59 (`src/data/characters.ts`, Guard `scripts/m10-charstats-followup.mjs`).
+  Die XP-Kurve trägt seit `m10-level-target-balance` zusätzlich einen Endgame-Aufschlag ab Level 28 (`src/logic/xp.ts`).
 - Waffen-Audit: alle 12 Waffen Stufe 8 verursachen Schaden (`shots/balance-weapons.json`).
 
 **Balance-Tabelle (M6-final gemergter Stand, `shots/balance-main.json`, 2026-11-26):**
@@ -386,7 +391,8 @@ Kael/101 erreicht Level 47 (Ziel 25–40) — dokumentierter Restmangel, keine R
 ### Lane `menus` (Details: `docs/lanes/menus.md`)
 
 - Titel (Start/Optionen/Credits), Credits, CharSelect mit Portraits/Stats/Startwaffe/Meta, Pause-Build 6/6+6/6,
-  Results (Sieg/Niederlage/Aufgabe), Optionen (Musik/SFX/Shake/Damage-Numbers/Skalierung, localStorage),
+  Results (Sieg/Niederlage/Aufgabe), Optionen (Musik/SFX/Shake/Damage-Numbers/Master-Mute/Skalierung/Bildrate,
+  8 Zeilen inkl. ZURÜCK, localStorage),
   Meta-Bestwerte pro Charakter, Tastatur + Maus/Touch, ganzzahlige Skalierung (AUTO/1×/2×/3×).
 - `node scripts/verify-menus.mjs`: 15/15 PASS; Screenshots `shots/m6-menus-*.png`.
 
@@ -458,6 +464,9 @@ APK-Build in der Lane.
 - **Checkliste:** abhakbare Endabnahme-Liste in
   `docs/qa/v10-readiness-2026-11-28.md` (Geräte-Tore A1–A5, Endabnahme-Suite B1–B7,
   Restpunkte C1–C3).
-- **Zuletzt belegt (Nachabnahme F, PIN `1ebd4ca`):** Build/Tests/Inhalte/verify grün;
-  einziger Suite-Blocker ist das fullrun-Heap-Tor (+18,2 %/+20,8 % > +15 %) — siehe
+- **Zuletzt belegt (Nachabnahme F, PIN `1ebd4ca`):** Build/Tests/Inhalte/verify grün; der dortige
+  Suite-Blocker „fullrun-Heap-Tor (+18,2 %/+20,8 % > +15 %)“ ist **entwarnet**: auf aktuellem main
+  (nach dem Hazard-Tex-Cap-Merge `39fdac5d`) liegt das Tor in 2/2 Läufen bei **−25,2 %**
+  (endMB 48,5 MB vs. Minute 1 64,8 MB, kein Retentions-Leck) — `docs/lanes/m10-heap-gate-recovery.md`
+  (K1/K2), Belege `~/games/.evidence/m10-heap-gate-recovery/`. Siehe
   `ACCEPTANCE.md` und `docs/lanes/m10-acceptance-refresh-f.md`.

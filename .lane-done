@@ -1,0 +1,13 @@
+Lane m10-game-md-sync-r2 — GAME.md-Sync nach der Merge-Welle (2026-11-28)
+
+Ergebnis: GAME.md um 5 belegte Driften korrigiert (je Zeile Beleg in docs/lanes/m10-game-md-sync-r2.md):
+- D1 Z.52 heart-Regen 0.2 → 0.3 HP/s (Test-Pin tests/logic.test.ts:207, Daten seit M6-balance a345da9e)
+- D2 Z.170 maxActiveEnemies 160+16 → Ist: 100+13/Minute, M8-View-Skalierung, Late-Cap 200 ab Min 18, hart 500
+  (src/logic/scaling.ts:88-101, tests/balance-endgame.test.ts:35-61)
+- D3 Z.356/357 (P3 charstats-spec-followup) als historischer M6-Tuning-Stand markiert + Fußnote
+  mit den geltenden Spec-Werten (Mira 90; Kael 130/+20 %/Rüstung 1/Tempo 59)
+- D4 Z.389 Optionsliste auf 8-Zeilen-Ist ergänzt (MASTER MUTE, BILDRATE; OPTION_ROWS, tests/gamepad-nav.test.ts:217)
+- D5 v1.0-Status: Heap-Tor entwarnet (2/2 Läufe −25,2 % nach hazard-tex-cap, docs/lanes/m10-heap-gate-recovery.md)
+B1 (Z.342 „kein Master-Mute“) ist historisch (M5-Abschnitt), nur dokumentiert, kein Edit.
+Gegenprobe: tests/data.test.ts + tests/charselect-truth.test.ts 15/15 grün, tsc rc=0,
+keine src-/tests-Änderungen. Kein Push, kein Merge.

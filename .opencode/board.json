@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 13263,
+  "next": 13304,
   "cards": [
     {
       "id": 1,
@@ -18779,6 +18779,43 @@
       "notes": [],
       "created": "2026-11-28T16:19:56Z",
       "updated": "2026-11-28T16:19:56Z"
+    },
+    {
+      "id": 13304,
+      "title": "m10-game-md-sync-r2 K1: Divergenzliste GAME.md vs src/data (je Zeile Beleg)",
+      "description": "Abnahme: belegte Driften mit Datei:Zeile in docs/lanes/m10-game-md-sync-r2.md dokumentiert; GAME.md-Diff nur belegte Korrekturen; keine Test-/src-Änderungen.",
+      "column": "done",
+      "notes": [
+        "K1 gestartet: GAME.md-Zeilen vs src/data prüfen",
+        "erledigt (Lane-Commit, GAME.md-Sync): siehe docs/lanes/m10-game-md-sync-r2.md"
+      ]
+    },
+    {
+      "id": 13305,
+      "title": "m10-game-md-sync-r2 K2: geklärte Driften in GAME.md korrigieren",
+      "description": "Abnahme: belegte Driften mit Datei:Zeile in docs/lanes/m10-game-md-sync-r2.md dokumentiert; GAME.md-Diff nur belegte Korrekturen; keine Test-/src-Änderungen.",
+      "column": "done",
+      "notes": [
+        "erledigt (Lane-Commit, GAME.md-Sync): siehe docs/lanes/m10-game-md-sync-r2.md"
+      ]
+    },
+    {
+      "id": 13306,
+      "title": "m10-game-md-sync-r2 K3: Gegenprobe tests/data.test.ts + charselect-truth grün",
+      "description": "Abnahme: belegte Driften mit Datei:Zeile in docs/lanes/m10-game-md-sync-r2.md dokumentiert; GAME.md-Diff nur belegte Korrekturen; keine Test-/src-Änderungen.",
+      "column": "done",
+      "notes": [
+        "erledigt (Lane-Commit, GAME.md-Sync): siehe docs/lanes/m10-game-md-sync-r2.md"
+      ]
+    },
+    {
+      "id": 13307,
+      "title": "m10-game-md-sync-r2 K4: Commit + .lane-done",
+      "description": "Abnahme: belegte Driften mit Datei:Zeile in docs/lanes/m10-game-md-sync-r2.md dokumentiert; GAME.md-Diff nur belegte Korrekturen; keine Test-/src-Änderungen.",
+      "column": "done",
+      "notes": [
+        "erledigt (Lane-Commit, GAME.md-Sync): siehe docs/lanes/m10-game-md-sync-r2.md"
+      ]
     }
   ]
 }
