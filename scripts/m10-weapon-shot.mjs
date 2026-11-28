@@ -54,6 +54,7 @@ const SHOT_TEXTURES = {
   lantern: "orb_lantern",
 };
 const MINUTE = 1490; // Minute 25: Endgame-Chaos.
+const SOLO_MINUTE = 240; // Minute 4: kein Boss im Solo-Bild.
 const TOTAL_ENEMIES = 300;
 const MIX = [
   ["toad", 22], ["witchling", 18], ["lich", 15], ["horror", 15],
@@ -141,6 +142,16 @@ async function collectCenters(page, rafMs = 0) {
   }), rafMs);
 }
 
+/** Feuer-Signal je Waffe: solange warten, bis die Signatur wirklich aktiv ist. */
+const FIRE_SIGNALS = {
+  ember: "run.combat.projectiles.active.some(p => p.weaponId === 'ember' && p.active && p.sprite.visible)",
+  thorn: "run.combat.projectiles.active.some(p => (p.weaponId === 'thorn' || p.weaponId === 'thorn_storm') && p.active && p.sprite.visible)",
+  frost: "run.combat.fx.active.some(f => f.frames[0] === 'ring_frost') || run.combat.particles.active.some(p => p.frames[0].startsWith('fx_ice'))",
+  storm: "run.combat.fx.active.some(f => f.frames[0] === 'fx_bolt')",
+  flail: "[...run.combat.states.values()].some(s => s.swings.length > 0)",
+  lantern: "[...run.combat.states.values()].some(s => s.orbs.some(o => o.sprite.visible))",
+};
+
 // ---------- Solo-Szenen: je Waffe allein im Bild ----------
 const soloPaths = {};
 for (const weapon of WEAPONS) {
@@ -172,10 +183,14 @@ for (const weapon of WEAPONS) {
       spawned += fresh.length;
     }
     return spawned;
-  }, { minute: MINUTE, mix: SOLO_MIX });
-  // 2 s feuern lassen; Centres akkumulieren (niedrige Duty-Cycle-Waffen).
-  for (let i = 0; i < 12; i++) await collectCenters(page, 160);
-  await new Promise((r) => setTimeout(r, 60));
+  }, { minute: SOLO_MINUTE, mix: SOLO_MIX });
+  // Warten, bis die Waffe tatsaechlich feuert (sonst zeigt der Shot nur Cooldown).
+  try {
+    await page.waitForFunction(FIRE_SIGNALS[weapon], { timeout: 6000 });
+  } catch {
+    console.log(`  solo ${weapon}: FEUER-Signal nicht gesehen (Timeout)`);
+  }
+  await new Promise((r) => setTimeout(r, 40));
   const path = join(OUT_DIR, `m10-weapon-shot-${TAG}-solo-${weapon}.png`);
   await page.screenshot({ path });
   soloPaths[weapon] = path;
@@ -206,8 +221,10 @@ const chaosPrep = await chaosPage.evaluate(async ({ total, mix, minute }) => {
     const fresh = run.enemies.active.filter((e) => e.alive).slice(before);
     for (const e of fresh) {
       const side = rand() < 0.5 ? 1 : -1;
-      e.x = 2048 + side * (10 + rand() * 200);
-      e.y = 2048 + (rand() - 0.5) * 230;
+      // Ring 120-260 px: Punktblank-Gegner toeten kurzlebige Projektile (ember)
+      // im Spawntick — so bleiben alle 6 Signaturen wenigstens 1-2 s in der Luft.
+      e.x = 2048 + side * (120 + rand() * 140);
+      e.y = 2048 + (rand() - 0.5) * 260;
       e.vx = 0; e.vy = 0;
       e.hp = 1e9; e.maxHp = 1e9;
       e.damage = Math.max(0, e.damage);
