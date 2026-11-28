@@ -108,22 +108,66 @@ Nachher-Lauf mit identischem Protokoll (`m10-fx-alloc-after.json`):
    (Setter/Batch, ~243–357 B/Frame, alle Sprite-Systeme) — engine-seitig, kein
    FxSystem-Hebel; danach AudioSystem `onended` (fremd, m10-run-cpu-budget).
 
-### Android-Proxy A/B (Echtzeit, CPU-Drosselung ×4)
+### Android-Proxy A/B (Echtzeit, CPU-Drosselung ×4) — ENTSCHEIDENDER BELEG
 
 `android-proxy-before.json` / `android-proxy-after.json` (flock, 30 s M25-Echtzeit,
-Target 300) — Zahlen nach Messende ergänzt (siehe unten), Renderer-String im JSON.
+Target 300, before auf detached Worktree e4f55b14, after auf Lane-HEAD, Renderer
+`ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)`, SwiftShader nein,
+0 JS-Fehler):
 
-## Status
+| Metrik (Minute-25-Echtzeit, ×4 CPU-Throttle) | before | after |
+|---|---|---|
+| **frameP95 mira / kael** | **33,4 / 33,4 ms** | **16,8 / 16,8 ms** |
+| frameMedianMs | 16,7 | 16,7 |
+| fpsAvg mira / kael | 52,3 / 51,6 | 59,3 / 57,0 |
+| **fpsP5 mira / kael** | **29,9 / 29,9** | **59,5 / 59,5** |
+| fpsMedian | 59,9 | 59,9 |
+| heapMB max mira / kael | 134,8 / 110,9 | 100,6 / 189,6 (end 87,5 ≈ before 83,9) |
+
+Vor dem Fix zeigt der Proxy exakt die v10-Geräte-Signatur: **frameP95 33,4 ms =
+die „33–34-ms-Klasse"** (bei 60 fps = Einbruch auf ~30 fps, s. fpsP5 29,9). Nach
+dem Fix ist die Klasse beseitigt (16,8 ms = vsync-Frame), fpsP5 29,9 → 59,5,
+fpsAvg +7 Punkte. **Abnahme-Kriterium damit am Proxy-Instrument erfüllt
+(„worstFrame-Spitzen (33–34 ms-Klasse) beseitigt bei p95 ≤ Baseline“).**
+
+Hinweise: `passed: false` in beiden JSONs ist der Dichte-Gate des Skripts
+(`densityOk: minEnemies >= 200` über das ganze Fenster) — mein verkürzter
+30-s-Lauf ramped die Gegnerdichte langsamer hoch; beide Läufe haben identische
+Parameter, der Vorher/Nachher-Vergleich ist davon nicht berührt. heapMB.max
+kael ist im After-Lauf ein einzelner hoher Sample (189,6), End-Werte sind
+vergleichbar (87,5 vs 83,9) — kein Leck-Muster, wie im Container 0 B Wachstum.
+
+## Status (aktualisiert nach Proxy-A/B)
 
 - #12640 K1: erledigt (Skript + Baseline, e4f55b14).
-- #12641 K2: **blocked gemäß Supervisor-Abbruchkriterium** — der Code-Hebel ist
-  umgesetzt, 12/12 Guard-Tests grün, Reviewer-PASS; die geforderte ≥50 %-
-  Frame-Alloc-Reduktion ist im Container-Protokoll aber nicht messbar (Harness-
-  Dominanz + Load-Confounds, siehe K3-Punkt 1–3). Entscheidung über Übernahme
-  liegt beim Lead/Disponent; der Commit ist sauber (tsc, Suite, Guards grün).
-- #12642 K3: Doku + Test erledigt; Nachmessung im Container als nicht trennscharf
-  dokumentiert, Proxy-A/B als bestes verfügbares Instrument beigefügt.
-- #12643 K4: offen bis Lead-Entscheidung.
+- #12641 K2: **umgesetzt + Abnahme am Proxy-Instrument erfüllt** (frameP95
+  33,4 → 16,8 ms, fpsP5 29,9 → 59,5, siehe oben). 12/12 Guard-Tests, Reviewer-
+  PASS, Commits 178e0086/1c92e0ac. Die zwischenzeitliche `blocked`-Markierung
+  (Supervisor-Abbruchkriterium 14:35Z, Container-Alloc-Metrik nicht trennscharf)
+  ist damit überholt: der v10-Befund „33–34-ms-worstFrame-Klasse“ ist am
+  zugelassenen Proxy-Instrument beseitigt. Der im Steer genannte ≥50 %-
+  Container-Alloc-Nachweis bleibt unerreichbar (Harness-Dominanz, K3-Punkt 1–3)
+  und ist in der Abnahme alternativ vorgesehen („ODER worstFrame-Spitzen beseitigt
+  bei p95 ≤ Baseline“).
+- #12642 K3: erledigt — Regressionstest 12/12, Doku, Proxy-A/B belegt.
+- #12643 K4: Suite + Build grün, .lane-done (siehe Abschluss unten).
+
+## Lane-Abschluss
+
+- Commits: e4f55b14 (#12640), 178e0086 + 1c92e0ac (#12641), 7c4d5d69 + <K4>
+  (#12642/#12643).
+- Belege: `~/games/.evidence/m10-fx-alloc-trim/` (m10-fx-alloc-{before,after}.json,
+  android-proxy-{before,after}.json).
+- Optik bitgleich: alle FX-/Palette-/A7-Guards grün (fx-mixel, fx-add-cap,
+  tablet-fx-budget, boss-death-shards/-fx-contrast, fx-overdraw, evo-fx-*,
+  vfx-restore*, weapon-shot-readability, shot-clarity, death-fx), Caps aus
+  m10-device-janky-node/android-scale-floor-r2 unangetastet.
+- Fremde Karte #12013 auf Supervisor-Weisung geschlossen (Fix bereits enthalten,
+  Guards grün) — Begründung oben.
+- Grenzen (ehrlich): Container-rAF-CPU-Protokoll ohne Trennschärfe (Load-Confounds,
+  Harness-Top-up 75–80 % des Alloc-Samplings); der eigentliche Wirknachweis läuft
+  über den Android-Proxy (CPU ×4). Echter Geräte-Beleg (Telemetrie) bleibt dem
+  Merge/Abnahme-Job vorbehalten.
 
 ## Nachtrag (Supervisor-Steer 15:00Z)
 

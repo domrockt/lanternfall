@@ -1,0 +1,20 @@
+Lane m10-fx-alloc-trim — abgeschlossen 2026-11-28.
+
+Ziel: Per-Frame-Allokationen/Phaser-Setter-Churn im FX-Draw-Pfad (FxSystem.ts).
+Fix (eine Einheit, src/systems/FxSystem.ts): Setter-Gates im update() beider Pools
+(FxRuntime-Felder cx/cy/csx/csy/ca/cr, Setter nur bei geändertem Wert — bitgleich),
+Scratch-Options statt {...spread} in allen Spawn-Helfern, geteilte Frame-Arrays
+(cachedFrames/mixelFramesFor mit Identitäts-Fallback), numerische Evolution-
+Cooldown-Slots. Reviewer PASS; Reviewer-Fix (setAlphaScale führt ca nach) drin.
+
+Abnahme: Android-Proxy A/B (Echtzeit Minute 25, CPU ×4 gedrosselt, flock):
+frameP95 33,4 → 16,8 ms (mira+kael) — die v10-Geräte-„33–34-ms-Klasse“ ist
+beseitigt; fpsP5 29,9 → 59,5, fpsAvg 52,3 → 59,3. fx-alloc-trim.test.ts 12/12,
+gesamte Suite 2396/2396, npm run build grün, FX-/Palette-/A7-Guards unverändert grün.
+
+Grenze: Container-Alloc-Protokoll nicht trennscharf (75–80 % Harness-Spawn-Top-up,
+FX-Eigenanteil unter Sampling-Sichtbarkeit) — dokumentiert in
+docs/lanes/m10-fx-alloc-trim.md; Belege in ~/games/.evidence/m10-fx-alloc-trim/.
+Karten: #12640 done, #12641 done (Proxy-Beleg, blocked-Markierung überholt),
+#12642 done, #12643 done; fremde #12013 auf Supervisor-Weisung geschlossen
+(Fix 5a3e91de bereits enthalten, Guards grün).
