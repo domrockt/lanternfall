@@ -1,0 +1,22 @@
+# Lane m10-verify-reacceptance-d — fertig (2026-11-28)
+
+Vorab-Check "Nachabnahme D" auf main (fe3ee61, nach merge-m10-run-determinism). Nur Befundliste,
+kein Fix, keine Code-Änderung. Belege alle mit iGPU-Renderer-String (K1-Pflicht, kein SwiftShader).
+
+Ergebnis: 4/4 Befundzeilen PASS —
+- K1 Renderer-Pflicht: ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2) — PASS
+  (shots/m10-reaccd-renderer.json)
+- K2 verify-input: 28/28 PASS, 0 JS-Fehler, ESC-Pfad OK (esc-pause-fix wirksam) — PASS
+  (shots/m10-reaccd-verify-input.json + 12 Shots)
+- K3 Heap-Tor 30-min-Echtzeitlauf: HARD endMB 60,8 MB vs Minute1 54,9 MB = +10,7 % <= +15 % — PASS;
+  SOFT-Beobachtung FAIL (max Fenster-Peak 77,7 MB = +41,5 %, GC-Sägezahn, kein Leaksignal)
+  (shots/m10-reaccd-heap.json)
+- K4 FPS iGPU: 780x360@3 M25 60,0 / Burst 60,1; 640x360 Burst 60,0 (worst frame 16,8 ms,
+  vsync-gecappt, 0 JS-Fehler, vs. Nachabnahme C stabil) — PASS (shots/m10-reaccd-perf-*.json)
+
+Befunde für Dora (Fix-Jobs daraus schneiden): F1 SOFT-Fenster-Peak-Messrauschen (NIEDRIG, Hebel
+scripts/m10-heap-budget-gate.mjs Fenster-0-Boot / Pool.ts-Allokationen), F2 victory=false im
+Echtzeitlauf (NIEDRIG, AutoPlay beendet Endboss nicht). Details: docs/lanes/m10-reacceptance-d.md
+
+Karten: #7998 (done), #7999 (review), #8000 (review), #8001 (review). Commits: 7e2cb07, 8052421,
+700fc24, 8602309. Beide Nachabnahme-C-Rotpunkte sind auf aktuellem main gruen.
