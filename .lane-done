@@ -1,0 +1,31 @@
+# Lane m10-evo-fx-soulpyre — Seelenleuchtfeuer-FX neu (fertig)
+
+Dom-Wunsch 21:45Z Punkt 1: Seelenleuchtfeuer las sich als graue Rechteck-Platte — neu als
+mystisches Seelenfeuer umgesetzt. Vorlage: docs/lanes/m10-evo-fx-phoenix.md (1:1).
+Details: docs/lanes/m10-evo-fx-soulpyre.md
+
+Karten (alle committed, Branch m10-evo-fx-soulpyre):
+- #7278 Ist-Beleg (a342076): Skript scripts/m10-evo-fx-soulpyre.mjs + before.json/PNGs.
+  Vorher: orb_soul 15x22 @ Scale 2 (43 Ink-/59 Grau-Pixel), Todes-Signatur 32x32 @ 4,0–4,3x
+  (113 Ink-/225 Grau-Pixel = graue Platte), Halo 24x24 @ 1,8 mit Alpha 0,09.
+- #7279 Fix (d9f4477): orb_soul 22x32 @ Scale 1 (3 Flacker-Frames), Signatur 96x96 mit
+  EvoSignature.drawScale [1,1] (FxSystem liest es), Halo gebackene Stufe 2 (48x48) @ 0,9,
+  Farb-Treppe Seelenfeuer ohne Ink/Grau, SOUL_FX-Parameterblock in evolution-weapons.ts,
+  Anticipation 0,28 s, Ausklang-Fade 0,35 s, aufsteigende Seelen-Funken.
+- #7280 Tests (4db839f): tests/evo-fx-soulpyre.test.ts — 12 Guards (Zielgrößen, Scale-1-Guard,
+  Treppe ohne Ink/Grau/warm, Kern-Dominanz, Flacker-Frames, drawScale nur soul_beacon).
+- #7281 Nachher + Abnahme (f4d5443, 1f1c3c4, a559ce3): after.json/PNGs + Doku + art-director.
+
+Abnahme:
+- art-director: Runde 1 FAIL (Kern nicht flächig, warm-beige Bänder, Quadrat-Funken) →
+  Fixrunde (Kern flächig 13, Kantenbänder 11/31/30, kein 12/10, konturierte Funken) →
+  Runde 2 **PASS (4,5/5, kein Asset < 4)**, Maßstab kommerziell auslieferbar.
+- Messung nachher (shots/m10-evo-fx-soulpyre-after.json, Renderer Mesa iGPU RPL-S, 0 JS-Fehler):
+  alle live Scales ≤ 1 (orb 1.0, Sig 1.0, Halo 0.9); orb_soul 0 Ink-/0 Grau-Pixel,
+  Signatur 96x96 mit 0 Ink-/0 Grau-Pixeln, Kern 13 dominant (439 px).
+- npx tsc --noEmit rc=0; npm run build rc=0; Suite 1052/1052 grün; verify:vfx 18/18 OK
+  (inkl. soul_beacon), 0 JS-Fehler.
+
+Offen (nicht blockierend): Türkis-Stufe fehlt in der 32er-Palette (Dom/Rhea-Entscheid);
+Funken-Drossel bei Mehrfach-Tod-Clustern; Kontur 29 vor helleren Biom-Grundflächen prüfen.
+Merge-Hinweis: drawScale-Zeilen in FxSystem.spawnEvolution kollidieren mit m10-evo-fx-phoenix.
