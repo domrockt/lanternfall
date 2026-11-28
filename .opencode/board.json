@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 13029,
+  "next": 13033,
   "cards": [
     {
       "id": 1,
@@ -18130,6 +18130,91 @@
       "notes": [],
       "created": "2026-11-28T15:55:52Z",
       "updated": "2026-11-28T15:55:52Z"
+    },
+    {
+      "id": 13029,
+      "title": "m10-fps-cap-stackfix K1: Stack-Capture unter Last",
+      "description": "Abnahmekriterium: Voller Callstack mindestens eines RangeError-Treffers (Datei + Funktion) als JSON in ~/games/.evidence/m10-fps-cap-stackfix/. Probe scripts/m10-fps-cap-stackfix.mjs nach fps-cap-Rezept (m25-Last, 3x60-Fenster), lokal/Android-Proxy (Geraet 409 -> nicht wiederholen).",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T15:10:01Z",
+          "by": "build",
+          "text": "todo → doing: Angenommen: fps-cap-Dateien aus m10-mobile-fps-cap (f64b3d33, lane-done, unmerged) in den Lane-Worktree materialisiert, damit die Regression ueberhaupt reproduzierbar ist; Probe scripts/m10-fps-cap-stackfix.mjs gebaut."
+        },
+        {
+          "at": "2026-11-28T15:21:15Z",
+          "by": "build",
+          "text": "doing → review: Stack-Capture fertig: RangeError = Spread-Overflow in Spawner.drainDebugQueue (push(...rest), ~100-150k Argumente), kein JS-Rekurs. Beleg ~/games/.evidence/m10-fps-cap-stackfix/k1-stack-vorher.json; Commits bd33a081 + Doku nennen #12813."
+        },
+        {
+          "at": "2026-11-28T15:50:13Z",
+          "by": "build",
+          "text": "review → done: lane #12813, Merge ausstehend. Reviewer PASS (ses_ddd29d75); K1-Beleg .evidence/k1-stack-vorher.json, Commit bd33a081."
+        }
+      ],
+      "created": "2026-11-28T15:09:59Z",
+      "updated": "2026-11-28T15:50:13Z"
+    },
+    {
+      "id": 13030,
+      "title": "m10-fps-cap-stackfix K2: Wurzel fixen",
+      "description": "Abnahmekriterium: minimaler Fix der Rekursionsquelle (Beleg Datei + Hebel in docs/lanes/m10-fps-cap-stackfix.md); fps-cap.ts gegen Vorgaenger diffen, Fremdgriff begruendet; main.ts/UI.ts nicht anfassen (Bedarf in .dispatch/requests.md falls noetig).",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T15:21:15Z",
+          "by": "build",
+          "text": "todo → review: Fix: Front-Entnahme per slice+splice statt Rest-Repush; Reihenfolge/Batches bitgleich. Commit ad78560e (#12814/#12815)."
+        },
+        {
+          "at": "2026-11-28T15:50:13Z",
+          "by": "build",
+          "text": "review → done: lane #12814, Merge ausstehend. Reviewer PASS — Semantik bitgleich (slice/splice = Front-Entnahme), Batch 30 unveraendert; Commit ad78560e."
+        }
+      ],
+      "created": "2026-11-28T15:09:59Z",
+      "updated": "2026-11-28T15:50:13Z"
+    },
+    {
+      "id": 13031,
+      "title": "m10-fps-cap-stackfix K3: Regressionstest",
+      "description": "Abnahmekriterium: tests/fps-cap-stackfix.test.ts — Lastaufnahme 3x60-Fenster mit 0 RangeError, 0 Frozen-Loop; Desktop-Pfad (kein Cap) bitgleich gepinnt. Suite + tsc gruen.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T15:21:15Z",
+          "by": "build",
+          "text": "todo → review: tests/fps-cap-stackfix.test.ts 5 gruen (Gegenprobe 200k push wirft RangeError, Drain 200k wirft nicht, Ordnung bitgleich, Desktop-Pfad); tsc rc=0. Commit ad78560e."
+        },
+        {
+          "at": "2026-11-28T15:50:13Z",
+          "by": "build",
+          "text": "review → done: lane #12815, Merge ausstehend. Reviewer PASS — Tests nicht tautologisch, Gegenprobe 200k mit sicherem Abstand zum V8-Arg-Limit; Commit ad78560e."
+        }
+      ],
+      "created": "2026-11-28T15:09:59Z",
+      "updated": "2026-11-28T15:50:13Z"
+    },
+    {
+      "id": 13032,
+      "title": "m10-fps-cap-stackfix K4: Vorher/Nachher + Doku",
+      "description": "Abnahmekriterium: janky-Anteil vor/nach Fix unter identischer Last (eigener Nachweis, keine Geraete-Doppelmessung), Empfehlung der fps-cap-Lane unberuehrt, Lane-Doku + .lane-done.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T15:21:11Z",
+          "by": "build",
+          "text": "todo → doing: Nachher-Lauf (3x60-Fenster, identisches Rezept) laeuft; danach Doku + .lane-done."
+        },
+        {
+          "at": "2026-11-28T15:50:13Z",
+          "by": "build",
+          "text": "doing → done: lane #12816, Merge ausstehend. K4 Messpaar: Vorher 2/2 Crashes, Nachher 2/2 x 0 Fehler / 0 Frozen-Loop; janky-Proxy im Rauschen; Reviewer PASS; Commit 4a4b09ae + .lane-done (a9c8a9e6)."
+        }
+      ],
+      "created": "2026-11-28T15:09:59Z",
+      "updated": "2026-11-28T15:50:13Z"
     }
   ]
 }

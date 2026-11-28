@@ -393,15 +393,27 @@ export class Spawner {
   /** Verteilt wartende Debug-Spawns auf den aktuellen Frame (Obergrenze fix).
    *  Public seit m10-frame-tail-followup (#12288): während der Morgendämmerung
    *  läuft update() nicht — Run.startDawn() ruft den Drain daher einmal beim
-   *  Dawn-Start, damit gequeuete Debug-Spawns nicht bis zum Run-Ende warten. */
+   *  Dawn-Start, damit gequeuete Debug-Spawns nicht bis zum Run-Ende warten.
+   *
+   *  m10-fps-cap-stackfix K2: die alte Rest-Repush-Version
+   *  `this.debugQueue.push(...rest)` sprengt bei grossen Queues die
+   *  Stackgrenze — Spread übergibt ALLE Einträge als Funktionsargumente;
+   *  ab ~100.000 Einträgen stirbt der Aufruf mit "RangeError: Maximum call
+   *  stack size exceeded" und der Game-Loop bleibt tot (Frozen-Loop).
+   *  Repro + Stack: ~/games/.evidence/m10-fps-cap-stackfix/k1-stack-vorher.json
+   *  (Top-up-Probe alle 50 ms auf 300 Gegner, Drain 30/Substep — übersteigt
+   *  der Nachschub den Drain, wächst die Queue unbeschränkt, der nächste
+   *  Drain crasht; am Gerät 9× je 10-min-Lauf, alle ~40–80 s).
+   *  Fix: Front-Entnahme per splice (konstante Argumentzahl, keine
+   *  Rest-Kopie) — Spawn-Reihenfolge und Batchgrösse bitgleich. */
   drainDebugQueue(): void {
     if (this.debugQueue.length === 0) return;
-    const { now, rest } = drainSpawnQueue(this.debugQueue, SPAWN_DEBUG_BATCH_PER_FRAME);
-    this.debugQueue.length = 0;
+    const batch = Math.min(SPAWN_DEBUG_BATCH_PER_FRAME, this.debugQueue.length);
+    const now = this.debugQueue.slice(0, batch);
+    this.debugQueue.splice(0, batch);
     for (const q of now) {
       this.spawnAt(q.def, q.x, q.y, { elite: q.elite, hpScale: q.hpScale });
     }
-    this.debugQueue.push(...rest);
   }
 
   /** Direkter Spawn (Bosse, Splitter-Kinder, Summoner-Minions). */
