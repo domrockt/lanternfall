@@ -86,6 +86,14 @@ Drift (Wert ≠ Spec ohne „Bewusst“-Kommentar bzw. ≠ gepinntem Ist), exit 
 - Guard erkennt zusätzlich: verbotene Mods (kael `moveSpeedPct` = F3-Doppel-Abzug), unbekannte Mods,
   Charaktere ohne Tabellen-Eintrag.
 
+**Review-Runde (Reviewer-PASS, 2026-11-28):** Reviewer-Befund „sollte" — Guard war nicht feldscharf:
+`hasComment` akzeptierte das lockere Muster `F\d`, sodass die Nachbarzeile (`// maxHpPct 20: …
+F4-Entscheid`) fälschlich auch Kaels spec-schweigende Mods abdeckte (Reviewer-Probe B: F1-Kommentarzeile
+löschen → fälschlich PASS). Behoben: Modus „silent" verlangt jetzt Feldname + Marker
+(`Spec schweigt|F1/P1|Bewusst:`) im Kommentar-Fenster; Modus „deviation" bleibt `Bewusst:|F\d`.
+Nachfix verifiziert: Ist-Stand PASS exit 0; Probe B (F1-Kommentarzeile gelöscht) → FAIL exit 1 mit
+allen drei F1-Feldern benannt (`maxHpFlat`, `regen`, `xpPct`).
+
 ## Status / Nachweise
 
 - K1: Audit-Tabelle oben, Baseline 2455/2455 grün (#12925, Commit 01a88a03).

@@ -75,9 +75,11 @@ const text = readFileSync(SRC, "utf8");
 const data = parseCharacters(text);
 const problems = [];
 
-const hasComment = (id, key) => {
-  // Kommentar-Marker am Feld selbst (gleiche Zeile) oder unmittelbar drumherum
-  // (1 Zeile davor / 2 Zeilen danach, deckt Inline- und Folgezeilen-Kommentare).
+const hasComment = (id, key, mode) => {
+  // Kommentar-Marker am Feld selbst (Inline) oder an unmittelbar angrenzenden
+  // reinen Kommentarzeilen (1 darüber / bis zu 2 darunter — Folgezeilen-Stil).
+  // mode "silent" (Spec schweigt): Kommentar MUSS den Feldnamen nennen — sonst
+  // deckt die Nachbarzeile eines anderen Felds den Befund fälschlich (Review-Sollte).
   const block = new RegExp(`${id}:\\s*\\{[\\s\\S]*?\\n  \\}`, "m").exec(text);
   if (!block) return false;
   const lines = block[0].split("\n");
@@ -86,20 +88,24 @@ const hasComment = (id, key) => {
   const window = [lines[idx]];
   if (idx > 0 && lines[idx - 1].trim().startsWith("//")) window.push(lines[idx - 1]);
   for (let i = 1; i <= 2 && lines[idx + i]?.trim().startsWith("//"); i++) window.push(lines[idx + i]);
-  return /Bewusst:|Spec schweigt|F\d/.test(window.join("\n"));
+  const w = window.join("\n");
+  if (mode === "silent") {
+    return new RegExp(`\\b${key}\\b`).test(w) && /Spec schweigt|F1\/P1|Bewusst:/.test(w);
+  }
+  return /Bewusst:|F\d/.test(w);
 };
 
 for (const [id, fields] of Object.entries(SPEC)) {
   const d = data[id];
   if (!d) { problems.push(`${id}: in characters.ts nicht gefunden`); continue; }
-  const commented = (key) => hasComment(id, key);
+  const commented = (key, e) => hasComment(id, key, e.spec === null ? "silent" : "deviation");
   for (const key of ["hp", "speed", "armor", "startWeapon"]) {
     const e = fields[key];
     if (d[key] !== e.ist) {
       problems.push(`${id}.${key}: Ist ${JSON.stringify(d[key])} ≠ entschieden ${JSON.stringify(e.ist)} (${e.why})`);
-    } else if (e.spec !== null && e.spec !== e.ist && !commented(key)) {
+    } else if (e.spec !== null && e.spec !== e.ist && !commented(key, e)) {
       problems.push(`${id}.${key}: Abweichung von der Spec (${e.spec}) ohne "Bewusst:"-Kommentar`);
-    } else if (e.spec === null && !commented(key)) {
+    } else if (e.spec === null && !commented(key, e)) {
       problems.push(`${id}.${key}: spec-schweigendes Feld ohne Kommentar (F1/P1)`);
     }
   }
@@ -107,7 +113,7 @@ for (const [id, fields] of Object.entries(SPEC)) {
     const actual = d.mods[mod];
     if (actual !== e.ist) {
       problems.push(`${id}.mods.${mod}: Ist ${JSON.stringify(actual)} ≠ entschieden ${JSON.stringify(e.ist)} (${e.why})`);
-    } else if (e.spec === null && !commented(mod)) {
+    } else if (e.spec === null && !commented(mod, e)) {
       problems.push(`${id}.mods.${mod}: spec-schweigendes Feld ohne Kommentar (F1/P1)`);
     }
   }
