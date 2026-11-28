@@ -31,14 +31,11 @@ try {
   await page.evaluate(() => {
     window.__lf.god(true);
     window.__lf.setSuppressLevelUps(true); // dauerhaft: kein Level-up-Dialog (pausiert die Sim)
-    window.__lf.setTimeScale(30); // schnell auf Minute 4 (Elite-Welle)
+    // Deterministische Debug-Elites (K4-Freischaltung: spawnEnemy reicht elite durch).
+    window.__lf.spawnEnemy("mudling", 4, true);
+    window.__lf.spawnEnemy("bog_rat", 2, true);
   });
-  // Auf Minute 2+ beschleunigen (Sim-Sekunden ueber Registry lesen).
-  // Minute 4 = Elite-Welle (isEliteMinute: minute % 6 === 4) → garantiert Elites.
-  await page.waitForFunction(() => window.__lf.state().time >= 610, null, { timeout: 90000 });
-  await page.evaluate(() => window.__lf.setTimeScale(1));
-  // Warten, bis ein Elite ins Sample-Fenster von __lfEnemyFrames gelaufen ist
-  // (Spawn-Ring liegt teils ausserhalb des Viewports).
+  // Warten, bis ein Elite ins Sample-Fenster von __lfEnemyFrames gelaufen ist.
   await page.waitForFunction(
     () => (globalThis.__lfEnemyFrames ?? (() => []))().some((e) => e.id.endsWith("_rim")),
     null, { timeout: 90000 },
