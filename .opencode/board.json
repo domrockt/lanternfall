@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 7515,
+  "next": 7519,
   "cards": [
     {
       "id": 1,
@@ -9379,6 +9379,48 @@
       ],
       "created": "2026-11-28T02:21:15Z",
       "updated": "2026-11-28T02:21:19Z"
+    },
+    {
+      "id": 7515,
+      "title": "m10-chest-reveal K1: Vorher-Beleg Truhen-Moment + Öffnen (640x360, 780x360@3) + Überlapp-Doku",
+      "description": "lane #5958 — scripts/m10-chest-reveal.mjs rendert Truhe am Boden + Öffnungs-Panel in beiden Viewports, misst Subtitle-/Icon-Überlappung pixelgenau, schreibt shots/m10-chest-reveal-before.png/-before.json mit iGPU-Renderer-String. AK: JSON enthält Renderer-String, Overlap-Messung belegt Befund, 0 JS-Fehler.",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T02:26:11Z",
+      "updated": "2026-11-28T02:26:11Z"
+    },
+    {
+      "id": 7516,
+      "title": "m10-chest-reveal K2: Öffnungs-Sequenz in ChestSystem (Aufleuchten, Münzen/Funken, Reveal) + Untertitel-Fix 0 Überlappung",
+      "description": "lane #5959 — Oeffnungs-Sequenz: Glanz-Animation hoch, Münzen-/Funken-Partikel aus der Truhe (ChestSystem-eigener Renderer, NICHT FxSystem), klare Reveal-Reihenfolge; Untertitel so positioniert, dass 0 Überlappung mit dem Truhen-Icon (640 + 780@3). AK: npx tsc --noEmit grün, Nachher-Shots zeigen Sequenz.",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T02:26:11Z",
+      "updated": "2026-11-28T02:26:11Z"
+    },
+    {
+      "id": 7517,
+      "title": "m10-chest-reveal K3: evolution.ts Reveal-Reihenfolge/Labels chestRewards lesbar, Rewards unverändert",
+      "description": "lane #5960 — Reveal-Reihenfolge/Labels der chestRewards so, dass jede Belohnung lesbar erscheint (Evolution zuerst, klare Labels); Reward-Werte selbst unverändert. AK: Tests bestätigen Reihenfolge + unveränderte Werte.",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T02:26:11Z",
+      "updated": "2026-11-28T02:26:11Z"
+    },
+    {
+      "id": 7518,
+      "title": "m10-chest-reveal K4: tests/chest-reveal.test.ts + Nachher-Shots + Doku + .lane-done",
+      "description": "lane #5961 — Sequenz-Reihenfolge deterministisch, 0 Überlappungen bei 640 + 780@3, Truhen-Count 6/6 unberührt; Nachher-Shots + docs/lanes/m10-chest-reveal.md; art-director >= 4/5 Inszenierung. AK: Tests + tsc grün, Belege im Commit.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T02:26:31Z",
+          "by": "build",
+          "text": "review → done: lane #5961, Merge a1de89f — merge-base --is-ancestor m10-chest-reveal main rc=0; build + 1216/1216 Tests grün auf main"
+        }
+      ],
+      "created": "2026-11-28T02:26:11Z",
+      "updated": "2026-11-28T02:26:31Z"
     }
   ]
 }
