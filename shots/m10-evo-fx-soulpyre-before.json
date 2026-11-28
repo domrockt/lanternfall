@@ -1,0 +1,644 @@
+{
+  "generatedAt": "2026-11-28T01:03:00.738Z",
+  "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+  "valid": true,
+  "errors": [],
+  "configs": {
+    "640": {
+      "renderer": {
+        "generatedAt": "2026-11-28T01:02:52.938Z",
+        "context": "webgl1",
+        "version": "WebGL 1.0 (OpenGL ES 2.0 Chromium)",
+        "shadingLanguage": "WebGL GLSL ES 1.0 (OpenGL ES GLSL ES 1.0 Chromium)",
+        "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+        "vendor": "Google Inc. (Intel)",
+        "maxTextureSize": 16384,
+        "maxTextureImageUnits": 32,
+        "extensions": [
+          "ANGLE_instanced_arrays",
+          "EXT_blend_minmax",
+          "EXT_clip_control",
+          "EXT_color_buffer_half_float",
+          "EXT_depth_clamp",
+          "EXT_disjoint_timer_query",
+          "EXT_float_blend",
+          "EXT_frag_depth",
+          "EXT_polygon_offset_clamp",
+          "EXT_texture_compression_bptc",
+          "EXT_texture_compression_rgtc",
+          "EXT_texture_filter_anisotropic",
+          "EXT_texture_mirror_clamp_to_edge",
+          "EXT_sRGB",
+          "KHR_parallel_shader_compile",
+          "OES_element_index_uint",
+          "OES_fbo_render_mipmap",
+          "OES_standard_derivatives",
+          "OES_texture_float",
+          "OES_texture_float_linear",
+          "OES_texture_half_float",
+          "OES_texture_half_float_linear",
+          "OES_vertex_array_object",
+          "WEBGL_blend_func_extended",
+          "WEBGL_color_buffer_float",
+          "WEBGL_compressed_texture_astc",
+          "WEBGL_compressed_texture_etc",
+          "WEBGL_compressed_texture_etc1",
+          "WEBGL_compressed_texture_s3tc",
+          "WEBGL_compressed_texture_s3tc_srgb",
+          "WEBGL_debug_renderer_info",
+          "WEBGL_debug_shaders",
+          "WEBGL_depth_texture",
+          "WEBGL_draw_buffers",
+          "WEBGL_lose_context",
+          "WEBGL_multi_draw"
+        ],
+        "contextAttributes": {
+          "alpha": false,
+          "antialias": false,
+          "depth": true,
+          "desynchronized": false,
+          "failIfMajorPerformanceCaveat": false,
+          "powerPreference": "high-performance",
+          "premultipliedAlpha": true,
+          "preserveDrawingBuffer": false,
+          "stencil": true,
+          "xrCompatible": false
+        },
+        "precision": {
+          "fragmentHighp": {
+            "rangeMin": 127,
+            "rangeMax": 127,
+            "precision": 23
+          },
+          "fragmentMediump": {
+            "rangeMin": 127,
+            "rangeMax": 127,
+            "precision": 23
+          },
+          "vertexHighp": {
+            "rangeMin": 127,
+            "rangeMax": 127,
+            "precision": 23
+          }
+        },
+        "fps": {
+          "target": 60,
+          "limit": 60,
+          "cappedAt60": true
+        },
+        "powerPreference": "high-performance",
+        "canvas": {
+          "attrWidth": 640,
+          "attrHeight": 360,
+          "logicalWidth": 640,
+          "logicalHeight": 360,
+          "rendersDevicePixels": false
+        },
+        "textures": {
+          "count": 0,
+          "pixels": 0,
+          "approxBytes": 0,
+          "maxEdge": 0,
+          "oversized": []
+        }
+      },
+      "textures": {
+        "orb_soul": {
+          "sourceW": 15,
+          "sourceH": 22,
+          "frameW": 15,
+          "frameH": 22
+        },
+        "fx_halo_cold": {
+          "sourceW": 24,
+          "sourceH": 24,
+          "frameW": 24,
+          "frameH": 24
+        },
+        "fx_evo_hit_soul_beacon": {
+          "sourceW": 32,
+          "sourceH": 32,
+          "frameW": 32,
+          "frameH": 32
+        },
+        "fx_evo_death_soul_beacon": {
+          "sourceW": 32,
+          "sourceH": 32,
+          "frameW": 32,
+          "frameH": 32
+        }
+      },
+      "live": {
+        "fx_halo_cold": {
+          "maxScaleX": 1.8,
+          "maxScaleY": 1.8,
+          "samples": [
+            {
+              "scaleX": 1.8,
+              "scaleY": 1.8,
+              "dispW": 43,
+              "dispH": 43,
+              "blend": 1
+            },
+            {
+              "scaleX": 1.8,
+              "scaleY": 1.8,
+              "dispW": 43,
+              "dispH": 43,
+              "blend": 1
+            },
+            {
+              "scaleX": 1.8,
+              "scaleY": 1.8,
+              "dispW": 43,
+              "dispH": 43,
+              "blend": 1
+            },
+            {
+              "scaleX": 1.8,
+              "scaleY": 1.8,
+              "dispW": 43,
+              "dispH": 43,
+              "blend": 1
+            },
+            {
+              "scaleX": 1.8,
+              "scaleY": 1.8,
+              "dispW": 43,
+              "dispH": 43,
+              "blend": 1
+            }
+          ]
+        },
+        "orb_soul": {
+          "maxScaleX": 2,
+          "maxScaleY": 2,
+          "samples": [
+            {
+              "scaleX": 2,
+              "scaleY": 2,
+              "dispW": 30,
+              "dispH": 44,
+              "blend": 0
+            }
+          ]
+        },
+        "orb_soul_2": {
+          "maxScaleX": 2,
+          "maxScaleY": 2,
+          "samples": [
+            {
+              "scaleX": 2,
+              "scaleY": 2,
+              "dispW": 30,
+              "dispH": 44,
+              "blend": 0
+            },
+            {
+              "scaleX": 2,
+              "scaleY": 2,
+              "dispW": 30,
+              "dispH": 44,
+              "blend": 0
+            }
+          ]
+        },
+        "orb_soul_3": {
+          "maxScaleX": 2,
+          "maxScaleY": 2,
+          "samples": [
+            {
+              "scaleX": 2,
+              "scaleY": 2,
+              "dispW": 30,
+              "dispH": 44,
+              "blend": 0
+            },
+            {
+              "scaleX": 2,
+              "scaleY": 2,
+              "dispW": 30,
+              "dispH": 44,
+              "blend": 0
+            }
+          ]
+        },
+        "fx_evo_death_soul_beacon": {
+          "maxScaleX": 4.036,
+          "maxScaleY": 4.036,
+          "samples": [
+            {
+              "scaleX": 4.036,
+              "scaleY": 4.036,
+              "dispW": 129,
+              "dispH": 129,
+              "blend": 0
+            }
+          ]
+        },
+        "fx_evo_death_soul_beacon_3": {
+          "maxScaleX": 4.327,
+          "maxScaleY": 4.327,
+          "samples": [
+            {
+              "scaleX": 4.327,
+              "scaleY": 4.327,
+              "dispW": 138,
+              "dispH": 138,
+              "blend": 0
+            }
+          ]
+        }
+      },
+      "colors": {
+        "orb_soul": {
+          "width": 15,
+          "height": 22,
+          "opaque": 106,
+          "inkPixels": 43,
+          "grayPixels": 59,
+          "edgeOpaquePixels": 4,
+          "edgeSample": [
+            {
+              "x": 7,
+              "y": 0,
+              "i": 0
+            },
+            {
+              "x": 5,
+              "y": 21,
+              "i": 0
+            },
+            {
+              "x": 6,
+              "y": 21,
+              "i": 6
+            },
+            {
+              "x": 7,
+              "y": 21,
+              "i": 0
+            }
+          ],
+          "histogram": {
+            "pal0": 43,
+            "pal6": 33,
+            "pal8": 5,
+            "pal5": 17,
+            "pal9": 4,
+            "pal13": 4
+          }
+        },
+        "fx_evo_death_soul_beacon": {
+          "width": 32,
+          "height": 32,
+          "opaque": 492,
+          "inkPixels": 113,
+          "grayPixels": 225,
+          "edgeOpaquePixels": 0,
+          "edgeSample": [],
+          "histogram": {
+            "pal0": 113,
+            "pal11": 154,
+            "pal5": 85,
+            "pal8": 140
+          }
+        }
+      },
+      "errors": [],
+      "liveCounts": {
+        "fx_halo_cold": 5,
+        "orb_soul": 1,
+        "orb_soul_2": 2,
+        "orb_soul_3": 2,
+        "fx_evo_death_soul_beacon": 1,
+        "fx_evo_death_soul_beacon_3": 1
+      },
+      "view": {
+        "configW": 640,
+        "configH": 360,
+        "zoom": 1,
+        "cameraW": 640
+      },
+      "aliveEnemies": 17
+    },
+    "960x540": {
+      "renderer": {
+        "generatedAt": "2026-11-28T01:02:57.101Z",
+        "context": "webgl1",
+        "version": "WebGL 1.0 (OpenGL ES 2.0 Chromium)",
+        "shadingLanguage": "WebGL GLSL ES 1.0 (OpenGL ES GLSL ES 1.0 Chromium)",
+        "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+        "vendor": "Google Inc. (Intel)",
+        "maxTextureSize": 16384,
+        "maxTextureImageUnits": 32,
+        "extensions": [
+          "ANGLE_instanced_arrays",
+          "EXT_blend_minmax",
+          "EXT_clip_control",
+          "EXT_color_buffer_half_float",
+          "EXT_depth_clamp",
+          "EXT_disjoint_timer_query",
+          "EXT_float_blend",
+          "EXT_frag_depth",
+          "EXT_polygon_offset_clamp",
+          "EXT_texture_compression_bptc",
+          "EXT_texture_compression_rgtc",
+          "EXT_texture_filter_anisotropic",
+          "EXT_texture_mirror_clamp_to_edge",
+          "EXT_sRGB",
+          "KHR_parallel_shader_compile",
+          "OES_element_index_uint",
+          "OES_fbo_render_mipmap",
+          "OES_standard_derivatives",
+          "OES_texture_float",
+          "OES_texture_float_linear",
+          "OES_texture_half_float",
+          "OES_texture_half_float_linear",
+          "OES_vertex_array_object",
+          "WEBGL_blend_func_extended",
+          "WEBGL_color_buffer_float",
+          "WEBGL_compressed_texture_astc",
+          "WEBGL_compressed_texture_etc",
+          "WEBGL_compressed_texture_etc1",
+          "WEBGL_compressed_texture_s3tc",
+          "WEBGL_compressed_texture_s3tc_srgb",
+          "WEBGL_debug_renderer_info",
+          "WEBGL_debug_shaders",
+          "WEBGL_depth_texture",
+          "WEBGL_draw_buffers",
+          "WEBGL_lose_context",
+          "WEBGL_multi_draw"
+        ],
+        "contextAttributes": {
+          "alpha": false,
+          "antialias": false,
+          "depth": true,
+          "desynchronized": false,
+          "failIfMajorPerformanceCaveat": false,
+          "powerPreference": "high-performance",
+          "premultipliedAlpha": true,
+          "preserveDrawingBuffer": false,
+          "stencil": true,
+          "xrCompatible": false
+        },
+        "precision": {
+          "fragmentHighp": {
+            "rangeMin": 127,
+            "rangeMax": 127,
+            "precision": 23
+          },
+          "fragmentMediump": {
+            "rangeMin": 127,
+            "rangeMax": 127,
+            "precision": 23
+          },
+          "vertexHighp": {
+            "rangeMin": 127,
+            "rangeMax": 127,
+            "precision": 23
+          }
+        },
+        "fps": {
+          "target": 60,
+          "limit": 60,
+          "cappedAt60": true
+        },
+        "powerPreference": "high-performance",
+        "canvas": {
+          "attrWidth": 640,
+          "attrHeight": 360,
+          "logicalWidth": 640,
+          "logicalHeight": 360,
+          "rendersDevicePixels": false
+        },
+        "textures": {
+          "count": 0,
+          "pixels": 0,
+          "approxBytes": 0,
+          "maxEdge": 0,
+          "oversized": []
+        }
+      },
+      "textures": {
+        "orb_soul": {
+          "sourceW": 15,
+          "sourceH": 22,
+          "frameW": 15,
+          "frameH": 22
+        },
+        "fx_halo_cold": {
+          "sourceW": 24,
+          "sourceH": 24,
+          "frameW": 24,
+          "frameH": 24
+        },
+        "fx_evo_hit_soul_beacon": {
+          "sourceW": 32,
+          "sourceH": 32,
+          "frameW": 32,
+          "frameH": 32
+        },
+        "fx_evo_death_soul_beacon": {
+          "sourceW": 32,
+          "sourceH": 32,
+          "frameW": 32,
+          "frameH": 32
+        }
+      },
+      "live": {
+        "fx_halo_cold": {
+          "maxScaleX": 1.8,
+          "maxScaleY": 1.8,
+          "samples": [
+            {
+              "scaleX": 1.8,
+              "scaleY": 1.8,
+              "dispW": 43,
+              "dispH": 43,
+              "blend": 1
+            },
+            {
+              "scaleX": 1.8,
+              "scaleY": 1.8,
+              "dispW": 43,
+              "dispH": 43,
+              "blend": 1
+            },
+            {
+              "scaleX": 1.8,
+              "scaleY": 1.8,
+              "dispW": 43,
+              "dispH": 43,
+              "blend": 1
+            },
+            {
+              "scaleX": 1.8,
+              "scaleY": 1.8,
+              "dispW": 43,
+              "dispH": 43,
+              "blend": 1
+            },
+            {
+              "scaleX": 1.8,
+              "scaleY": 1.8,
+              "dispW": 43,
+              "dispH": 43,
+              "blend": 1
+            }
+          ]
+        },
+        "orb_soul": {
+          "maxScaleX": 2,
+          "maxScaleY": 2,
+          "samples": [
+            {
+              "scaleX": 2,
+              "scaleY": 2,
+              "dispW": 30,
+              "dispH": 44,
+              "blend": 0
+            }
+          ]
+        },
+        "orb_soul_2": {
+          "maxScaleX": 2,
+          "maxScaleY": 2,
+          "samples": [
+            {
+              "scaleX": 2,
+              "scaleY": 2,
+              "dispW": 30,
+              "dispH": 44,
+              "blend": 0
+            },
+            {
+              "scaleX": 2,
+              "scaleY": 2,
+              "dispW": 30,
+              "dispH": 44,
+              "blend": 0
+            }
+          ]
+        },
+        "orb_soul_3": {
+          "maxScaleX": 2,
+          "maxScaleY": 2,
+          "samples": [
+            {
+              "scaleX": 2,
+              "scaleY": 2,
+              "dispW": 30,
+              "dispH": 44,
+              "blend": 0
+            },
+            {
+              "scaleX": 2,
+              "scaleY": 2,
+              "dispW": 30,
+              "dispH": 44,
+              "blend": 0
+            }
+          ]
+        },
+        "fx_evo_death_soul_beacon": {
+          "maxScaleX": 4.036,
+          "maxScaleY": 4.036,
+          "samples": [
+            {
+              "scaleX": 4.036,
+              "scaleY": 4.036,
+              "dispW": 129,
+              "dispH": 129,
+              "blend": 0
+            }
+          ]
+        },
+        "fx_evo_death_soul_beacon_3": {
+          "maxScaleX": 4.327,
+          "maxScaleY": 4.327,
+          "samples": [
+            {
+              "scaleX": 4.327,
+              "scaleY": 4.327,
+              "dispW": 138,
+              "dispH": 138,
+              "blend": 0
+            }
+          ]
+        }
+      },
+      "colors": {
+        "orb_soul": {
+          "width": 15,
+          "height": 22,
+          "opaque": 106,
+          "inkPixels": 43,
+          "grayPixels": 59,
+          "edgeOpaquePixels": 4,
+          "edgeSample": [
+            {
+              "x": 7,
+              "y": 0,
+              "i": 0
+            },
+            {
+              "x": 5,
+              "y": 21,
+              "i": 0
+            },
+            {
+              "x": 6,
+              "y": 21,
+              "i": 6
+            },
+            {
+              "x": 7,
+              "y": 21,
+              "i": 0
+            }
+          ],
+          "histogram": {
+            "pal0": 43,
+            "pal6": 33,
+            "pal8": 5,
+            "pal5": 17,
+            "pal9": 4,
+            "pal13": 4
+          }
+        },
+        "fx_evo_death_soul_beacon": {
+          "width": 32,
+          "height": 32,
+          "opaque": 492,
+          "inkPixels": 113,
+          "grayPixels": 225,
+          "edgeOpaquePixels": 0,
+          "edgeSample": [],
+          "histogram": {
+            "pal0": 113,
+            "pal11": 154,
+            "pal5": 85,
+            "pal8": 140
+          }
+        }
+      },
+      "errors": [],
+      "liveCounts": {
+        "fx_halo_cold": 5,
+        "orb_soul": 1,
+        "orb_soul_2": 2,
+        "orb_soul_3": 2,
+        "fx_evo_death_soul_beacon": 1,
+        "fx_evo_death_soul_beacon_3": 1
+      },
+      "view": {
+        "configW": 640,
+        "configH": 360,
+        "zoom": 1,
+        "cameraW": 640
+      },
+      "aliveEnemies": 16
+    }
+  }
+}

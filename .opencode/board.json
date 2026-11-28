@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 7238,
+  "next": 7282,
   "cards": [
     {
       "id": 1,
@@ -8520,6 +8520,52 @@
       "notes": [],
       "created": "2026-11-28T00:58:08Z",
       "updated": "2026-11-28T00:58:08Z"
+    },
+    {
+      "id": 7278,
+      "title": "m10-evo-fx-soulpyre K1: Ist-Beleg Seelenleuchtfeuer",
+      "description": "Skript scripts/m10-evo-fx-soulpyre.mjs (Vorlage phoenix) nachstellen: soul_beacon Lv8, 20 lebende Gegner, 640x360@2x + 960x540@1x, before.json mit WebGL-Renderer-String + PNGs. AK: JSON committed, valid=true (kein SwiftShader), 0 JS-Fehler, Draw-Scale des orb_soul (aktuell 2.0) und Signaturen (3.2-4.6) belegt.",
+      "column": "doing",
+      "assignee": "vfx-artist",
+      "notes": [
+        {
+          "at": "2026-11-28T01:01:55Z",
+          "by": "build",
+          "text": "todo → doing"
+        }
+      ],
+      "created": "2026-11-28T01:01:53Z",
+      "updated": "2026-11-28T01:01:55Z"
+    },
+    {
+      "id": 7279,
+      "title": "m10-evo-fx-soulpyre K2: Fix Seelenflammen in Zielgroesse",
+      "description": "gen-fx.ts: orbSoulFrame neu (Zielgroesse, Scale 1, Farb-Treppe Kern weiss(13/12) -> kuehl(11/10) -> gruen-blau Rand(31/30) -> dunkler Rand(28), kein Ink/Grau 5-9); Signatur soul_beacon in Zielgroesse mit drawScale [1,1]; CombatSystem: orb Scale 1, Halo gebackene Stufe <=1 + sichtbarere Alpha, Anticipation <=0.3s + Ausklang-Fade. AK: tsc rc=0, keine Scale>1 am soul-Effekt im Quelltext.",
+      "column": "todo",
+      "assignee": "vfx-artist",
+      "notes": [],
+      "created": "2026-11-28T01:01:53Z",
+      "updated": "2026-11-28T01:01:53Z"
+    },
+    {
+      "id": 7280,
+      "title": "m10-evo-fx-soulpyre K3: Tests evo-fx-soulpyre",
+      "description": "tests/evo-fx-soulpyre.test.ts nach Vorlage evo-fx-phoenix: Zielgroessen, Draw-Scale-1-Guard, Farb-Treppe ohne Ink/Grau, Flacker-Frames verschieden. AK: zielbezogene Tests gruen, bestehende Suite bleibt gruen.",
+      "column": "todo",
+      "assignee": "test-auditor",
+      "notes": [],
+      "created": "2026-11-28T01:01:53Z",
+      "updated": "2026-11-28T01:01:53Z"
+    },
+    {
+      "id": 7281,
+      "title": "m10-evo-fx-soulpyre K4: Nachher-Beleg + Abnahme + Doku",
+      "description": "after.json/png (Renderer-String), art-director-Vision PASS gegen verschairfte Kriterien (Dither nur an Kanten, Kerne flaechig hell, organische Formen), docs/lanes/m10-evo-fx-soulpyre.md Vorher/Nachher, .lane-done. AK: art-director PASS, build+tests+tsc rc=0, 0 JS-Fehler im Probelauf.",
+      "column": "todo",
+      "assignee": "tech-lead",
+      "notes": [],
+      "created": "2026-11-28T01:01:53Z",
+      "updated": "2026-11-28T01:01:53Z"
     }
   ]
 }
