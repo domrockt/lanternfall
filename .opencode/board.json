@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 8241,
+  "next": 8300,
   "cards": [
     {
       "id": 1,
@@ -10294,6 +10294,48 @@
       "notes": [],
       "created": "2026-11-28T04:11:01Z",
       "updated": "2026-11-28T04:11:01Z"
+    },
+    {
+      "id": 8298,
+      "title": "m10-elite-tier-w3 K1: T4-Stufenkollaps (#7526) — per-Type Soft-Mix + Vorher/Nachher-Belege",
+      "description": "Rettet backlog-#7526 (ging beim Board-Reconcile verloren). Befund refine: bei mix 0,7 kollabieren T4-Typen — horror 1 Innen-Stufe, übrige betroffene T4-Typen 2. Hebel: per-Type Soft-Mix 0,55–0,6 in eliteTierMixFor für genau die betroffenen T4-Typen (Offline-Suchlauf, festes Iterationslimit). Ziele: horror ≥ 2 Stufen, übrige betroffene ≥ 3; T4-Bucket gruen ≥ ~75 %, min Tier-Zentroid ≥ 30, T2-dominant ≥ 82 %, T0/T2-Zentroid ≥ 130 unverändert. Verträge: A10 Rand 100 % Amber PAL 20, Silhouette/Kontur/Augen bytegleich, 1 Frame je Typ, Nicht-Elite bytegleich. AC: tsc/build/test grün, art-director PASS ≥ 4/5 am 4x-Crop, JSONs mit iGPU-Renderer.",
+      "column": "review",
+      "assignee": "@pixel-artist",
+      "notes": [
+        {
+          "at": "2026-11-28T04:35:07Z",
+          "by": "build",
+          "text": "K1 erledigt, in review: Fix horror/gargoyle FINE-Mix 0,6 (6425d45), Offline-Suchlauf 2 Iter (shots/m10-elite-tier-w3-analysis.json), Runtime w3-before/w3-k1 (Mesa RPL-S iGPU, 60/60 fps flock, Amber 1,0). Stufen: horror 2, gargoyle 3; 4 T4-Typen im Fenster 0,55-0,6 nicht heilbar ([9,31]) dokumentiert. T4 gruen 74,5 % (~-0,5 pp unter ~75-Marke, dominant erhalten — bewusster Trade-off). build+test 1357/1357 gruen. art-director/reviewer laufen."
+        },
+        {
+          "at": "2026-11-28T04:47:05Z",
+          "by": "build",
+          "text": "doing → review: K1 fertig: Fix 6425d45 + Runtime 88ca935 + Doku d8dbf17 + Review-Fix 0494a47 (#8298). Belege: w3-before/w3-k1 JSON+PNG+crop4x, analysis.json. horror 2/gargoyle 3 Stufen; 4 T4-Typen im Fenster nicht heilbar (dokumentiert); T4 gruen 74,5 % dominant erhalten; A10 1,0; 60/60 fps flock; Mesa RPL-S iGPU; build+test 1357/1357. Kontrolleure: art-director PASS 4/5 (muss-neu: keine), Reviewer PASS (Doku-Fix 0494a47)."
+        }
+      ],
+      "created": "2026-11-28T04:21:45Z",
+      "updated": "2026-11-28T04:47:05Z"
+    },
+    {
+      "id": 8299,
+      "title": "m10-elite-tier-w3 K2: centipede/voidcaller paleMist — eine Prüfung + dokumentierte Entscheidung",
+      "description": "Lane-Befund refine: helle Basen centipede/voidcaller mischen bei T4 teils auf paleMist (9). EIN Offline-Suchlauf (max. 2 Iterationen): macht ein per-Type-Dye beide nachweislich lesbarer OHNE K1-Grenzen zu verletzen (gruen ≥ ~75 %, min Zentroid ≥ 30)? Ergebnis als dokumentierte Entscheidung umgesetzt oder verworfen in docs/lanes/m10-elite-tier-w3.md. Keine zweite Karte, kein weiteres Messen.",
+      "column": "review",
+      "assignee": "@pixel-artist",
+      "notes": [
+        {
+          "at": "2026-11-28T04:35:07Z",
+          "by": "build",
+          "text": "K2 erledigt, in review: EIN Offline-Suchlauf (im K1-Lauf) — 6 Dye-Kandidaten; Dye 26 lesbar (0 % Fremd-Familie) verletzt aber gruen-Grenze (65,4 % < ~75 %), einziger guard-konformer Kandidat 30 = Grasrampe (Refine-K1-Mangel). ENTSCHEIDUNG: VERWORFEN, belegt in docs/lanes/m10-elite-tier-w3.md. Kein Code-Delta → w3-k1 = After-Stand, kein zweiter Lauf."
+        },
+        {
+          "at": "2026-11-28T04:47:05Z",
+          "by": "build",
+          "text": "doing → review: K2 fertig: EIN Offline-Suchlauf, 6 Dye-Kandidaten — Dye 26 lesbar verletzt gruen-Grenze (65,4 %), einziger guard-konformer Dye 30 = Grasrampe. ENTSCHEIDUNG: VERWORFEN, belegt docs/lanes/m10-elite-tier-w3.md + analysis.json. Kein Code-Delta → w3-k1 = After-Stand. Commit d8dbf17 + 0494a47 (#8299)."
+        }
+      ],
+      "created": "2026-11-28T04:21:45Z",
+      "updated": "2026-11-28T04:47:05Z"
     }
   ]
 }

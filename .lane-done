@@ -1,0 +1,31 @@
+# Lane m10-elite-tier-w3 — fertig (2026-11-28)
+
+Rettete backlog-#7526 (T4-Stufenkollaps) als Board-#8298 (K1) + #8299 (K2); beide in `review`.
+
+## Zusammenfassung
+- K1: horror/gargoyle auf FINE-Mix 0,6 in `eliteTierMixFor` (src/gfx/enemySprites.ts) —
+  horror 1 → 2 Innen-Stufen `[31,9]`, gargoyle 2 → 3 `[31,9,7]` (Offline-Suchlauf, 2
+  Iterationen, shots/m10-elite-tier-w3-analysis.json). centipede/reaper_bat/abom/
+  voidcaller sind im Fenster 0,55–0,6 nicht heilbar (immer `[9,31]`) — dokumentiert
+  statt getrickst, neuer Palettenindex nötig. Neuer Test in elite-tier-families.
+- K2 (centipede/voidcaller paleMist): EIN Suchlauf, 6 Dye-Kandidaten — Dye 26 lesbar
+  (0 % Fremd-Familie) verletzt gruen-Grenze (65,4 % < ~75 %), einziger guard-konformer
+  Dye 30 = Grasrampe (Refine-K1-Mangel). **Verworfen**, belegt in docs/lanes/m10-elite-tier-w3.md.
+
+## Messwerte (Runtime, scripts/m10-elite-tier.mjs, Mesa Intel RPL-S iGPU, 0 JS-Fehler)
+- T4 gruen 77,3 % → 74,5 % (dominant erhalten, bewusster Trade-off, ~-0,5 pp unter ~75 %)
+- T2 glut-braun 83,2 % (≥ 82, unverändert), T0 100 %, T0/T2-Zentroid 134,9 (≥ 130)
+- min Tier-Zentroid Offline 43,2 → 41,8 (≥ 30); Amber-Rim 1,0 (A10) beide Läufe
+- 60/60 fps median/mean unter flock; 339 lebend / 34 Elites / texMiss 0
+- tsc/build grün, npm test 1357/1357 (elite-tier-families 7, elite-rim 11, crowd-variety 6, enemy-palette 6)
+
+## Kontrolleure
+- art-director streng: PASS 4/5, „muss neu": nichts (horror 2. Stufe dünn + gruen-Marke
+  als dokumentierte Abwertungen).
+- Reviewer: PASS (3 Doku-Zahlen korrigiert, Commit 0494a47).
+
+## Hinweise
+- Scope: nur src/gfx/enemySprites.ts, tests/elite-tier-families.test.ts, docs/lanes,
+  shots/m10-elite-tier-w3-*. Fremde Dateien unberührt; keine Bedarfsmeldungen.
+- `npm test` regeneriert shots/m10-passive-math-*.json (Timestamp) — im Worktree
+  zurückgestellt, keine inhaltliche Änderung.
