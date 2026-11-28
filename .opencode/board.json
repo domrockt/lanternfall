@@ -10472,7 +10472,7 @@
       "id": 8438,
       "title": "m10-props-variety K1: Vorher-Belege frueh/Chaos (1x+2x) + Wiederholungs-Befund",
       "description": "Skript scripts/m10-props-variety.mjs: Debug-Run (god/autoPlay), Screenshots frueh+Chaos je 1x und 2x (shots/m10-props-variety-before-*.png) + propComposition aus g.chunks; haeufigstes Prop-Anteil in % als Befund in docs/lanes/m10-props-variety.md. AK: 4 PNGs + JSON mit jsErrors=[] committet, Befund-Zahl dokumentiert.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T04:47:56Z",
@@ -10483,10 +10483,15 @@
           "at": "2026-11-28T04:51:38Z",
           "by": "build",
           "text": "doing → review: m10-props-variety: Vorher-Belege (4 PNG + JSON, jsErrors=[]) + Befund committet (6edcc59): prop_boulder 22,6%/23,7% haeufigstes Prop, stump 15%, bones 12%. Messskript eingefroren (3 Kalibrierlaeufe: Boss-Banner bei 25:00 -> Chaos auf 21:30 verlegt)."
+        },
+        {
+          "at": "2026-11-28T05:18:07Z",
+          "by": "build",
+          "text": "review → done: lane #8438, Commit 6edcc59"
         }
       ],
       "created": "2026-11-28T04:47:51Z",
-      "updated": "2026-11-28T04:51:38Z"
+      "updated": "2026-11-28T05:18:07Z"
     },
     {
       "id": 8439,
@@ -10517,7 +10522,7 @@
       "id": 8440,
       "title": "m10-props-variety K3: Guard-Test tests/props-variety.test.ts",
       "description": "Variantenzahl je Ziel-Klasse >= Ziel, 0 Off-Palette-Pixel, Dimensionen identisch zur Basisklasse, deterministische Variantenwahl; prop-density-lod-Test bleibt unveraendert gruen. AK: npx vitest run tests/props-variety.test.ts gruon, npm test gruen.",
-      "column": "review",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T04:59:07Z",
@@ -10528,16 +10533,21 @@
           "at": "2026-11-28T05:00:56Z",
           "by": "build",
           "text": "doing → review: m10-props-variety: Guard-Test tests/props-variety.test.ts (6 Tests) committed (6566472), alle gruen incl. m4b-terrain/palette-compliance/prop-density-lod (40/40)."
+        },
+        {
+          "at": "2026-11-28T05:18:07Z",
+          "by": "build",
+          "text": "review → done: lane #8440, Commit 6566472"
         }
       ],
       "created": "2026-11-28T04:47:51Z",
-      "updated": "2026-11-28T05:00:56Z"
+      "updated": "2026-11-28T05:18:07Z"
     },
     {
       "id": 8441,
       "title": "m10-props-variety K4: After-Belege + art-director-Urteil + Doku + lane-done",
       "description": "After-Shots (1x+2x, frueh/Chaos), Wiederholungs-Anteil nachher messen (Ziel deutlich gesenkt), art-director >= 4/5 fuer Bodenvielfalt, npm run build + npm test gruen, docs/lanes/m10-props-variety.md final, .lane-done. AK: Belege committet, Urteil in Doku.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T05:01:09Z",
@@ -10548,10 +10558,15 @@
           "at": "2026-11-28T05:12:24Z",
           "by": "build",
           "text": "m10-props-variety: K4 fast fertig — After-Messung HEAD (boulder 23,3/22,9%, unveraendert => Verdrahtung offen), Wirkprobe after-wired (stump 15%), art-director Runde 1 PASS 4/5, 3 Korrekturen in 1 Iteration umgesetzt (6d39c07), Zweitpruefung laeuft. npm test 1375/1375, Build gruen."
+        },
+        {
+          "at": "2026-11-28T05:18:07Z",
+          "by": "build",
+          "text": "doing → done: lane #8441, Commits 475e237/8c4e8b2/6d39c07/d8c55a0 — art-director final PASS 4/5 (Zweitpruefung nach 3 Korrekturen), .lane-done committet. Offener Punkt: 3-Zeilen-Verdrahtung in GroundRenderer.addProp als Folgekarte (Doku: docs/lanes/m10-props-variety.md)."
         }
       ],
       "created": "2026-11-28T04:47:51Z",
-      "updated": "2026-11-28T05:12:24Z"
+      "updated": "2026-11-28T05:18:07Z"
     }
   ]
 }
