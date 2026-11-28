@@ -58,7 +58,7 @@ auf der vsync-Kante, das Harness-Tor kann daher nur "nicht schlechter als Vorher
 belegen (Akzeptanzkriterium der Lane), einen GPU-seitigen Gewinn Richtung ≤ 16 ms kann
 nur die Geräteprobe zeigen.
 
-### Geräteprobe
+## Geräteprobe
 
 Device-bridge (`http://172.17.0.1:5181`) ist erreichbar (Redmi Pad Pro, SM7435,
 Adreno 710, Thermal 0, Akku 33,0 °C). Geräteprobe in dieser Lane **nicht gefahren**,
@@ -99,9 +99,38 @@ Gegenprobe im Test #12484) → ADD-Flaeche/Partikel unter medium-Budget → p95 
   Referenzwert-Tests (tests/device-tier-schedule.test.ts pinnt die Desktop-
   Zustandsfolgen exakt).
 
-## K4 — Messung Vorher/Nachher
+## K4 — Messung Vorher/Nachher (iGPU-Harness, 780x360@3, M25-Szene)
 
-(nach K2/K3 ergänzt)
+`node scripts/m10-device-tier.mjs` (Vorher vor K2, Nachher nach K2/K3; Belege
+`~/games/.evidence/m10-device-tier-schedule/{before,after}.json`, je 601 Frames,
+10 s Fenster, Top-up 300 Gegner im 50-ms-Takt):
+
+| Wert | Vorher (Commit 6aaa79ba) | Nachher (nach efee908e) |
+|---|---|---|
+| Renderer-String | `ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)` | `ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)` |
+| qualityTier im Lauf | `high` | `high` |
+| Frames / FPS avg | 601 / 60,0 | 601 / 60,0 |
+| p50 / p90 (ms) | 16,6 / 16,7 | 16,6 / 16,7 |
+| **p95** (ms) | **16,7** | **16,7** |
+| p99 / worst (ms) | 16,8 / 16,8 | 16,8 / 16,8 |
+| janky (>16,7 ms) | 3,83 % | 4,50 % |
+| JS-Fehler | 0 | 0 |
+
+**Auswertung (Akzeptanz: p95 nicht schlechter als Vorher):** p95/p99/worst
+identisch (16,7/16,8/16,8 ms) — beide Laeufe laufen mit VSync an der 60-FPS-Kante,
+die Perzentile sind durch die Panel-Runde bestimmt, nicht durch Sim-Last.
+jankyPct 3,83 → 4,50 % sind 23 bzw. 27 Frames an derselben Kante (Vsync-Jitter,
+kein Tail-Anstieg: worst unverändert 16,8 ms). **PASS** im Sinne des Lane-Tores.
+
+**Desktop-Tier-Pfad unberührt (AE=0):** qualityTier bleibt beide Male `high`
+(Geräteknoten am Mesa-Renderer nie erkannt → stepQuality ohne Zeitbudget-Pfad),
+zusätzlich pinnt tests/device-tier-schedule.test.ts die Desktop-Referenzwerte
+(bitgleiche Zustandsfolgen, Commit e2c6f88b).
+
+Wie in K1 ehrlich notiert: einen GPU-seitigen Gewinn "Richtung ≤ 16 ms" kann der
+iGPU-Lauf an der VSync-Kante nicht zeigen — der Geräte-Hebel (medium-Cap +
+16,7-ms-Grenze) ist durch die Tests #12484/#12485 belegt, der janky-Gewinn am
+Adreno-710-Knoten bleibt der Geräteprobe in einem device-Job vorbehalten.
 
 ## Offene Punkte
 
