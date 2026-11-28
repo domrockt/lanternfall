@@ -48,6 +48,12 @@ export function titleBgLayout(gameW: number, gameH: number,
 export const TITLE_GLASS_HOLE = { row: 5, w: 8, h: 6 } as const;
 /** Nacht-Dim-Stärke der Bodenlasur (unverändert zu main — nur Ausnahmefenster neu). */
 export const TITLE_DIM_ALPHA = 0.62;
+/**
+ * Flammen-Depth wie in main (2): bewusst UNTER den Menue-Buttons (6) und der
+ * Vignette (50) — die Dim-Ausnahme läuft über die Glas-Fenster in den Dim-
+ * Layern, NICHT über Depth (Flammen dürften nicht über dem Menü landen).
+ */
+export const TITLE_FLAME_DEPTH = 2;
 
 /**
  * m10-title-dim-lanterns: Dim-Ausnahmefenster für die Laternen-Flammen
@@ -159,7 +165,7 @@ export class Title extends Phaser.Scene {
     const flameSeq = [0, 1, 0, 2];
     const flames = TITLE_FLAME_SPOTS.map((spot, i) =>
       this.add.image(bgL.x + spot.x, bgL.y + spot.y, flameFrames[flameSeq[i % flameSeq.length]!])
-        .setOrigin(0, 0).setDepth(2).setScale(s));
+        .setOrigin(0, 0).setDepth(TITLE_FLAME_DEPTH).setScale(s));
     let flameStep = 0;
     this.time.addEvent({
       delay: 500,
