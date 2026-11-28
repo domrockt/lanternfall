@@ -178,17 +178,19 @@ function installLifecycle(ready: Game, Phaser: PhaserNS): void {
  * Scheitert Phase 1, gibt es eine sichtbare Fehlermeldung — kein weisser Screen.
  */
 async function boot(): Promise<void> {
+  // Phase 2 sofort (parallel zu Phase 1) anstossen — die Chunks sollen schon
+  // waehrend des Phaser-Parsens ueber die Leitung gehen. Ein .catch haengt
+  // einen Handled-Zweig an, damit bei Phase-1-Fehler keine Uncaught-(in-
+  // promise)-Noise entsteht; das eigentliche Ergebnis wird unten awaited.
+  const phase2 = Promise.all([
+    import("./scenes/CharSelect"),
+    import("./scenes/Run"),
+    import("./scenes/UI"),
+    import("./scenes/Results"),
+    import("./scenes/Credits"),
+  ]);
+  phase2.catch(() => { /* Fehler wird beim await unten behandelt */ });
   try {
-    // Phase 2 sofort (parallel zu Phase 1) anstossen — die Chunks sollen schon
-    // waehrend des Phaser-Parsens ueber die Leitung gehen.
-    const phase2 = Promise.all([
-      import("./scenes/CharSelect"),
-      import("./scenes/Run"),
-      import("./scenes/UI"),
-      import("./scenes/Results"),
-      import("./scenes/Credits"),
-    ]);
-
     // m10-loading-screen (gemergt auf main): Boot -> Loading -> Title ist der
     // kritische Pfad, daher gehoert die Loading-Szene in Phase 1.
     const [phaserMod, debugMod, bootMod, loadingMod, titleMod] = await Promise.all([
@@ -236,18 +238,26 @@ async function boot(): Promise<void> {
     if (Number.isFinite(densityParam) && densityParam > 0) started.registry.set("lf-density", densityParam);
 
     installLifecycle(started, Phaser);
-
-    // Phase 2: Szenen registrieren, sobald die Chunks da sind (await = kein
-    // Polling). autoStart=false — gestartet werden sie per scene.start(key).
-    const [charSelectMod, runMod, uiMod, resultsMod, creditsMod] = await phase2;
-    started.scene.add("charselect", charSelectMod.CharSelect, false);
-    started.scene.add("run", runMod.Run, false);
-    started.scene.add("ui", uiMod.UI, false);
-    started.scene.add("results", resultsMod.Results, false);
-    started.scene.add("credits", creditsMod.Credits, false);
   } catch (err) {
     const detail = err instanceof Error ? err.message : String(err);
     showBootError(`SPIELDATEIEN KONNTEN NICHT GELADEN WERDEN. SEITE NEU LADEN. (${detail})`);
+    return;
+  }
+
+  // Phase 2: Szenen registrieren, sobald die Chunks da sind (await = kein
+  // Polling). autoStart=false — gestartet werden sie per scene.start(key).
+  // Eigenes try/catch: laeuft das Spiel schon, duerfen wir kein Vollbild-
+  // Overlay ("konnte nicht geladen") ueber ein funktionierendes Spiel legen.
+  if (!game) return;
+  try {
+    const [charSelectMod, runMod, uiMod, resultsMod, creditsMod] = await phase2;
+    game.scene.add("charselect", charSelectMod.CharSelect, false);
+    game.scene.add("run", runMod.Run, false);
+    game.scene.add("ui", uiMod.UI, false);
+    game.scene.add("results", resultsMod.Results, false);
+    game.scene.add("credits", creditsMod.Credits, false);
+  } catch (err) {
+    console.error("[lanternfall] Nachladen der Late-Szenen fehlgeschlagen (Spiel laeuft weiter):", err);
   }
 }
 

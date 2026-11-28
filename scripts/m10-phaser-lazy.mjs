@@ -2,8 +2,10 @@
 // Lane m10-phaser-lazy-import (K1/K4): Kaltladezeit bis Titel + Bundle-Groessen.
 //
 //   node scripts/m10-phaser-lazy.mjs [--out ~/games/.evidence/m10-phaser-lazy-import/m10-phaser-lazy-before.json]
-//                                    [--runs 3] [--tag before|after]
+//                                    [--runs 3] [--tag before|after] [--throttle]
 //
+// --throttle: CDP Fast 3G (1,6 Mb/s, 150 ms RTT) — die netzwerknahe Frage
+// (Android-Zielgeraet); ohne Drosselung dominiert lokal das Phaser-Parsen.
 // Misst pro Lauf (frischer Browser-Context = kalter Cache):
 //   - Zeit von navigation bis Titel-Szene aktiv (window.__lf.state().scene)
 //   - Resource-Timing der kritischen Pfade (uebertragene/entpackte Bytes)
@@ -27,6 +29,8 @@ const tag = opt("tag", "before");
 const defaultOut = `${homedir()}/games/.evidence/m10-phaser-lazy-import/m10-phaser-lazy-${tag}.json`;
 const out = opt("out", defaultOut);
 const runs = Number(opt("runs", "3"));
+const throttle = argv.includes("--throttle");
+const titleTimeout = throttle ? 30000 : 20000;
 
 // Bundle-Groessen: alle .js/.css aus dist/assets, einzeln + gzip.
 function bundleSizes() {
@@ -54,6 +58,16 @@ try {
   for (let i = 0; i < runs; i++) {
     const context = await browser.newContext({ viewport: { width: 960, height: 540 } });
     const page = await context.newPage();
+    if (throttle) {
+      const cdp = await context.newCDPSession(page);
+      await cdp.send("Network.enable");
+      await cdp.send("Network.emulateNetworkConditions", {
+        offline: false,
+        latency: 150,
+        downloadThroughput: (1.6 * 1024 * 1024) / 8,
+        uploadThroughput: (750 * 1024) / 8,
+      });
+    }
     const errors = [];
     page.on("pageerror", (err) => errors.push(String(err)));
     page.on("console", (msg) => {
@@ -64,7 +78,7 @@ try {
     await page.waitForFunction(
       () => Boolean(window.__lf) && window.__lf.state().scene === "title",
       null,
-      { timeout: 20000, polling: "raf" },
+      { timeout: titleTimeout, polling: "raf" },
     );
     const probe = await page.evaluate(() => {
       const canvas = document.createElement("canvas");

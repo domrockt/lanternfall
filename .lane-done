@@ -1,0 +1,22 @@
+# Lane m10-phaser-lazy-import — fertig (2026-11-28)
+
+Phaser lädt nicht mehr statisch in main.ts: 2-Phasen-Boot (Phase 1 blockiert bis
+Titel: phaser+debug+Boot+Title per import(); Phase 2: CharSelect/Run/UI/Results/
+Credits per scene.add, sofort parallel gestartet). Keine Änderungen an
+src/scenes/**, src/gfx/**, src/systems/**, warmup.ts, GAME.md.
+
+Karten: #11832-#11835, Commits 83f096ae / c642987e / 2a8e1799 / (K4: dieser Commit).
+Abnahme: build rc=0 warnfrei, npm test 2230 gruen (6 neue Guards),
+Headless-Smoke Titel->CharSelect->Run mit 0 JS-Fehler.
+
+Zahlen (Probe scripts/m10-phaser-lazy.mjs, je 3 Laeufe, Renderer Mesa Intel RPL-S,
+Belege ~/games/.evidence/m10-phaser-lazy-import/):
+- Kaltladezeit bis Titel lokal: 2070 ms -> 2055 ms avg (min 1946 -> 1898) — ~flach.
+- Entry-Shell (gzip): 81,4 kB -> 4,46 kB. ~111 kB gzip App-Code vom Titel-Pfad
+  abgekoppelt (Run/UI/CharSelect/Results/Credits + Entry-Rest).
+- Zentraler Befund: der Titel BRAUCHT Phaser — die 317 kB gzip Phaser bleiben im
+  Titel-Pfad; Briefing-Erwartung "signifikanter Teil der 318 kB aus dem Pfad" ist
+  so nicht haltbar. Echter Resthebel: phaser-freier Titel (grosser Umbau) und
+  warmup.ts (m10-loading-screen, unberuehrt).
+- Mess-Skript-Bedarf: CDP-Netz-Throttle wirkte im Harness nicht (invalid); echte
+  Netz-/Geraetemessung ueber android-proxy.mjs noetig (Details docs/lanes/).

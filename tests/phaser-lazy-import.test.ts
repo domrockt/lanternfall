@@ -3,6 +3,7 @@
 // dem Muster der bestehenden Quell-Guards (z. B. chaos-glow-runpath.test.ts,
 // vfx-restore.test.ts: readFileSync auf die Quelldatei, Regex auf Importe).
 import { describe, expect, it } from "vitest";
+// @ts-ignore — Node-Typen sind im Repo nicht installiert; Vitest stellt fs bereit.
 import { readFileSync } from "node:fs";
 
 const MAIN_TS = readFileSync(new URL("../src/main.ts", import.meta.url), "utf8");
