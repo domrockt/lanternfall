@@ -14,9 +14,9 @@ an `src/**` oder `tests/**`; bei FAIL entsteht eine Fix-Empfehlungsliste
 | 2 | Options-Footer Kontrast 2.72 | `src/ui/options-menu.ts` | m10-menu-contrast-fixes | gemergt |
 | 3 | Options-Footer-Overlap 465 px² | `src/ui/options-menu.ts` + Title.ts | m10-menu-contrast-fixes | gemergt |
 | 4 | Credits-Zeilen-Kontrast 2.73 | `src/scenes/Credits.ts` | m10-menu-contrast-fixes | gemergt |
-| 5 | Pause-Build-Texte 4.15 (Index 8→12) | `src/scenes/UI.ts` | m10-ui-pause-quality (#11079) | lane-done 10:47, Merge folgt |
+| 5 | Pause-Build-Texte 4.15 (Index 8→12) | `src/scenes/UI.ts` | m10-ui-pause-quality (#11079) | gemergt (11:00Z bestätigt: `git merge-base --is-ancestor` rc=0) |
 | 6 | KAEL-Freiraum 7 px (Bestwerte↔Knopfreihe) | `src/scenes/Title.ts` | m10-menu-contrast-fixes K5 (`57d3b56e`) | gemergt |
-| 7 | Pause Icon-Spacing + Zeile-6-Puffer | `src/scenes/UI.ts` | m10-ui-pause-quality (#11080) | lane-done 10:47, Merge folgt |
+| 7 | Pause Icon-Spacing + Zeile-6-Puffer | `src/scenes/UI.ts` | m10-ui-pause-quality (#11080) | gemergt (11:00Z bestätigt) |
 
 ## K1: Frischer Qualitäts-Scan (#11268)
 
@@ -61,6 +61,44 @@ an `src/**` oder `tests/**`; bei FAIL entsteht eine Fix-Empfehlungsliste
 - Beobachtung für K2: Die Pause-Footer-Hints (4.15 / 2.72) sind der einzige restliche
   Kontrast-Hebel über alle 5 Screens — falls der art-director FAIL urteilt, ist das
   der Hauptkandidat (Datei `src/scenes/UI.ts`, createPauseUI(), 2 Farbkonstanten).
+
+## K1-Nachtrag: definierender Scan auf echtem main-HEAD (11:02Z)
+
+Der Merge `m10-ui-pause-quality` ist inzwischen auf main (bestätigt 11:01Z,
+`git merge-base --is-ancestor m10-ui-pause-quality main` = rc=0). Damit entfällt die
+Kompositions-Annahme oben — der Scan wurde **einmal frisch auf main HEAD
+`5664a7fc`** (merge-merge-m10-view-pixel-snap, inkl. Pause-Merge) im Haupt-Repo
+`/home/ai/games/lanternfall` ausgeführt (`node scripts/m10-menu-quality.mjs
+--tag=after-resight`, rc=0, Log + JSON in Evidence):
+
+- **Beleg:** `~/games/.evidence/m10-menu-art-resight/m10-menu-quality-after-resight-scan.json`
+  (Scan-Base in Log: `5664a7fc`), PNGs unter gleichem Präfix, 2x-nearest-Abnahme-Shots
+  im Repo: `shots/abnahme/m10-menu-art-resight-{title,options,credits,charselect,pause}-2x.png`.
+- Renderer: `ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)` (kein
+  SwiftShader), **0 JS-Fehler** in beiden Profilen.
+- title / options / credits / charselect: **0 scaleCalls, 0 subpixel, 0 Kontrast-Fails,
+  0 Overlaps** (beide Profile) — identisch zum komponierten Stand oben.
+- pause (run+ui): scaleCalls=2 (`m9_ambient_fog` 2.2x/2.75x, Run-Welt-Deko = M6-Rauschen),
+  subpixel=151 (water_ripple-Frames, Run-Welt), **overlaps=0**, **kontrastFails=2**:
+  `ESC = WEITER - O = OPTIONEN - Q = AUFGAB` (idx 8, 4.15) und
+  `PFEILE + ENTER ODER MAUS` (idx 7, 2.72) — exakt die beiden Footer-Hints, die
+  m10-ui-pause-quality als Folgebedarf (nicht Teil der 7 Hebel) dokumentiert hat.
+
+### Hebel-Abgleich 1–7 (definitiv, main-HEAD 5664a7fc)
+
+| # | Hebel | Befund |
+|---|---|---|
+| 1 | Title-Hint-Zeilen Kontrast 2.07 | **PASS** — title kontrastFails=0 |
+| 2 | Options-Footer Kontrast 2.72 | **PASS** — options kontrastFails=0 |
+| 3 | Options-Footer-Overlap 465 px² | **PASS** — options overlaps=0 |
+| 4 | Credits-Zeilen-Kontrast 2.73 | **PASS** — credits kontrastFails=0 |
+| 5 | Pause-Build-Texte idx 8→12 | **PASS** — Build-Zeilen erscheinen in keiner Fail-Liste mehr |
+| 6 | KAEL-Freiraum 7 px | **PASS** — title overlaps=0 |
+| 7 | Pause Icon-Spacing + Zeile-6-Puffer | **PASS** — pause overlaps=0 |
+
+**Ergebnis: 7/7 Hebel PASS.** Einziger Menü-Kontrast-Rest: die 2 Pause-Footer-Hints
+(4.15/2.72, `src/scenes/UI.ts` createPauseUI) — Folgebedarf der Quell-Lane, kein
+Blocker der 7 Hebel.
 
 ## K2: art-director-Sichtung (#11269)
 
