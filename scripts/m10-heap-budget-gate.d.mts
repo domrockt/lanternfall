@@ -15,8 +15,17 @@ export interface HeapGateWindow {
   peakMB: number;
 }
 
+/** Robustes SOFT-Signal (F1-Fix): Minimum der rohen Peaks je Fenster. */
+export interface HeapGateFloor {
+  window: number;
+  fromMin: number;
+  toMin: number;
+  floorMB: number;
+}
+
 export interface HeapGateResult {
   definition: string;
+  softDefinition: string;
   minute1MB: number | null;
   endMB: number | null;
   endDeltaMB: number | null;
@@ -26,10 +35,16 @@ export interface HeapGateResult {
   windowPeaks: HeapGateWindow[];
   maxWindowPeakMB: number | null;
   maxWindowPeakPct: number | null;
+  windowFloors: HeapGateFloor[];
+  maxWindowFloorMB: number | null;
+  maxWindowFloorPct: number | null;
+  softReferenceMB: number | null;
+  softFloorPass: boolean;
   hardPass: boolean;
   softPass: boolean;
   verdict: "PASS" | "FAIL" | "UNMESSBAR";
   softVerdict: string;
+  softFloorVerdict: string;
   fallA: boolean;
   fallB: boolean;
 }
