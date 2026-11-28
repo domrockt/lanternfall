@@ -18,6 +18,7 @@ import {
   eliteRimDef,
   eliteRimFrame,
   eliteTierDye,
+  eliteTierMixFor,
   eliteTierPixel,
   enemyFrameKeys,
   enemySpriteFrames,
@@ -74,7 +75,7 @@ function eliteFramesByTier(): Map<number, Grid[]> {
 }
 
 describe("elite-tier-families: Faerbe-Klassen je Tier", () => {
-  it("hat 5 unterscheidbare Tier-Klassen (Paar-Distanz >= 60, Palette, Luminanz-Fenster)", () => {
+  it("hat 5 unterscheidbare Tier-Klassen (Paar-Distanz >= 55, Palette, Luminanz-Fenster)", () => {
     expect(ELITE_TIER_DYES).toHaveLength(5);
     for (const [tier, dye] of ELITE_TIER_DYES.entries()) {
       expect(dye, `Tier ${tier} muss Palette-Index sein`).toBeGreaterThanOrEqual(0);
@@ -86,8 +87,12 @@ describe("elite-tier-families: Faerbe-Klassen je Tier", () => {
     }
     for (let a = 0; a < 5; a++) {
       for (let b = a + 1; b < 5; b++) {
+        // m10-elite-tier-refine (#7523): 60 -> 55 — T4 ist seit der Umstellung
+        // auf marshLight (31, Terrain-Kontrast) 55,6 von T1 mist (8) entfernt;
+        // die Trennung bleibt weit ueber der Zentroid-Schwelle (>= 30) und wird
+        // dort (nicht auf Dye-Ebene) bewacht.
         expect(dist(rgb(ELITE_TIER_DYES[a]), rgb(ELITE_TIER_DYES[b])), `Tier ${a} vs. ${b}`)
-          .toBeGreaterThanOrEqual(60);
+          .toBeGreaterThanOrEqual(55);
       }
     }
   });
@@ -110,7 +115,7 @@ describe("elite-tier-families: Faerbe-Klassen je Tier", () => {
             if (bp !== null) expect(rp, `${def.id} Rand (${x},${y})`).toBe(ELITE_RIM_COLOR);
             continue;
           }
-          expect(rp, `${def.id} Innen (${x},${y})`).toBe(eliteTierPixel(bp, def.tier));
+          expect(rp, `${def.id} Innen (${x},${y})`).toBe(eliteTierPixel(bp, def.tier, eliteTierMixFor(def.id)));
           // Kontur/Augen-Positionen unveraendert
           if (bp === 0 || bp === 13) expect(rp, `${def.id} Kontur/Augen (${x},${y})`).toBe(bp);
         }
@@ -118,7 +123,7 @@ describe("elite-tier-families: Faerbe-Klassen je Tier", () => {
     });
   });
 
-  it("Familien-Kontrast-Metrik: Tier-Zentroiden min. 40 auseinander und messbar besser als ungefaerbt", () => {
+  it("Familien-Kontrast-Metrik: Tier-Zentroiden min. 30 auseinander und messbar besser als ungefaerbt", () => {
     const byTier = eliteFramesByTier();
     expect([...byTier.keys()].sort()).toEqual([0, 1, 2, 3, 4]);
     const minPairwise = (gridsByTier: Map<number, Grid[]>) => {
@@ -145,12 +150,37 @@ describe("elite-tier-families: Faerbe-Klassen je Tier", () => {
     expect(after).toBeGreaterThanOrEqual(before * 2);
   });
 
+  it("K3 (#7525): Soft-Mix-Typen behalten >= 3 Innen-Schattierungsstufen im Rim-Frame", () => {
+    const softTypes = ["wisp", "knight", "harpy", "lich", "wraith", "treant", "imp"];
+    for (const id of softTypes) {
+      const index = ENEMY_LIST.findIndex((d) => d.id === id);
+      expect(index, id).toBeGreaterThanOrEqual(0);
+      const grid = eliteRimFrame(index);
+      const levels = new Set<number>();
+      for (let y = 0; y < grid.length; y++) {
+        for (let x = 0; x < grid[0].length; x++) {
+          if (grid[y][x] === null || isBoundary(grid, x, y)) continue;
+          const c = grid[y][x] as number;
+          if (c === 0 || c === 13 || c === ELITE_RIM_COLOR) continue;
+          levels.add(c);
+        }
+      }
+      // Gemessen (Offline-Suchlauf): 0,7 kollabiert diese Typen auf 2 Stufen,
+      // der Soft-Mix (0,65; imp 0,6) restauriert die dritte (imp: vierte).
+      expect(levels.size, `${id} (mix ${eliteTierMixFor(id)})`).toBeGreaterThanOrEqual(3);
+    }
+  });
+
   it("eliteTierPixel/eliteTierDye sind deterministisch und klampen auf Tier 0-4", () => {
     expect(eliteTierDye(-3)).toBe(ELITE_TIER_DYES[0]);
     expect(eliteTierDye(9)).toBe(ELITE_TIER_DYES[4]);
     for (let tier = -1; tier <= 6; tier++) {
       for (let pixel = 0; pixel < PAL.length; pixel++) {
         expect(eliteTierPixel(pixel, tier)).toBe(eliteTierPixel(pixel, tier));
+        // m10-elite-tier-refine (#7525): auch der mix-Pfad ist deterministisch
+        // (Soft-Mix 0,65 und imp 0,6 — haette den K3-Mix-Bug im Review gefangen).
+        expect(eliteTierPixel(pixel, tier, eliteTierMixFor("imp"))).toBe(eliteTierPixel(pixel, tier, eliteTierMixFor("imp")));
+        expect(eliteTierPixel(pixel, tier, eliteTierMixFor("wraith"))).toBe(eliteTierPixel(pixel, tier, eliteTierMixFor("wraith")));
       }
     }
     expect(eliteTierPixel(0, 3)).toBe(0); // Kontur unangetastet

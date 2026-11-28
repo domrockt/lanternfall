@@ -1,0 +1,25 @@
+# Lane m10-elite-tier-refine — fertig (28.11.2026, ~01:30-03:30Z)
+
+Rettung der 3 verlorenen art-director-Nachbesserungen der Lane m10-elite-tier-families
+(backlog #7382-#7384 beim Board-Reconcile verloren → Lane-Karten #7523-#7525).
+
+- K1 (#7523, a0e3b99): T4-Klasse marsh(30) -> marshLight(31) — T4-Elites auf hellem
+  Moorgras jetzt über Körperfarbe lesbar (30 ist häufige Grasrampe, 31 Flächenfarbe
+  außerhalb). Trade-off dokumentiert: T4-Bucket gruen 82 % -> 77,3 % (bleibt dominant).
+- K2 (#7524, 8d4043e): T2-Klasse flame(18) -> flameBright(19) — T0/T2-Zentroid
+  97,6 -> 135,4; T2-Bucket glut-braun 83,2 % (>= 82 % erhalten).
+- K3 (#7525, 41d10cf + Fix 23f8824 + Belege 0dc4bc0): eliteTierMixFor(id) — Soft-Mix
+  0,65 (wisp/knight/harpy/lich/wraith/treant, 2 -> 3 Innen-Stufen), imp 0,6 (2 -> 4);
+  skeleton/bat/T0 nicht heilbar (belegt). Reviewer-FAIL (mix-Parameter halb angewendet)
+  gefixt, Re-Check PASS.
+- Final-Lauf (refine-after, unter flock): T0 100/T1 92/T2 83,2/T3 98,6/T4 77,3 —
+  alle dominant; Amber-Rand 1,0 (A10); min Tier-Zentroid 43,8 (>= 30); 60/60 fps
+  median/mean; Mesa Intel RPL-S (iGPU, Pflicht); 0 JS-Fehler; 34 Elites / 339 lebend.
+- Abnahme: tsc + build grün, npm test 1219/1219; art-director streng PASS 4,5/5
+  (Re-Abnahme nach Fix bestätigt); Reviewer PASS.
+- Folgekarte backlog #7526: T4-Stufenkollaps (horror 1 Innenstufe, übrige T4-Typen 2)
+  per Soft-Mix 0,55-0,6 heben, Gegenprobe T4-Bucket >= ~75 %.
+- Belege: shots/m10-elite-tier-refine-{before,k1,k2,after}.* + -crop4x.png (4x) +
+  analysis.json + 8x-Sichtungs-Views; Doku: docs/lanes/m10-elite-tier-refine.md.
+- Mess-Skript-Budget: 1 Edit-Iteration (rAF-Crop-Fix + Schwarz-Falle nach schwarzem
+  502-Byte-Crop-Artefakt).
