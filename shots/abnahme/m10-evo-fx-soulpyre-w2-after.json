@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-11-28T11:53:30.185Z",
+  "generatedAt": "2026-11-28T11:59:25.123Z",
   "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
   "valid": true,
   "errors": [],
   "configs": {
     "640": {
       "renderer": {
-        "generatedAt": "2026-11-28T11:53:21.540Z",
+        "generatedAt": "2026-11-28T11:59:16.307Z",
         "context": "webgl1",
         "version": "WebGL 1.0 (OpenGL ES 2.0 Chromium)",
         "shadingLanguage": "WebGL GLSL ES 1.0 (OpenGL ES GLSL ES 1.0 Chromium)",
@@ -183,42 +183,42 @@
           ]
         },
         "fx_halo_cold@2": {
-          "maxScaleX": 0.9,
-          "maxScaleY": 0.9,
+          "maxScaleX": 0.85,
+          "maxScaleY": 0.85,
           "samples": [
             {
-              "scaleX": 0.9,
-              "scaleY": 0.9,
-              "dispW": 43,
-              "dispH": 43,
+              "scaleX": 0.85,
+              "scaleY": 0.85,
+              "dispW": 41,
+              "dispH": 41,
               "blend": 1
             },
             {
-              "scaleX": 0.9,
-              "scaleY": 0.9,
-              "dispW": 43,
-              "dispH": 43,
+              "scaleX": 0.85,
+              "scaleY": 0.85,
+              "dispW": 41,
+              "dispH": 41,
               "blend": 1
             },
             {
-              "scaleX": 0.9,
-              "scaleY": 0.9,
-              "dispW": 43,
-              "dispH": 43,
+              "scaleX": 0.85,
+              "scaleY": 0.85,
+              "dispW": 41,
+              "dispH": 41,
               "blend": 1
             },
             {
-              "scaleX": 0.9,
-              "scaleY": 0.9,
-              "dispW": 43,
-              "dispH": 43,
+              "scaleX": 0.85,
+              "scaleY": 0.85,
+              "dispW": 41,
+              "dispH": 41,
               "blend": 1
             },
             {
-              "scaleX": 0.9,
-              "scaleY": 0.9,
-              "dispW": 43,
-              "dispH": 43,
+              "scaleX": 0.85,
+              "scaleY": 0.85,
+              "dispW": 41,
+              "dispH": 41,
               "blend": 1
             }
           ]
@@ -254,25 +254,25 @@
         "orb_soul": {
           "width": 22,
           "height": 32,
-          "opaque": 233,
+          "opaque": 234,
           "inkPixels": 0,
-          "grayPixels": 85,
+          "grayPixels": 98,
           "edgeOpaquePixels": 4,
           "edgeSample": [
             {
               "x": 10,
               "y": 0,
-              "i": 6
+              "i": 9
             },
             {
               "x": 11,
               "y": 0,
-              "i": 6
+              "i": 9
             },
             {
               "x": 10,
               "y": 31,
-              "i": 5
+              "i": 6
             },
             {
               "x": 11,
@@ -281,11 +281,11 @@
             }
           ],
           "histogram": {
-            "pal6": 24,
-            "pal13": 115,
-            "pal11": 33,
-            "pal5": 33,
-            "pal9": 28
+            "pal9": 57,
+            "pal5": 25,
+            "pal13": 107,
+            "pal11": 29,
+            "pal6": 16
           }
         },
         "fx_evo_death_soul_beacon": {
@@ -297,10 +297,10 @@
           "edgeOpaquePixels": 0,
           "edgeSample": [],
           "histogram": {
-            "pal5": 238,
+            "pal5": 219,
             "pal13": 439,
-            "pal9": 118,
-            "pal6": 95,
+            "pal9": 180,
+            "pal6": 52,
             "pal11": 80
           }
         }
@@ -324,7 +324,7 @@
     },
     "960x540": {
       "renderer": {
-        "generatedAt": "2026-11-28T11:53:26.047Z",
+        "generatedAt": "2026-11-28T11:59:20.907Z",
         "context": "webgl1",
         "version": "WebGL 1.0 (OpenGL ES 2.0 Chromium)",
         "shadingLanguage": "WebGL GLSL ES 1.0 (OpenGL ES GLSL ES 1.0 Chromium)",
@@ -501,42 +501,42 @@
           ]
         },
         "fx_halo_cold@2": {
-          "maxScaleX": 0.9,
-          "maxScaleY": 0.9,
+          "maxScaleX": 0.85,
+          "maxScaleY": 0.85,
           "samples": [
             {
-              "scaleX": 0.9,
-              "scaleY": 0.9,
-              "dispW": 43,
-              "dispH": 43,
+              "scaleX": 0.85,
+              "scaleY": 0.85,
+              "dispW": 41,
+              "dispH": 41,
               "blend": 1
             },
             {
-              "scaleX": 0.9,
-              "scaleY": 0.9,
-              "dispW": 43,
-              "dispH": 43,
+              "scaleX": 0.85,
+              "scaleY": 0.85,
+              "dispW": 41,
+              "dispH": 41,
               "blend": 1
             },
             {
-              "scaleX": 0.9,
-              "scaleY": 0.9,
-              "dispW": 43,
-              "dispH": 43,
+              "scaleX": 0.85,
+              "scaleY": 0.85,
+              "dispW": 41,
+              "dispH": 41,
               "blend": 1
             },
             {
-              "scaleX": 0.9,
-              "scaleY": 0.9,
-              "dispW": 43,
-              "dispH": 43,
+              "scaleX": 0.85,
+              "scaleY": 0.85,
+              "dispW": 41,
+              "dispH": 41,
               "blend": 1
             },
             {
-              "scaleX": 0.9,
-              "scaleY": 0.9,
-              "dispW": 43,
-              "dispH": 43,
+              "scaleX": 0.85,
+              "scaleY": 0.85,
+              "dispW": 41,
+              "dispH": 41,
               "blend": 1
             }
           ]
@@ -572,25 +572,25 @@
         "orb_soul": {
           "width": 22,
           "height": 32,
-          "opaque": 233,
+          "opaque": 234,
           "inkPixels": 0,
-          "grayPixels": 85,
+          "grayPixels": 98,
           "edgeOpaquePixels": 4,
           "edgeSample": [
             {
               "x": 10,
               "y": 0,
-              "i": 6
+              "i": 9
             },
             {
               "x": 11,
               "y": 0,
-              "i": 6
+              "i": 9
             },
             {
               "x": 10,
               "y": 31,
-              "i": 5
+              "i": 6
             },
             {
               "x": 11,
@@ -599,11 +599,11 @@
             }
           ],
           "histogram": {
-            "pal6": 24,
-            "pal13": 115,
-            "pal11": 33,
-            "pal5": 33,
-            "pal9": 28
+            "pal9": 57,
+            "pal5": 25,
+            "pal13": 107,
+            "pal11": 29,
+            "pal6": 16
           }
         },
         "fx_evo_death_soul_beacon": {
@@ -615,10 +615,10 @@
           "edgeOpaquePixels": 0,
           "edgeSample": [],
           "histogram": {
-            "pal5": 238,
+            "pal5": 219,
             "pal13": 439,
-            "pal9": 118,
-            "pal6": 95,
+            "pal9": 180,
+            "pal6": 52,
             "pal11": 80
           }
         }
