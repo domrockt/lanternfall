@@ -44,6 +44,42 @@ export function titleBgLayout(gameW: number, gameH: number,
   };
 }
 
+/** Glas-Reihen des Flammen-Patches: 8x6 Texel ab Patch-Reihe 5 (komplett opak). */
+export const TITLE_GLASS_HOLE = { row: 5, w: 8, h: 6 } as const;
+/** Nacht-Dim-Stärke der Bodenlasur (unverändert zu main — nur Ausnahmefenster neu). */
+export const TITLE_DIM_ALPHA = 0.62;
+/** Nacht-Dim-Lasur: Deckel wie in main (Rectangle 0, 132+oy, W, 138). */
+export const TITLE_DIM_TOP = 132;
+export const TITLE_DIM_HEIGHT = 138;
+/**
+ * Flammen-Depth wie in main (2): bewusst UNTER den Menue-Buttons (6) und der
+ * Vignette (50) — die Dim-Ausnahme läuft über die Glas-Fenster in den Dim-
+ * Layern, NICHT über Depth (Flammen dürften nicht über dem Menü landen).
+ */
+export const TITLE_FLAME_DEPTH = 2;
+
+/**
+ * m10-title-dim-lanterns: Dim-Ausnahmefenster für die Laternen-Flammen
+ * (Lichtquellen). Je Laterne ein 8x6-Texel-Fenster exakt über den GLAS-Reihen
+ * des Flammen-Patches (Reihen 5-10, vollständig opake Texel) — dort zeigt die
+ * Szene dann die unverdunkelten Palettenstufen (13 lanternWhite im Kern).
+ * Skalenbewusst: Flammen-Patches werden mit bgL.scale gezeichnet, Fenster
+ * skalieren mit (bei Scale 1 identisch zu den Texel-Koordinaten).
+ * Bewusst NICHT die Funken-Reihen 0-4 (transparent, Hintergrund käme undunkel
+ * durch = helles Kasten-Artefakt) und bewusst KEIN Depth > Vignette/Buttons
+ * (Flammen dürften nicht über dem Menü landen).
+ */
+export function lanternGlassHoles(bgL: TitleBgLayout):
+  Array<{ x: number; y: number; w: number; h: number }> {
+  const s = bgL.scale;
+  return TITLE_FLAME_SPOTS.map((spot) => ({
+    x: bgL.x + spot.x * s,
+    y: bgL.y + (spot.y + TITLE_GLASS_HOLE.row) * s,
+    w: TITLE_GLASS_HOLE.w * s,
+    h: TITLE_GLASS_HOLE.h * s,
+  }));
+}
+
 export class Title extends Phaser.Scene {
   private seed = 1;
   private debug = false;
@@ -135,7 +171,7 @@ export class Title extends Phaser.Scene {
     const flameSeq = [0, 1, 0, 2];
     const flames = TITLE_FLAME_SPOTS.map((spot, i) =>
       this.add.image(bgL.x + spot.x, bgL.y + spot.y, flameFrames[flameSeq[i % flameSeq.length]!])
-        .setOrigin(0, 0).setDepth(2).setScale(s));
+        .setOrigin(0, 0).setDepth(TITLE_FLAME_DEPTH).setScale(s));
     let flameStep = 0;
     this.time.addEvent({
       delay: 500,
@@ -147,9 +183,44 @@ export class Title extends Phaser.Scene {
       },
     });
     // Dunkle Bodenlasur unter dem Textblock (nur Palettenfarbe, Alpha-Overlay).
-    this.add.rectangle(0, 132 + oy, W, 138, PAL[C.nightDeep], 0.62)
-      .setOrigin(0, 0).setDepth(3);
-    this.add.image(cx, H / 2, "vignette").setScrollFactor(0).setDepth(50)
+    // m10-title-dim-lanterns K2: die Laternen-Flammen (Lichtquellen) bleiben
+    // vom Nacht-Dim AUSGENOMMEN — die Lasur ist jetzt eine Canvas-Textur mit
+    // Fenstern exakt ueber den opaken Glas-Reihen der 4 Flammen-Patches
+    // (lanternGlassHoles). Landschaft/Text-Flaeche bleiben wie in main
+    // gedimmt (nightDeep, TITLE_DIM_ALPHA), nur das Glas zeigt ab sofort die
+    // ungedimmte Palette (Kern 13 lanternWhite). Kein Depth-Trick: die Flammen
+    // bleiben unter Menue-Buttons (L2 Glas liegt hinter OPTIONEN - Bestand).
+    const dimTop = oy + TITLE_DIM_TOP;
+    const dimHoles = lanternGlassHoles(bgL);
+    const dimKey = `title_dim_lasur_${W}x${H}`;
+    if (!this.textures.exists(dimKey)) {
+      const c = document.createElement("canvas");
+      c.width = W; c.height = TITLE_DIM_HEIGHT;
+      const ctx = c.getContext("2d")!;
+      ctx.globalAlpha = TITLE_DIM_ALPHA;
+      ctx.fillStyle = "#" + PAL[C.nightDeep].toString(16).padStart(6, "0");
+      ctx.fillRect(0, 0, W, 138);
+      ctx.globalAlpha = 1;
+      for (const hole of dimHoles) ctx.clearRect(hole.x, hole.y - dimTop, hole.w, hole.h);
+      this.textures.addCanvas(dimKey, c);
+    }
+    this.add.image(0, dimTop, dimKey).setOrigin(0, 0).setDepth(3);
+    // Vignette bleibt Vollbild-Dim (depth 50) — ebenfalls mit denselben
+    // Glas-Fenstern (lokale Kopie der Boot-Textur, Boot.ts unangetastet).
+    // drawImage auf Zielgroesse WxH erzwungen (Verhalten wie setDisplaySize),
+    // imageSmoothingEnabled = false fuer pixelgenaue Bandkanten (NEAREST).
+    const vinKey = `title_vignette_dim_${W}x${H}`;
+    if (!this.textures.exists(vinKey)) {
+      const src = this.textures.get("vignette").getSourceImage() as HTMLCanvasElement;
+      const c = document.createElement("canvas");
+      c.width = W; c.height = H;
+      const ctx = c.getContext("2d")!;
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(src, 0, 0, src.width, src.height, 0, 0, W, H);
+      for (const hole of dimHoles) ctx.clearRect(hole.x, hole.y, hole.w, hole.h);
+      this.textures.addCanvas(vinKey, c);
+    }
+    this.add.image(cx, H / 2, vinKey).setScrollFactor(0).setDepth(50)
       .setDisplaySize(W, H);
 
     this.add.image(cx, 58 + oy, "title_logo").setScale(2).setDepth(2);
