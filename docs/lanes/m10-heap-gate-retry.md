@@ -132,6 +132,20 @@ Skripts im Test ist selbst Teil der Abnahme: main-guard belegt Nebeneffektlosigk
 
 2 aufeinanderfolgende 30-min-Tor-Läufe unter `flock /home/ai/games/.lf-perf.lock`
 (ein Hintergrundbefehl, run1 → run2, Belege `shots/m10-heap-gate-retry-run{1,2}.json`,
-Kopie nach `~/games/.evidence/m10-heap-gate-retry/`). Ergebnis steht unten nach
-Abschluss; Abnahmekriterium: 2/2 verdict PASS oder FAIL (nie UNMESSBAR),
-Renderer-String = iGPU (kein SwiftShader).
+Kopie nach `~/games/.evidence/m10-heap-gate-retry/`).
+
+**Lauf 1 (belegt, 17:39:21–18:10:30Z, gitSha e7012251):**
+`gate=PASS` — endMB 48,6 MB vs Minute1 67,9 MB = **−28,4 %** (Tor ≤ +15 %),
+soft robust PASS (maxWindowFloor 78,3 MB = +7,9 % vs Floor Fenster 0), Raw-Peak-
+Beobachtung maxWindowPeak 80,2 MB = +18,1 %. victory=true, simSeconds 1830,6,
+truncated=false, fatal=null, attempts=[] (kein Retry nötig), FPS median 60,5
+(3665 Samples), Renderer `ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES
+3.2)` = **iGPU** (kein SwiftShader). Datei: `shots/m10-heap-gate-retry-run1.json`,
+Kopie in `~/games/.evidence/m10-heap-gate-retry/`.
+
+**Lauf 2:** gestartet 18:10Z unmittelbar nach Lauf 1 (derselbe flock-Block,
+`,lane-done`-Budget des Supervisors endete ~18:44Z; Lauf 2 endet ~18:41Z).
+Ergebnis wird beim Abschluss angehängt; falls der Lauf nach Abschlussbudget
+nicht mehr gewertet werden kann, gilt der Ersatznachweis aus dem Briefing
+(1 verbindlicher Lauf PASS + Retry-Pfad per Unit-Test belegt, 10/10 Tests in
+tests/heap-budget-retry.test.ts).
