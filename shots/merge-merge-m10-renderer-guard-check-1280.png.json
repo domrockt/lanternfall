@@ -1,0 +1,8 @@
+{
+  "url": "http://127.0.0.1:5585/?debug=1",
+  "scene": "run",
+  "commands": [],
+  "out": "shots/merge-merge-m10-renderer-guard-check-1280.png",
+  "gif": null,
+  "jsErrors": []
+}
