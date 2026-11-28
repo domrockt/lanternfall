@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 7432,
+  "next": 7437,
   "cards": [
     {
       "id": 1,
@@ -8971,6 +8971,51 @@
       "notes": [],
       "created": "2026-11-28T01:36:33Z",
       "updated": "2026-11-28T01:36:33Z"
+    },
+    {
+      "id": 7432,
+      "title": "m10-evo-fx-soulpyre K1: Ist-Beleg Seelenleuchtfeuer",
+      "description": "Lane #7278 (m10-evo-fx-soulpyre), Merge 6135fcc. Ist-Beleg: orb_soul 15x22 @ Scale 2, Todes-Signatur 32x32 @ 4,0-4,3x (graue Platte), Halo @ 1,8x; shots/m10-evo-fx-soulpyre-before-*.",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T01:43:33Z",
+      "updated": "2026-11-28T01:43:33Z"
+    },
+    {
+      "id": 7433,
+      "title": "m10-evo-fx-soulpyre K2: Fix Seelenflammen in Zielgroesse",
+      "description": "Lane #7279 (m10-evo-fx-soulpyre), Merge 6135fcc. orb_soul neu 22x32 Draw-Scale 1 (Seelen-Farb-Treppe 13/12/11/10/31/30/29, kein Ink/Grau), Signatur 96x96 + drawScale [1,1] in spawnEvolution, Halo gebackene Stufe 2 @ 0.9, Anticipation 0.28s + Ausklang-Fade + Seelen-Funken (SOUL_FX).",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T01:43:33Z",
+      "updated": "2026-11-28T01:43:33Z"
+    },
+    {
+      "id": 7434,
+      "title": "m10-evo-fx-soulpyre K3: Tests evo-fx-soulpyre",
+      "description": "Lane #7280 (m10-evo-fx-soulpyre), Merge 6135fcc. tests/evo-fx-soulpyre.test.ts (10 Guards): Zielgroessen 22x32/96x96, Draw-Scale-1-Guard am Quelltext, Farb-Treppe ohne Ink/Grau, hellflaechiger Kern >60%, Flacker-Frames verschieden, drawScale nur soul_beacon.",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T01:43:33Z",
+      "updated": "2026-11-28T01:43:33Z"
+    },
+    {
+      "id": 7435,
+      "title": "m10-evo-fx-soulpyre K4: Nachher-Beleg + Abnahme + Doku",
+      "description": "Lane #7281 (m10-evo-fx-soulpyre), Merge 6135fcc. after.json (iGPU, 0 JS-Fehler, Kern dominant), art-director Abnahme Runde 2 PASS 4,5/5 (alle 4 FAIL-Punkte aus Runde 1 behoben), docs/lanes/m10-evo-fx-soulpyre.md.",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T01:43:33Z",
+      "updated": "2026-11-28T01:43:33Z"
+    },
+    {
+      "id": 7436,
+      "title": "m10-evo-fx-soulpyre Merge-Fix: Signatur-Test phoenix drawScale [1,1]",
+      "description": "Merge 6135fcc (m10-evo-fx-soulpyre × m10-evo-fx-phoenix). tests/evo-fx-soulpyre.test.ts erwartete phoenix.drawScale = undefined (Lane-Stand); auf main ist Phönix seit dem Phoenix-Merge in Zielgröße 128 gebacken. Erwartung auf toEqual([1,1]) korrigiert, Baked-Verhalten beider Signaturen im Test dokumentiert. AC: vitest evo-fx-soulpyre + evo-fx-phoenix gruen, tsc rc=0.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T01:43:33Z",
+      "updated": "2026-11-28T01:43:33Z"
     }
   ]
 }
