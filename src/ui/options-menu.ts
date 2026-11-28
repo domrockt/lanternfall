@@ -84,7 +84,7 @@ export class OptionsMenu {
       cx, 135 + oy, "ui_frame", undefined, Math.min(rowW + 24, W - 24), 234, 8, 8, 8, 8,
     ));
     this.container.add(new PixelText(scene, cx, 42 + oy, "OPTIONEN", C.lantern, "center").setScale(2));
-    this.container.add(new PixelText(scene, cx, 62 + oy, "PFEILE ODER MAUS - ENTER/ESC", C.fog, "center"));
+    this.container.add(new PixelText(scene, cx, 62 + oy, "PFEILE ODER MAUS - ENTER/ESC", C.bone, "center"));
 
     // M10: Jede Zeile hat EINE zusammenhaengende Trefferflaeche ueber die volle
     // Zeilenbreite und die ganze Zeilenhoehe (20 px Pitch). Die Flaechen beruehren
@@ -121,9 +121,14 @@ export class OptionsMenu {
       }
       this.rows.push({ label, value, outline });
     }
+    // m10-menu-contrast-fixes K3: Footer stand auf H-14 und schnitt mit 465 px^2
+    // in die Title-Hint-Zeile "ESC = PAUSE - O = OPTIONEN" (H-18) — der Knopf-
+    // freie Slot direkt UEBER dem Hint-Block (H-50) ist overlap-frei zu allen
+    // Title-Texten beider Profile (Gap 5 px zur obersten Hint-Zeile). Farbe
+    // mist -> bone (Kontrast-Ziel >= 10).
     this.container.add(new PixelText(
-      scene, cx, H - 14, "OPTIONEN GELTEN SOFORT UND BLEIBEN GESPEICHERT",
-      C.mist, "center",
+      scene, cx, H - 50, "OPTIONEN GELTEN SOFORT UND BLEIBEN GESPEICHERT",
+      C.bone, "center",
     ));
     this.refresh();
     this.setInputEnabled(false);
