@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import { GAME_HEIGHT, GAME_WIDTH, setGameView } from "./config";
-import { computeView, viewKey, type ViewSpec } from "./logic/view";
+import { computeView, snapCanvasRect, viewKey, type ViewSpec } from "./logic/view";
 import { Boot } from "./scenes/Boot";
 import { Title } from "./scenes/Title";
 import { CharSelect } from "./scenes/CharSelect";
@@ -111,6 +111,18 @@ function applyView(spec: ViewSpec, force = false): void {
   canvas.style.height = `${spec.cssHeight}px`;
   canvas.style.maxWidth = "100vw";
   canvas.style.maxHeight = "100dvh";
+  // M10-view-pixel-snap: das Flex-Layout zentriert den Canvas; bei unteilbaren
+  // Breiten liegt seine Kante dann auf halben Geraetepixeln (2560x1080@1:
+  // CSS-x = 0.5) und die Randspalte blurrt zum Seitenhintergrund. Fix in der
+  // POSITIONIERUNG, nicht in der View-Rechnung: Rect nach dem Layout messen
+  // (Transform vorher loeschen, damit sich Offsets nicht akkumulieren) und um
+  // snapCanvasRect verschieben — Restspalte nach rechts/unten, harte Kante.
+  canvas.style.transform = "";
+  const rect = canvas.getBoundingClientRect();
+  if (rect.width > 0 && rect.height > 0) {
+    const snap = snapCanvasRect(rect.left, rect.top, spec.dpr);
+    canvas.style.transform = snap.alreadySnapped ? "" : `translate(${snap.dx}px, ${snap.dy}px)`;
+  }
   if (changed && game.scale && game.isBooted) {
     setGameView(spec.width, spec.height, spec.scale);
     game.scale.resize(spec.width, spec.height);

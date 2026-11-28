@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 11305,
+  "next": 11308,
   "cards": [
     {
       "id": 1,
@@ -15097,6 +15097,79 @@
       ],
       "created": "2026-11-28T10:08:28Z",
       "updated": "2026-11-28T10:49:52Z"
+    },
+    {
+      "id": 11305,
+      "title": "m10-view-pixel-snap K1: Vorher-Scan 2560x1080@1 + Kontrolle 1280x720@1",
+      "description": "Skript scripts/m10-view-snap.mjs: Pixel-Scan bei 2560x1080@1 (Kontrolle 1280x720@1), Balken-/Kanten-Beleg (barsPx, Canvas-Rect). Before-JSON + Shot nach /home/ai/games/.evidence/m10-view-pixel-snap/. Abnahme: JSON belegt barsPx.left=1 bei 2560x1080@1 (Canvas 2559 Geraetepx, CSS-x=0.5) und 0 Balken bei der Kontrolle; 0 JS-Fehler.",
+      "column": "done",
+      "assignee": "engine-dev",
+      "notes": [
+        {
+          "at": "2026-11-28T10:42:59Z",
+          "by": "build",
+          "text": "todo → doing: Lane m10-view-pixel-snap angenommen: Vorher-Scan 2560x1080@1 (Bedarf aus m10-view-4k K2-Meldung)."
+        },
+        {
+          "at": "2026-11-28T10:46:27Z",
+          "by": "build",
+          "text": "doing → review: Skript scripts/m10-view-snap.mjs (1 Iteration) + Before-JSON/Shots in /home/ai/games/.evidence/m10-view-pixel-snap/. Beleg: 2560x1080@1 canvasRectCss=[0.5,0,2559,1080], rectDevicePx=[0.5,0], rectIntegerDevice=false, barsPx.left=1; Kontrolle 1280x720@1 alles 0, 0 JS-Fehler, Renderer Mesa Intel RPL-S. Commit e99ffb8d."
+        },
+        {
+          "at": "2026-11-28T11:00:31+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #11148, Merge branch m10-view-pixel-snap"
+        }
+      ],
+      "created": "2026-11-28T10:42:57Z",
+      "updated": "2026-11-28T10:46:27Z"
+    },
+    {
+      "id": 11306,
+      "title": "m10-view-pixel-snap K2: Fix — Canvas-Rect auf ganze Geraetepixel snappen",
+      "description": "Snap im POSITIONIERUNGSPfad (src/main.ts bzw. index.html), nicht in der View-Rechnung: reine Helper-Funktion snapCanvasRect ADDITIV in src/logic/view.ts ergaenzen (bestehende Exporte unangetastet), main.ts konsumiert sie. Restspalte nach rechts (harte Kante). Abnahme: npx tsc --noEmit rc=0, bestehende Tests gruen, bestehende view.ts-Exporte unveraendert.",
+      "column": "done",
+      "assignee": "engine-dev",
+      "notes": [
+        {
+          "at": "2026-11-28T10:46:27Z",
+          "by": "build",
+          "text": "todo → doing: K2 Fix: snapCanvasRect additiv in src/logic/view.ts, Konsum in src/main.ts applyView (Transform nach Layout-Messung, Restspalte nach rechts)."
+        },
+        {
+          "at": "2026-11-28T10:48:25Z",
+          "by": "build",
+          "text": "doing → review: snapCanvasRect additiv in src/logic/view.ts (Exporte unangetastet), main.ts applyView: Transform nach Layout-Messung (Reset->messen->snappen, Rest nach rechts/unten). Belege: after.json rectDevicePx=[0,0], rectIntegerDevice=true, barsPx.left=0 (rechts 1 Geraetepx harte Restspalte), Kontrolle unveraendert, 0 JS-Fehler. tsc rc=0, 5 View-Testdateien 63 Tests gruen, build rc=0. Commit dd66b021. Nach-Shot gesichtet: Ränder hart, Spielfeld voll."
+        },
+        {
+          "at": "2026-11-28T11:00:31+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #11149, Merge branch m10-view-pixel-snap"
+        }
+      ],
+      "created": "2026-11-28T10:42:57Z",
+      "updated": "2026-11-28T10:48:25Z"
+    },
+    {
+      "id": 11307,
+      "title": "m10-view-pixel-snap K3: Guard-Test + After-Scan + Doku + Abschluss",
+      "description": "tests/view-pixel-snap.test.ts (ganzzahlige Rect-Grenzen fuer unteilbare Breiten 2560/1080 u.a.), After-Scan barsPx.left=0 bei 2560x1080@1, Stichprobe 2 weitere Formate ohne Rueckschritt, Doku docs/lanes/m10-view-pixel-snap.md + Belege in /home/ai/games/.evidence/m10-view-pixel-snap/. Abnahme: npm test gruen, npm run build rc=0, .lane-done.",
+      "column": "done",
+      "assignee": "engine-dev",
+      "notes": [
+        {
+          "at": "2026-11-28T10:48:25Z",
+          "by": "build",
+          "text": "todo → doing: K3: tests/view-pixel-snap.test.ts + Stichprobe 2 weitere Formate (3440x1440@1, 1920x1080@1) + Doku + .lane-done."
+        },
+        {
+          "at": "2026-11-28T11:00:31+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #11307, Merge branch m10-view-pixel-snap (doing-Karte der gemergten Lane)"
+        }
+      ],
+      "created": "2026-11-28T10:42:57Z",
+      "updated": "2026-11-28T10:48:25Z"
     }
   ]
 }
