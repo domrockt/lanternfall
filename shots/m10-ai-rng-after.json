@@ -1,0 +1,87 @@
+{
+  "tag": "after",
+  "fallback": "seeded",
+  "seed": 20261127,
+  "enemies": 120,
+  "frames": 600,
+  "dt": 0.016666666666666666,
+  "runs": [
+    {
+      "mark": "fa543c71",
+      "sample": [
+        {
+          "uid": 1,
+          "mode": "approach",
+          "blinks": 0,
+          "attacks": 0,
+          "x": 46,
+          "y": 38.5
+        },
+        {
+          "uid": 2,
+          "mode": "approach",
+          "blinks": 0,
+          "attacks": 0,
+          "x": 46,
+          "y": 38.6
+        },
+        {
+          "uid": 3,
+          "mode": "approach",
+          "blinks": 0,
+          "attacks": 0,
+          "x": 46,
+          "y": 38.5
+        },
+        {
+          "uid": 4,
+          "mode": "approach",
+          "blinks": 0,
+          "attacks": 0,
+          "x": 45.8,
+          "y": 38.8
+        }
+      ]
+    },
+    {
+      "mark": "fa543c71",
+      "sample": [
+        {
+          "uid": 1,
+          "mode": "approach",
+          "blinks": 0,
+          "attacks": 0,
+          "x": 46,
+          "y": 38.5
+        },
+        {
+          "uid": 2,
+          "mode": "approach",
+          "blinks": 0,
+          "attacks": 0,
+          "x": 46,
+          "y": 38.6
+        },
+        {
+          "uid": 3,
+          "mode": "approach",
+          "blinks": 0,
+          "attacks": 0,
+          "x": 46,
+          "y": 38.5
+        },
+        {
+          "uid": 4,
+          "mode": "approach",
+          "blinks": 0,
+          "attacks": 0,
+          "x": 45.8,
+          "y": 38.8
+        }
+      ]
+    }
+  ],
+  "identical": true,
+  "akzeptanz": "Nachher: Marken der beiden Kontrollläufe BITGLEICH (gesäter Pool-Fallback deterministisch).",
+  "bestanden": true
+}

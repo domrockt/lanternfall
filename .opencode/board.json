@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 7702,
+  "next": 7801,
   "cards": [
     {
       "id": 1,
@@ -9849,6 +9849,45 @@
       ],
       "created": "2026-11-28T03:11:29Z",
       "updated": "2026-11-28T03:11:51Z"
+    },
+    {
+      "id": 7798,
+      "title": "m10-ai-rng-seed K1: Vorher-Probe (2 Kontrollläufe, Divergenz belegen)",
+      "description": "scripts/m10-ai-rng.mjs --fallback=math: zwei Kontrollläufe gleicher Seed über stepEnemyAi mit Math.random-Fallback → KI-Marken divergieren. shots/m10-ai-rng-before.json committen. Akzeptanz: nach Fix bitgleiche Marken bei gleichem Seed; tsc/test/build grün; Balance-Korridor gegen shots/m10-balance-kael-final.json.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T03:21:44Z",
+          "by": "build",
+          "text": "doing → done: Vorher-Probe commit 8e01e16: fallback=math seed=20261127 markA=6fbb1086 markB=75571c0b identical=false → Divergenz belegt. Akzeptanz vor Messung festgelegt (im JSON)."
+        }
+      ],
+      "created": "2026-11-28T03:19:50Z",
+      "updated": "2026-11-28T03:21:44Z"
+    },
+    {
+      "id": 7799,
+      "title": "m10-ai-rng-seed K2: Gesäte KI-RNG in EnemyPool + Tests",
+      "description": "EnemyPool.ts: DEFAULT_AI_RNG (Math.random) ersetzen durch pool-eigenen SeededRng (Muster Run-SeededRng, Seed aus Run via Konstruktor, 1-Zeile-Verdrahtung); Recycle-Reset der 5 AiState-Felder nur prüfen (schon in resetAiState). tests/enemy-ai-rng.test.ts neu (Math.random-Spy wirft, Marken bitgleich). Commit.",
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-28T03:23:55Z",
+          "by": "build",
+          "text": "backlog → review: K2 commit c011202: EnemyPool-Fallback = pool-eigener SeededRng(aiSeed) statt Math.random; Run.ts übergibt Run-Seed (1 Zeile, unclaimed, begründet); Recycle-Reset bereits in resetAiState (nicht doppelt gebaut). Belege: tsc grün, tests/enemy-ai-rng.test.ts 4/4, 33 bestehende Pool/AI-Tests grün, npm test + build grün."
+        }
+      ],
+      "created": "2026-11-28T03:19:50Z",
+      "updated": "2026-11-28T03:23:55Z"
+    },
+    {
+      "id": 7800,
+      "title": "m10-ai-rng-seed K3: Nachher-Probe + Doku",
+      "description": "Probe mit --fallback=seeded → shots/m10-ai-rng-after.json (bitgleiche Marken); docs/lanes/m10-ai-rng-seed.md mit before/after + Hebel; Commit + .lane-done.",
+      "column": "backlog",
+      "notes": [],
+      "created": "2026-11-28T03:19:50Z",
+      "updated": "2026-11-28T03:19:50Z"
     }
   ]
 }
