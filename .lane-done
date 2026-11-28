@@ -1,0 +1,18 @@
+Lane m10-board-hygiene-stale: Board-Reconcile abgeschlossen (28.11.2026).
+12 verwaiste Karten von abgeschlossenen + gemergten Lanes nach done geschlossen,
+jede mit EIN-Zeilen-Referenz (Merge-/lane-done-/K-Commit):
+- #2226 → m10-enemy-ai (Merge 287a8ac)
+- #2678 → m10-perf-fix-ambient-batching (Merge 8c1b8d4, lane-done 6ca654d)
+- #7858/#7859/#7860/#7861 → m10-pause-freeze (Merge 1b1b352, lane-done 8fc6212)
+- #8599/#8601 → m10-boss-portrait-crisp (Merge b959a63, lane-done f5f201c)
+- #8607/#8608/#8609 → m10-boss-lure-fair (Merge d8b4961, K2 f587736, K3 ce5df8e, K4 c04727c)
+- #8669 → m10-run-determinism-fix (Merge 97fac33, lane-done 4acc1ce, Duplikat von #7979)
+Erster Run der Lane hatte #8598/#8600/#8606 bereits geschlossen (6b58865).
+Offen bleiben bewusst 24 Karten (Backlog-Follow-ups, blocked mit Grund, #1000/#1020 ohne
+Lane-Abschluss-Beleg) — Status/Owner/Text unverändert.
+Abnahme: board.json valid (747 Karten), diff seit 6b58865 nur .opencode/board.json +
+docs/lanes/m10-board-hygiene-stale.md + Marker-Commits (leer); kein Spielcode, keine Tests,
+kein shots/ angefasst. Board-Plugin-Gate ("one card = one commit") erzwang je Karte einen
+Marker-Commit mit Karten-ID (b9fd5b5…99ce22c) vor dem board_move.
+Lehre: Lanes sollten alle eigenen Karten VOR .lane-done schließen; Marker-Commits je Karte
+sind der dokumentierte Weg für Nachschließungen.
