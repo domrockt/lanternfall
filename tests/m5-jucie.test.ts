@@ -1,7 +1,22 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+
+// formatDamageLabel lebt in systems/DamageNumbers.ts, das Phaser nur fuer
+// PixelText/Scene importiert — Container-Stub wie in tests/damage-grid.test.ts.
+vi.mock("phaser", () => {
+  class Container {
+    scene: unknown;
+    children: unknown[] = [];
+    constructor(scene: unknown) { this.scene = scene; }
+    add(child: unknown) { this.children.push(child); return this; }
+    setDepth() { return this; }
+  }
+  return { default: { GameObjects: { Container } } };
+});
+
+import { formatDamageLabel } from "../src/systems/DamageNumbers";
 import { lodFor, LOD_THRESHOLD, fxAlphaFor } from "../src/logic/lod";
 import {
-  addDamage, expireDamage, damageLabel, rollCrit, critDamage, AGGREGATE_WINDOW,
+  addDamage, expireDamage, rollCrit, critDamage, AGGREGATE_WINDOW,
   shouldAggregateDamage, DAMAGE_AGGREGATE_MIN_ENEMIES,
   type AggregateEntry,
 } from "../src/logic/damage-numbers";
@@ -73,7 +88,7 @@ describe("Damage-Number-Zusammenfassung", () => {
     addDamage(list, { enemyUid: 1, damage: 10, crit: false, time: 0 });
     addDamage(list, { enemyUid: 1, damage: 10, crit: true, time: 0.1 });
     expect(list[0].crit).toBe(true);
-    expect(damageLabel(list[0])).toBe("20!");
+    expect(formatDamageLabel(list[0].damage, list[0].crit)).toBe("20!");
   });
   it("expire entfernt alte Einträge", () => {
     const list: AggregateEntry[] = [];
