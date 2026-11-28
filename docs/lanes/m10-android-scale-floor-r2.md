@@ -21,3 +21,53 @@ Belege (außerhalb des Repos): `~/games/.evidence/m10-android-scale-floor-r2/`
 - `android-tabS4-levelup-rb1-before.png` — Referenz: Text sauber.
 
 Sichtprüfung (Crops 2x): rb2 zerfällt, rb1 lesbar. ✔ Karte 1 abgeschlossen.
+
+## K2 — Renderpuffer hart auf 1 #10606
+
+`src/logic/scale.ts`: `RENDER_SCALE_MAX = 1` — der Teiler-Regler kann den
+Renderbuffer nicht mehr unter die logische Auflösung senken (Android-Praxisregel 1).
+`?rbscale` bleibt als Debug-Override, wird aber auf 1 geklemmt (`parseRenderScaleOverride`
+liefert für 2/3 jetzt null, `applyRenderScaleOverride` klemmt). `renderBufferSize`
+liefert jede Stufe als volle logische Größe. Der Soll/Ist-Vergleich in
+`config.ts installRenderBudget()` bleibt (stellt Buffer-Resets wieder her).
+
+Begründung fremde Dateien: `tests/fx-add-cap.test.ts`, `tests/boss-fx-contrast.test.ts`
+und `tests/boss-camera-width.test.ts` erwarteten den alten Teiler-Cap
+(FxSystem cappt ADD-Glows nur bei `RENDER_SCALE > 1`) — Erwartungen auf das neue
+Invarianten-Verhalten umgestellt; der echte Glow-Flächen-Cap kommt mit K3 über die
+Qualitätsstufe zurück.
+
+Belege: `npx vitest run` 1921/1921 grün, `npx tsc --noEmit` ok, `npm run build` ok.
+Commit 3bb22cd6. ✔ Karte 2 abgeschlossen.
+
+## K3 — Qualitätsstufen statt Auflösung #10607
+
+Neu `src/logic/quality.ts` (rein, ohne Phaser/Uhr):
+- Stufen `high/medium/low` mit Budgets `QUALITY_BUDGETS`: maxFxSprites 220/140/90,
+  maxAddArea ∞/9216/2025 Device-px, particlesPerHit 24/14/8,
+  damageNumbersPerSec 24/14/8, maxDamageLabels 12/8/5, glow an/an/aus.
+- Hysterese-Regler `stepQuality`: < 45 FPS 3 s kumulativ → Stufe runter,
+  > 57 FPS 12 s am Stück → rauf, Totzone 45–57 friert Timer ein (kein Pumpen).
+- Helper: glowAreaCapForQuality, glowSlotCapForQuality/glowEnabledFor,
+  damageLabelCapForQuality, damageNumbersPerSecFor, particlesPerHitFor.
+
+Verdrahtung NUR an bestehenden Caps (kleinste Änderung):
+- `FxSystem`: ADD-Flächen-Deckel (2 Spawn-Stellen) liest jetzt
+  `glowAreaCapForQuality(QUALITY)` statt des toten `glowAreaCapForRenderScale`;
+  Glow-Slot-Request (4 Stellen) zusätzlich mit `glowEnabledFor(QUALITY)` —
+  low fällt auf NORMAL-Blend zurück (wie beim Slot-Fallback).
+- `DamageNumbers.viewLimit`: min mit `damageLabelCapForQuality(QUALITY)`.
+- `config.ts`: live-Binding `QUALITY`, Laufzeit-Regler ruft `stepQuality`
+  (ersetzt den toten Teiler-Regler im rAF-Tick).
+- `debug.ts`: `__lf.state().quality` (Abnahme-Kriterium).
+
+Begründung fremde Dateien: Verdrahtung nur am existierenden Cap möglich
+(FxSystem.ts, DamageNumbers.ts, debug.ts) — je 1–4 Zeilen plus Import.
+Budget-Werte maxFxSprites/particlesPerHit/damageNumbersPerSec sind als
+Budget-Daten geliefert (Emissions-Caps existieren dort noch nicht; Bedarf
+gemerkt, keine neue Caps gebaut).
+
+Belege: `npx vitest run` 1936/1936 grün (neu: tests/quality-tier.test.ts,
+15 Tests), `npx tsc --noEmit` ok, `npm run build` ok.
+
+
