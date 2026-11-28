@@ -6,16 +6,23 @@ Divergenz ab Sim-Sekunde 1 in `elapsed`/`px`, danach alle 120 Marken (Seeds 101/
 
 ## Ergebnis (Kurz)
 
-| Seed | Before (Mess-Lane) | After (diese Lane) |
+| Seed | Before (Mess-Lane) | After (diese Lane, Endstand) |
 |---|---|---|
 | 101 | 120/120 Marken divergent (ab s=1, elapsed/px) | **IDENTISCH** — 120 Marken + Events + Final bitgleich |
-| 202 | 120/120 divergent | divergierend ab **s=48** (kills/enemies); s=1–47 bitgleich |
+| 202 | 120/120 divergent | **IDENTISCH** — 120 Marken + Events + Final bitgleich |
 | 404 | 120/120 divergent | **IDENTISCH** — 120 Marken + Events + Final bitgleich |
 
-Verdict after: `shots/m10-run-det-verdict.json` (`deterministic: false`, weil Seed 202) —
-**AK 1 ist zu 2/3 erfüllt; der Rest-Leak liegt in einer Fremd-Datei** (siehe „Offen“).
+Verdict after: `shots/m10-run-det-verdict.json` → **`deterministic: true`** (3/3 Seeds, 0
+divergierende Marken, 0 JS-Fehler). Before-Beleg: `shots/m10-run-det-verdict-before.json`
+(`deterministic: false`, 120/120 divergent je Seed). **AK 1 voll erfüllt.**
 
-## Fix — vier Schichten, alle in `src/scenes/Run.ts` + Mess-Skript
+Zwischenstand (erster Lauf, committet d81019c): 101/404 bitgleich, 202 divergierte ab s=48 in
+kills/enemies — Rest-Leak war die frame-basierte Spawn-Allowance in `src/systems/Spawner.ts`.
+Der vergebene Fremd-Job **`m10-spawn-budget-dt`** ist seitdem auf main gemerged (6728485);
+dieser Fix wurde hier aus main übernommen (Commit d3c17f3) und der Guard-Lauf wiederholt →
+auch Seed 202 jetzt bitgleich.
+
+## Fix — fünf Schichten: vier in `src/scenes/Run.ts` + Mess-Skript, eine aus main (`Spawner.ts`)
 
 1. **Carry-over statt Partial-Schritt** (`Run.update`): `scaledDt` geht in `simCarry`; nur volle
    `SIM_MAX_STEP`-Einheiten (1/20 s) werden simuliert, der Rest bleibt für den nächsten Frame.
@@ -36,6 +43,11 @@ Verdict after: `shots/m10-run-det-verdict.json` (`deterministic: false`, weil Se
    der Lerp-Follow (0,18) glättete `scrollX` pro Echtzeit-Frame → Spawn-Positionen frame-abhängig.
    Probe-Beleg: Spawn bei bitgleichem RNG-Ziehungsstand um ~1 px unterschiedlich (Gegner uid 15,
    Schritt 475); Kamerazentrum 8/23 px auseinander bei identischem Spieler.
+5. **Spawn-Allowance auf dt-Akkumulator** (`src/systems/Spawner.ts`, aus main übernommen — Job
+   `m10-spawn-budget-dt`, Merge 6728485): `accrueSpawnAllowance(acc, dt)` wächst mit SIM-Zeit
+   (480 Spawns je Sim-Sekunde = altes 60-Hz-Verhalten, ganzzahliger Abgriff, Rest-Carry,
+   Deckel `SPAWN_ALLOWANCE_MAX`). Vorher: `SPAWN_FRAME_BUDGET = 8` wurde pro *Echtzeit-Frame*
+   über `game.loop.frame` zurückgesetzt → Spawn-Phase frame-abhängig (Rest-Diff Seed 202 ab s=48).
 
 **Mess-Skript** (`scripts/m10-run-determinism.mjs`, 2 Edit-Iterationen wie genehmigt):
 (a) `?detstart=1` + `resumeRun()` im Flag-Eval; (b) `final` wird sim-exakt im simulate-Hook beim
@@ -48,9 +60,10 @@ unterschieden sich nur im final-Stempel).
 - KI-RNG: vor dem Fix Divergenz ab s=1 in px; nach dem Fix erster Diff s≈28–44.
 - Kamera: Schritt 633 — RNG-Ziehungsstand bitgleich (sd=204, ad=54), Spieler bitgleich, aber
   Spawn-Position von Gegner 18 um ~8/21 px unterschiedlich.
-- Nach allen vier Schichten: Seeds 101/404 in allen 120 Marken bitgleich; 202 ab s=48.
+- Nach allen vier Schichten: Seeds 101/404 in allen 120 Marken bitgleich; 202 ab s=48
+  (→ siehe „Rest-Befund“; geschlossen durch Schicht 5).
 
-## Rest-Befund Seed 202 (konkret, belegt aus `shots/m10-run-det-202-r{0,1}.json`)
+## Rest-Befund Seed 202 (Zwischenstand, geschlossen — Beleg aus `shots/m10-run-det-202-r{0,1}.json`)
 
 ```
 s=47: r0 kills 22, enemies 3, xp 9, px 21651341 | r1 identisch (bitgleich)
@@ -64,10 +77,10 @@ bitgleichem Spieler und bitgleichem RNG-Ziehungsstand. Ursache: die **frame-basi
 in `src/systems/Spawner.ts`** (`SPAWN_FRAME_BUDGET = 8` wird pro *Echtzeit-Frame* über
 `game.loop.frame` zurückgesetzt, Spawner.ts:106-108): bei 30× laufen 10–30 Sim-Schritte pro Frame;
 bei rauen Frame-Zeiten (geteilter Host) bindet der Deckel intermittierend und verschiebt die
-Spawn-Phase frame-abhängig. **Fremd-Datei** (Disponent-Claim liegt nicht bei dieser Lane) — der
-Fix (dt-basierte Zuteilung) ist als Job **`m10-spawn-budget-dt`** vergeben (Bedarfsmeldung
-`~/.dispatch/requests.md`, Eintrag 2026-11-28T03:1xZ; der Dispatcher hat den Zusammenhang
-Spawn-Allowance ↔ Determinismus dort bereits vermerkt).
+Spawn-Phase frame-abhängig. **Fremd-Datei** (Disponent-Claim lag nicht bei dieser Lane) — der
+Fix (dt-basierte Zuteilung) war als Job **`m10-spawn-budget-dt`** vergeben (Bedarfsmeldung
+`~/.dispatch/requests.md`, Eintrag 2026-11-28T03:1xZ) und ist inzwischen auf main gemerged
+(6728485); hier übernommen (Commit d3c17f3), Guard-Lauf danach: 202 bitgleich.
 
 Nicht die Ursache (geprüft/ausgeschlossen):
 - FrameBudget-Regler (scaling.ts): greift nur bei Deckel < 320 → `floorRatio = 1` → ratio bleibt
@@ -81,31 +94,32 @@ Nicht die Ursache (geprüft/ausgeschlossen):
 ## Abnahmekriterien
 
 1. **Determinismus-Messlauf** (`node scripts/m10-run-determinism.mjs --seconds=120`, ohne flock —
-   sim-exakte Marken, lastunabhängig): 101 ✓ IDENTISCH, 202 ✗ ab s=48 (s.o.), 404 ✓ IDENTISCH —
-   **teilweise erfüllt**, Rest hängt an `m10-spawn-budget-dt`. Before-Beleg:
-   `shots/m10-run-det-verdict-before.json` (aus Mess-Lane 99b990c, hier gesichert/committet).
+   sim-exakte Marken, lastunabhängig): **101 ✓, 202 ✓, 404 ✓ — alle drei Seeds IDENTISCH über
+   120 Marken + Events + Final**, Urteil `deterministic: true`, 0 JS-Fehler.
+   Before-Beleg: `shots/m10-run-det-verdict-before.json` (aus Mess-Lane 99b990c, gesichert/committet).
 2. **Marken-JSONs + Guard-Test im selben Commit** wie der Fix: `tests/run-determinism.test.ts`
-   assertet jetzt: 101/404 bitgleich (Marken+Events+Final), Marke s=1 bei ALLEN Seeds bitgleich
-   (die ursprüngliche Tick-Phase-Divergenz ist fixiert), 202 erster Diff exakt s=48 in
-   kills/enemies bei identischem px. Schlägt an, sobald auch 202 bitgleich ist → dann Verdict auf
-   `deterministic: true` heben und Befund hier aktualisieren.
-3. **Grün**: `npx tsc --noEmit` ✓, `npm test` **1307/1307** in 121 Dateien ✓, `npm run build` rc=0 ✓.
+   assertet jetzt: `deterministic: true` + je Seed `identical: true, divergingMarks: 0`,
+   alle 3 Seeds bitgleich (Marken+Events+Final), Marke s=1 bei ALLEN Seeds bitgleich,
+   und Seed 202 bleibt bitgleich (ehemaliger Rest-Leak als eigene Schranke). **7/7 grün.**
+3. **Grün**: `npx tsc --noEmit` ✓, `npm test` **1317/1317** in 122 Dateien ✓, `npm run build` rc=0 ✓.
 4. **Balance-Korridor unverändert** (`node scripts/balance.mjs --seeds 101 --characters kael`,
-   autoPlay, timeScale 30, ohne flock; Beleg `shots/m10-run-det-balance-kael-101.json`):
-   Kael/Seed 101 — **Sieg (dawn) bei 30,6 min**, Endlevel **37** (Korridor 25–40), **6/6 Bosse**
-   besiegt (Dauern 28/40/38/41/31/32 s — Korridor 20–60 s), **6 Truhen**, 3 Evolutionen
-   (wrath_pendulum, phoenix, eternal_winter), 0 JS-Fehler, kein Tod vor Minute 15.
-   Level 37 vs. Referenz 27–30 (`shots/m10-balance-kael-final.json`): die deterministische
-   Umstellung ändert die Trajektorie (KI-RNG aus Seed statt Math.random, Kamera-Anker, feste
-   Schritte) — im Zielband, Ursache dokumentiert, nicht wegtunet.
-5. **Doku** = dieses Dokument. `.lane-done` **nicht** gesetzt — siehe „Offen“.
+   autoPlay, timeScale 30, ohne flock; Beleg `shots/m10-run-det-balance-kael-101.json`,
+   **nach dem Spawner-Dt-Fix neu gemessen**):
+   Kael/Seed 101 — **Sieg (dawn) bei 30,6 min**, Endlevel **40** (Korridor 25–40, obere Grenze),
+   18254 Kills, **6/6 Bosse besiegt** (Dauern 33/48/44/36/40/34 s — Korridor 20–60 s,
+   `bossDurationsInCorridor: true`), 3 Evolutionen (wrath_pendulum, thunder_seal, soul_beacon),
+   `passedAll: true`, `allRunsPass: true`, 0 JS-Fehler, kein Tod vor Minute 15.
+   Level 40 vs. Referenz 27–30 (`shots/m10-balance-kael-final.json`) und vs. 37 (Erst-Messung
+   d81019c): die deterministische Umstellung + Spawner-Dt-Fix ändern die Trajektorie (KI-RNG aus
+   Seed statt Math.random, Kamera-Anker, feste Schritte, simzeit-basierte Spawn-Allowance) —
+   im Zielband (25–40 inklusive), Ursache dokumentiert, nicht wegtunet.
+5. **Doku** = dieses Dokument. `.lane-done` committet (alle Karten done).
 
-## Offen / blocked
+## Offen / Erledigt
 
-- **Seed 202 Rest-Diff s=48** → wartet auf **`m10-spawn-budget-dt`** (Fremd-Datei
-  `src/systems/Spawner.ts`, Z. 106-108: `lastSpawnFrame`/`spawnAllowance`). Danach: Guard-Lauf
-  wiederholen, Verdict `deterministic: true` erwarten, `tests/run-determinism.test.ts` erweitern
-  (Markierung im Test), Befund hier auf 3/3 heben.
+- ~~Seed 202 Rest-Diff s=48~~ — **erledigt**: `m10-spawn-budget-dt` ist auf main gemerged
+  (6728485), Fix hier übernommen (d3c17f3), Guard-Lauf: alle 3 Seeds bitgleich,
+  `deterministic: true` (siehe AK 1–3).
 - Bekannte, bewusst NICHT angefasste frame-abhängige Mechanismen außerhalb des 120-s-Fensters
   (für spätere Lanes): Truhe-Autoöffnung/Boss-Tod-Ketten laufen über Phaser-delayedCall (Wall-Clock,
   aber sim-gepaust → erst ab Boss-Phasen relevant); `EnemyProjectilePool.launchBudgetPerFrame`
