@@ -1,0 +1,52 @@
+{
+  "tag": "before",
+  "gitSha": "7886039",
+  "seed": 99,
+  "minutes": 3,
+  "burst": 500,
+  "t0": {
+    "active": 499,
+    "kills": 1,
+    "pools": {
+      "EnemyPool": {
+        "instances": 0,
+        "free": 0
+      },
+      "ProjectilePool": {
+        "instances": 0,
+        "free": 0
+      },
+      "Pool": {
+        "instances": 0,
+        "free": 0
+      }
+    },
+    "heapMB": 38.8
+  },
+  "tEnd": {
+    "active": 309,
+    "kills": 197,
+    "simSeconds": 180.8,
+    "pools": {
+      "EnemyPool": {
+        "instances": 0,
+        "free": 0
+      },
+      "ProjectilePool": {
+        "instances": 0,
+        "free": 0
+      },
+      "Pool": {
+        "instances": 0,
+        "free": 0
+      }
+    },
+    "heapMB": 51.1
+  },
+  "overhang": {
+    "EnemyPool": 0,
+    "ProjectilePool": 0,
+    "genericPool": 0
+  },
+  "jsErrors": []
+}

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 8662,
+  "next": 8758,
   "cards": [
     {
       "id": 1,
@@ -3691,11 +3691,17 @@
       "id": 2438,
       "title": "m10-heap-tail-followup-01 Pool.trim verdrahten oder Doku korrigieren",
       "description": "Reviewer-Befund: Pool.trim() ist toter Code (kein Aufrufer), docs/lanes/m10-heap-tail.md behauptet aber 'der Pool kappt Retention per trim()'. Abnahme: entweder trim() an EnemyPool/Run-Shutdown verdrahten + Test, oder Doku ehrlich auf 'API vorhanden, aktuell nicht verdrahtet' korrigieren. Owner engine-dev, Kontrolle reviewer.",
-      "column": "backlog",
+      "column": "doing",
       "assignee": "engine-dev",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T05:30:30Z",
+          "by": "build",
+          "text": "backlog → doing: K1 Befund: Pool.trim Code-Lesebefund (0 Aufrufstellen in src?) + Vorher-Messung Overhang via scripts/m10-pool-trim.mjs (3 min, 500 Gegner)."
+        }
+      ],
       "created": "2026-11-27T05:53:36Z",
-      "updated": "2026-11-27T05:53:36Z"
+      "updated": "2026-11-28T05:30:30Z"
     },
     {
       "id": 2439,
@@ -10982,16 +10988,21 @@
       "id": 8598,
       "title": "m10-boss-portrait-crisp K1: Before-Kontaktbögen 6 Bosse 1x+4x + Mängelliste",
       "description": "Owner: pixel-artist. AK: shots/m10-boss-portrait-before-*.png (je Boss 3 Frames 1x + 4x), Mängelliste je Boss max. 3 Muss-Punkte (Konturen, Silhouetten-Lesbarkeit, Lichtkanten), Baseline-JSON (Off-Palette, Silhouetten-Kontrast). Belege im Commit.",
-      "column": "doing",
+      "column": "todo",
       "notes": [
         {
           "at": "2026-11-28T04:32:17Z",
           "by": "build",
           "text": "todo → doing: Start K1: Kontaktbogen-Skript scripts/m10-boss-portrait.mjs, Before-Shots + Baseline-JSON."
+        },
+        {
+          "at": "2026-11-28T05:30:30Z",
+          "by": "build",
+          "text": "doing → todo: zurückgestellt per Supervisor (m10-pool-trim): fremde Lane-Karte, gehört nicht in doing (WIP-Limit)"
         }
       ],
       "created": "2026-11-28T04:32:11Z",
-      "updated": "2026-11-28T04:32:17Z"
+      "updated": "2026-11-28T05:30:30Z"
     },
     {
       "id": 8599,
@@ -11012,16 +11023,21 @@
       "id": 8600,
       "title": "m10-boss-portrait-crisp K3: Guard-Test boss-portrait-crisp.test.ts",
       "description": "Owner: test-auditor. AK: tests/boss-portrait-crisp.test.ts (6/6 Bosse, 0 Off-Palette-Pixel, Silhouetten-Kontrast >= Vorher, keine Frame-Dubletten) grün; npm test bleibt grün.",
-      "column": "doing",
+      "column": "todo",
       "notes": [
         {
           "at": "2026-11-28T04:58:15Z",
           "by": "build",
           "text": "todo → doing: Start K3: Guard-Test liegt vor, 5/5 grün auf Baseline und nach K2; Commit folgt."
+        },
+        {
+          "at": "2026-11-28T05:30:30Z",
+          "by": "build",
+          "text": "doing → todo: zurückgestellt per Supervisor (m10-pool-trim): fremde Lane-Karte, gehört nicht in doing (WIP-Limit)"
         }
       ],
       "created": "2026-11-28T04:32:11Z",
-      "updated": "2026-11-28T04:58:15Z"
+      "updated": "2026-11-28T05:30:30Z"
     },
     {
       "id": 8601,
@@ -11131,16 +11147,21 @@
       "id": 8606,
       "title": "m10-boss-lure-fair K1: Vorher-Beleg 6 Bosse x 3 Seeds",
       "description": "Skript scripts/m10-boss-fair.mjs: 6 Bosse x Seeds 101/202/404, autoPlay + 500 Gegner, 30 s Sim je Boss. Misst Distanz zum Spieler, Distanz zur Spawn-Zone (Leash), Sichtbarkeit im View, Schadensereignisse ohne vorherige Sichtbarkeit. Output shots/m10-bossfair-before.json. Abnahme: JSON committed, Kennzahlen (offscreenAnteil, maxLeashAbweichung, Schaden-ohne-Sicht) je Boss/Seed.",
-      "column": "doing",
+      "column": "todo",
       "notes": [
         {
           "at": "2026-11-28T03:33:39Z",
           "by": "build",
           "text": "todo → doing: Vorher-Beleg: Mess-Skript + Baseline-Lauf 6 Bosse x 3 Seeds"
+        },
+        {
+          "at": "2026-11-28T05:30:30Z",
+          "by": "build",
+          "text": "doing → todo: zurückgestellt per Supervisor (m10-pool-trim): fremde Lane-Karte, gehört nicht in doing (WIP-Limit)"
         }
       ],
       "created": "2026-11-28T03:33:37Z",
-      "updated": "2026-11-28T03:33:39Z"
+      "updated": "2026-11-28T05:30:30Z"
     },
     {
       "id": 8607,
