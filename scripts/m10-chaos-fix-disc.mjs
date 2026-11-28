@@ -38,6 +38,7 @@ const argOf = (name, fallback) => {
   return i >= 0 ? argv[i + 1] : fallback;
 };
 const TAG = String(argOf("tag", "before"));
+const PREFIX = "m10-hazard-disc-polish"; // Eigener Shot-Praefix der Polish-Lane (Belege von 3fa01eb bleiben unangetastet).
 
 const OUT = "shots";
 const TMP = `${homedir()}/tmp/m10-chaos-fix-hazard-disc`;
@@ -196,14 +197,14 @@ const injectDiscs = (page) => page.evaluate((discs) => {
     );
   }
   const added = run.hazards.active.slice(before);
-  return added.map((h) => ({ x: h.x, y: h.y, radius: h.radius }));
+  return added.map((h) => ({ x: h.x, y: h.y, radius: h.radius, discKey: h.warnSprite?.texture?.key ?? "" }));
 }, DISCS);
 
 const raf = (page) => page.evaluate(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))));
 
 const errors = [];
 const report = {
-  lane: "m10-chaos-fix-hazard-disc", tag: TAG, generatedAt: new Date().toISOString(),
+  lane: "m10-hazard-disc-polish", tag: TAG, generatedAt: new Date().toISOString(),
   swiftShader: null, renderer: null, errors: [],
   acceptance: {
     metric: "milkyShareDisc (hazard-attribuierte helle Nicht-Paletten-Pixel in Disc-Fenstern, shown-vs-hidden im selben Frame)",
@@ -239,7 +240,7 @@ try {
         const cam = run.cameras.main;
         return { scrollX: cam.scrollX, scrollY: cam.scrollY, camWidth: cam.width, camHeight: cam.height };
       });
-      const shotShown = `${OUT}/m10-chaos-fix-disc-${TAG}-${cfg.tag}-f${i + 1}.png`;
+      const shotShown = `${OUT}/${PREFIX}-${TAG}-${cfg.tag}-f${i + 1}.png`;
       await page.screenshot({ path: shotShown });
       const shown = decodePng(await page.screenshot());
 
@@ -252,7 +253,7 @@ try {
         }
       });
       await raf(page);
-      const shotHidden = `${TMP}/m10-chaos-fix-disc-${TAG}-${cfg.tag}-f${i + 1}-hidden.png`;
+      const shotHidden = `${TMP}/${PREFIX}-${TAG}-${cfg.tag}-f${i + 1}-hidden.png`;
       await page.screenshot({ path: shotHidden });
       const hidden = decodePng(await page.screenshot());
 
@@ -264,8 +265,9 @@ try {
 
       // Disc-Fenster in Device-Pixeln.
       const scale = shown.width / camInfo.camWidth;
-      let milkyDisc = 0, discPx = 0, hazardPx = 0, discWindows = 0;
+      let milkyDisc = 0, discPx = 0, hazardPx = 0, discWindows = 0, stackedDiscs = 0;
       for (const d of discs) {
+        if (d.discKey.includes("_s1")) stackedDiscs++;
         const cx = Math.round((d.x - camInfo.scrollX) * scale);
         const cy = Math.round((d.y - camInfo.scrollY) * scale);
         const half = Math.round((d.radius + 5) * scale);
@@ -297,6 +299,8 @@ try {
         shot: shotShown, hiddenShot: shotHidden.replace(homedir(), "~"),
         discs: discs.length, discWindows,
         milkyShareDisc: discPx ? +((100 * milkyDisc) / discPx).toFixed(2) : 0,
+        stackedDiscs,
+        discKeys: discs.map((d) => d.discKey),
         hazardShareDisc: discPx ? +((100 * hazardPx) / discPx).toFixed(2) : 0,
         milkyShareFull: +((100 * milkyFull) / (shown.width * shown.height)).toFixed(2),
         ...stats,
@@ -314,9 +318,9 @@ try {
         const x0 = Math.min(Math.max(0, cx - half), shown.width - w);
         const y0 = Math.min(Math.max(0, cy - half), shown.height - h);
         execFileSync("convert", [
-          `${OUT}/m10-chaos-fix-disc-${TAG}-${cfg.tag}-f${i + 1}.png`,
+          `${OUT}/${PREFIX}-${TAG}-${cfg.tag}-f${i + 1}.png`,
           "-crop", `${w}x${h}+${x0}+${y0}`, "-filter", "point", "-resize", "400%",
-          `${OUT}/m10-chaos-fix-disc-${TAG}-${cfg.tag}-f${i + 1}-zoom4x.png`,
+          `${OUT}/${PREFIX}-${TAG}-${cfg.tag}-f${i + 1}-zoom4x.png`,
         ]);
       }
     }
@@ -338,7 +342,7 @@ try {
   }
 } finally {
   report.errors = errors;
-  writeFileSync(`${OUT}/m10-chaos-fix-disc-${TAG}.json`, JSON.stringify(report, null, 2));
+  writeFileSync(`${OUT}/${PREFIX}-${TAG}.json`, JSON.stringify(report, null, 2));
   await browser.close();
   server.stop();
 }
