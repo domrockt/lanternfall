@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-11-28T01:33:25.161Z",
+  "generatedAt": "2026-11-28T01:37:37.992Z",
   "method": "Chaos (305 Nicht-Elites, Tier-Mix) + Elite-Cluster (2 je Typ, alle 5 Tiers, Radius 30-75); Familien-Buckets der Elite-Rim-Innenpixel je Tier (Palettenindex-Klassifikation wie tests/enemy-palette.test.ts); Amber-Rim-Coverage = Randpixel-Anteil PAL 20 (A10-Vertrag); Burst-FPS = Median/Mittel ueber 240 rAF-Ticks (unter flock gemessen)",
   "tag": "before",
   "minuteSec": 730,
   "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
   "alive": 339,
   "eliteSeen": 34,
-  "texMiss": 34,
+  "texMiss": 0,
   "elitesPerTier": {
     "0": 4,
     "1": 4,
@@ -14,10 +14,148 @@
     "3": 8,
     "4": 12
   },
-  "amberShareMin": null,
-  "rimCoverage": {},
-  "tierFamilies": {},
-  "distinctDominantFamilies": 0,
+  "amberShareMin": 1,
+  "rimCoverage": {
+    "enemy_bog_rat": {
+      "tier": 0,
+      "boundary": 43,
+      "amberShare": 1
+    },
+    "enemy_wisp": {
+      "tier": 0,
+      "boundary": 33,
+      "amberShare": 1
+    },
+    "enemy_skeleton": {
+      "tier": 1,
+      "boundary": 47,
+      "amberShare": 1
+    },
+    "enemy_scarecrow": {
+      "tier": 1,
+      "boundary": 68,
+      "amberShare": 1
+    },
+    "enemy_wolf": {
+      "tier": 2,
+      "boundary": 66,
+      "amberShare": 1
+    },
+    "enemy_banshee": {
+      "tier": 2,
+      "boundary": 60,
+      "amberShare": 1
+    },
+    "enemy_golem": {
+      "tier": 2,
+      "boundary": 85,
+      "amberShare": 1
+    },
+    "enemy_knight": {
+      "tier": 3,
+      "boundary": 98,
+      "amberShare": 1
+    },
+    "enemy_lich": {
+      "tier": 3,
+      "boundary": 127,
+      "amberShare": 1
+    },
+    "enemy_wraith": {
+      "tier": 3,
+      "boundary": 78,
+      "amberShare": 1
+    },
+    "enemy_treant": {
+      "tier": 3,
+      "boundary": 130,
+      "amberShare": 1
+    },
+    "enemy_horror": {
+      "tier": 4,
+      "boundary": 89,
+      "amberShare": 1
+    },
+    "enemy_centipede": {
+      "tier": 4,
+      "boundary": 93,
+      "amberShare": 1
+    },
+    "enemy_gargoyle": {
+      "tier": 4,
+      "boundary": 80,
+      "amberShare": 1
+    },
+    "enemy_voidcaller": {
+      "tier": 4,
+      "boundary": 95,
+      "amberShare": 1
+    },
+    "enemy_abom": {
+      "tier": 4,
+      "boundary": 117,
+      "amberShare": 1
+    },
+    "enemy_reaper_bat": {
+      "tier": 4,
+      "boundary": 99,
+      "amberShare": 1
+    }
+  },
+  "tierFamilies": {
+    "0": {
+      "dominantFamily": "gold",
+      "shares": {
+        "glut-braun": 0.309,
+        "mittel-neutral": 0.275,
+        "gruen": 0.054,
+        "gold": 0.362
+      }
+    },
+    "1": {
+      "dominantFamily": "hell-neutral",
+      "shares": {
+        "hell-neutral": 0.332,
+        "mittel-neutral": 0.17,
+        "gold": 0.226,
+        "glut-braun": 0.272
+      }
+    },
+    "2": {
+      "dominantFamily": "mittel-neutral",
+      "shares": {
+        "hell-neutral": 0.163,
+        "blau": 0.126,
+        "mittel-neutral": 0.352,
+        "gold": 0.021,
+        "glut-braun": 0.32,
+        "gruen": 0.018
+      }
+    },
+    "3": {
+      "dominantFamily": "mittel-neutral",
+      "shares": {
+        "blut-rot": 0.028,
+        "mittel-neutral": 0.432,
+        "hell-neutral": 0.124,
+        "blau": 0.167,
+        "gold": 0.023,
+        "glut-braun": 0.206,
+        "gruen": 0.019
+      }
+    },
+    "4": {
+      "dominantFamily": "mittel-neutral",
+      "shares": {
+        "blut-rot": 0.224,
+        "mittel-neutral": 0.419,
+        "hell-neutral": 0.257,
+        "blau": 0.097,
+        "gold": 0.003
+      }
+    }
+  },
+  "distinctDominantFamilies": 3,
   "burstFps": {
     "median": 60,
     "mean": 60,

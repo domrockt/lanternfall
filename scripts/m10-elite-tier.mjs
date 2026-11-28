@@ -99,8 +99,8 @@ try {
     await new Promise((r) => setTimeout(r, 250));
 
     const rand = mulberry32(20261128);
-    const px = 2048;
-    const py = 2048;
+    const px = 380; // weit weg vom 600s-Boss (spawnt an der Skip-Position)
+    const py = 380;
     window.__lf.teleport(px, py);
 
     // 1) Chaos-Ring (Nicht-Elite).
@@ -137,6 +137,14 @@ try {
     }
     await new Promise((r) => setTimeout(r, 400));
 
+    // Beleg-Aufraeumen (nur Darstellung, kein Gameplay-Eingriff): der bei 600 s
+    // gespawnte Boss und XP-Gems gehoeren nicht ins Elite-Cluster-Crop.
+    for (const b of run.bosses?.bosses ?? []) {
+      b.sprite?.setVisible(false);
+      if (b.enemy?.sprite) b.enemy.sprite.setVisible(false);
+    }
+    for (const g of run.pickups?.gems ?? []) g.sprite?.setVisible(false);
+
     // 3) Familien-Metrik aus den ECHTEN Elite-Texturen (Original-Canvas
     //    bleibt laut atlas.ts erhalten; Palettenindex-Klassifikation wie
     //    tests/enemy-palette.test.ts).
@@ -159,7 +167,7 @@ try {
     for (const e of run.enemies.active) {
       if (!e.alive || !uids.includes(e.uid) || !e.elite) continue;
       eliteSeen++;
-      const key = `enemy_${e.def.spriteKey}_rim`;
+      const key = `${e.def.spriteKey}_rim`;
       if (!tex.exists(key)) { texMiss++; continue; }
       const source = tex.get(key).getSourceImage();
       const w = source.width; const h = source.height;
@@ -239,7 +247,10 @@ try {
     cctx.imageSmoothingEnabled = false;
     cctx.drawImage(gameCanvas, sx, sy, Math.round(cw * scale), Math.round(ch * scale), 0, 0, cw * 4, ch * 4);
     crop.style.cssText = `position:fixed;top:0;left:0;z-index:9999;image-rendering:pixelated;width:${cw * 4}px;height:${ch * 4}px;background:#06070c;`;
-    document.body.appendChild(crop);
+    crop.id = "crop4x";
+    // Erst NACH dem Full-Shot einfuegen (zweites evaluate), damit das
+    // Vollbild nicht vom Crop verdeckt wird.
+    window.__cropCanvas = crop;
 
     // GL-Renderer (Mesa Intel iGPU erwartet — Pflicht im Beleg).
     let renderer = "";
@@ -273,6 +284,7 @@ try {
   });
 
   await page.screenshot({ path: OUT_PNG });
+  await page.evaluate(() => document.body.appendChild(window.__cropCanvas));
   await page.screenshot({ path: OUT_CROP, clip: { x: 0, y: 0, width: 440, height: 320 } });
 } finally {
   await browser.close();
