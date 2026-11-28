@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 10947,
+  "next": 11082,
   "cards": [
     {
       "id": 1,
@@ -14082,6 +14082,48 @@
       "notes": [],
       "created": "2026-11-28T10:16:12Z",
       "updated": "2026-11-28T10:16:12Z"
+    },
+    {
+      "id": 11078,
+      "title": "m10-ui-pause-quality K1: Vorher-Scan Pause (Kontrast + Icon-Overlaps, 640x360 + 780x360@3)",
+      "description": "Akzeptanz: scripts/m10-ui-pause-quality.mjs laeuft (Pause-Screen, Profile 640x360@2 und 780x360@3), JSON nach ~/games/.evidence/m10-ui-pause-quality/ (before) mit Kontrast-Fails (Erwartung: 12x idx 8 @4.15), 10 Icon-Overlaps, Zeilen-1-6-Name/LV-Abstaenden. Belegt die Baseline VOR dem Fix. Owner: Lead; Kontrolleure: test-auditor.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T10:31:07Z",
+          "by": "build",
+          "text": "todo → doing: m10-ui-pause-quality K1 angenommen: Scan-Skript auf Basis m10-menu-quality.mjs, Vorher-Messung vor dem Fix."
+        }
+      ],
+      "created": "2026-11-28T10:31:04Z",
+      "updated": "2026-11-28T10:31:07Z"
+    },
+    {
+      "id": 11079,
+      "title": "m10-ui-pause-quality K2: Pause-Build-Texte Farbe idx 8 -> 12 (Kontrast >= 4.5)",
+      "description": "Akzeptanz: src/scenes/UI.ts refreshPause: Passive-Spalte (Namen + LV) von C.mist (8, Kontrast 4.15) auf C.candleWhite (12); Waffen-Spalte (C.bone, besteht) unangetastet; Hinweiszeilen (ESC/PFEILE, idx 8/7) laut Scope unveraendert. Scan nachher: keine idx-8-Fails mehr im Pause-Build. Owner: Lead; Kontrolleure: reviewer + test-auditor.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T10:31:04Z",
+      "updated": "2026-11-28T10:31:04Z"
+    },
+    {
+      "id": 11080,
+      "title": "m10-ui-pause-quality K3: Icon-Spacing +4 px (0 Frame-Overlaps) + Zeile-6-Spaltenpuffer",
+      "description": "Akzeptanz: (a) Zeilen-Pitch 15 -> 19 in beiden Build-Spalten: 0 Icon-Frame-Overlaps (vorher 10), keine neuen Text/Icon-Overlaps; (b) art-director-Hebel (7): Zeile 6 (SEELENLEUCHTFEUER) bekommt denselben Spalten-Puffer wie Zeilen 1-5 (Name→LV >= 22 px, Minimum der Zeilen 1-5 im Vorher-Scan; LV sitzt heute 2 px an der Sanduhr-Icon-Kante) via slotNameLines-Umbruch, Zeilen 1-5 pixelgleich. Owner: Lead; Kontrolleure: art-director + reviewer.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T10:31:04Z",
+      "updated": "2026-11-28T10:31:04Z"
+    },
+    {
+      "id": 11081,
+      "title": "m10-ui-pause-quality K4: Regressionstest + Nachher-Scan + Abnahme-Shots + Lane-Doku",
+      "description": "Akzeptanz: tests/ui-pause-quality.test.ts (Kontrast >= 4.5 Build-Texte, 0 Overlaps, Zeile-6-Puffer >= Zeilen-1-5-Puffer, beide Viewports per Scan-JSON belegt); Nachher-Scan + Diff (Rest pixelgleich bis auf gemeldete Differenzen) nach ~/games/.evidence/m10-ui-pause-quality/; Abnahme-Shots shots/abnahme/m10-ui-pause-quality-*.png; npx tsc --noEmit rc=0, npm run build rc=0, npm test gruen, 0 JS-Fehler; docs/lanes/m10-ui-pause-quality.md; .lane-done. Owner: Lead; Kontrolleure: playtester + acceptance-auditor.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T10:31:04Z",
+      "updated": "2026-11-28T10:31:04Z"
     }
   ]
 }
