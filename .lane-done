@@ -1,0 +1,18 @@
+# Lane m10-apk-splash-window-beleg — 2026-11-28
+
+Karte #13215 (einzige der Lane): natives Starting-Window beim echten Kaltstart (erste ~3 s)
+dynamisch belegen. Ergebnis: **GEBLOCKT — keine Messung möglich, Ursache Spieler-Sperre.**
+
+- `/status` vor dem (einzigen) Versuch: `dom_playing=true` (3/3 Checks über ~4 min, user_idle_s 146→246→276).
+  Gemäß Auftrag Start übersprungen, kein `POST /launch` gegen die Sperre, kein sleep-Polling.
+- Beleg (außerhalb des Repos): ~/games/.evidence/m10-apk-splash-window-beleg/window-shots/manifest.json
+  (starts[0].blocked="DOM_SPIELT … kein Launch versucht", domPlayingBefore=true, launch=null, shots=[])
+  und status-after-attempt.json (Rohdaten dom_playing=true).
+- Messwerkzeuge liegen bereit und sind validierbar: scripts/m10-apk-splash.mjs
+  (M10_STARTS=1, M10_WINDOW_MS=6000, Warm-up-Shot vor Launch, ~420-ms-Takt, manifest mit atMs)
+  + ~/tmp/m10-apk-splash-window-beleg/measure.py (Pillow: Rand-Median #0a0d14 ±4,
+  Laterne ≥30 helle Pixel zentriert, kein Vollbild #000000, kein helles System-Fenster).
+- Hebel: EIN Retry, sobald /status dom_playing=false meldet (Karten-Restart durch Scheduler);
+  dann measure.py über das Shot-Verzeichnis, Urteil in docs/lanes/m10-apk-splash-window-beleg.md ergänzen.
+- Keine Spiel-/APK-Änderungen. Build rc=0, Tests 229 Dateien/2494 grün (vor Commit).
+- Doku: docs/lanes/m10-apk-splash-window-beleg.md (Urteil, Ursache, Hebel, Belegpfade).

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 13195,
+  "next": 13216,
   "cards": [
     {
       "id": 1,
@@ -18600,6 +18600,27 @@
           "text": "lane #13167, Merge branch m10-g-heap-sync"
         }
       ]
+    },
+    {
+      "id": 13215,
+      "title": "m10-apk-splash-window-beleg: natives Starting-Window beim echten Kaltstart belegen (erste ~3 s)",
+      "description": "Beleg-Karte (NUR-MESS, keine Spiel-/APK-Aenderung). Abnahme: EIN Kaltstart mit Warm-up-Skript scripts/m10-apk-splash.mjs (Screencaps ab t=0, erste 3 s moeglichst lueckenlos ~400 ms); Pillow-Farbmessung je Shot (BG #0a0d14 ±4/255, Laterne hell zentriert, kein Vollbild #000000, kein helles System-Fenster); manifest.json mit Shot-Zeitstempeln + Nachweis, dass kein Launch gegen die Spieler-Sperre erfolgte (/status vor jedem Start, dom_playing=true -> geblockt); Doku docs/lanes/m10-apk-splash-window-beleg.md mit Urteil ja/nein + Belegpfaden; danach .lane-done.",
+      "column": "doing",
+      "assignee": "coder",
+      "notes": [
+        {
+          "at": "2026-11-28T16:21:21Z",
+          "by": "build",
+          "text": "todo → doing: Lane m10-apk-splash-window-beleg uebernommen; /status geprueft (dom_playing=true zum Zeitpunkt der Annahme -> Launch noch nicht versucht)."
+        },
+        {
+          "at": "2026-11-28T16:21:23Z",
+          "by": "build",
+          "text": "doing → doing: Lane m10-apk-splash-window-beleg uebernommen; /status geprueft (dom_playing=true bei Annahme -> Launch noch nicht versucht, Sperre respektiert)."
+        }
+      ],
+      "created": "2026-11-28T16:21:21Z",
+      "updated": "2026-11-28T16:21:23Z"
     }
   ]
 }
