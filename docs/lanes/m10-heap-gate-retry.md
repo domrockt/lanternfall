@@ -56,6 +56,54 @@ nicht der Port-Mechanismus: hier ist die Einheit der komplette Messversuch
 ### Gate-Verhalten
 
 An den Tor-Definitionen (`scripts/m10-heap-budget-gate.mjs`, getestet in
-`tests/heap-budget.test.ts`) ändert diese Lane **nichts**. Das Skript schreibt bei
-endgültigem Scheitern aller Versuche eindeutig `verdict: UNMESSBAR` plus
-Ursachefeld (`gate.cause`), statt einen Halbsatz im Log zu hinterlassen.
+`tests/heap-budget.test.ts`) ändert diese Lane **nichts** (Review-Beleg:
+`git diff --stat b472b57d..HEAD -- scripts/m10-heap-budget-gate.mjs tests/heap-budget.test.ts` → leer).
+Das Skript schreibt bei jedem nicht vollständig durchgelaufenen Lauf eindeutig
+`verdict: UNMESSBAR` plus Ursachefeld (`gate.cause`, Fehlerklasse + Versuchsprotokoll),
+statt eines Halbsatzes im Log — auch für den Randfall „Letzter Versuch liefert nach
+Target-Tod noch ein Not-GC-endMB" (Review-Finding 3): ein Lauf gilt nur als valider
+Tor-Beleg, wenn er ohne `fatal`, nicht `truncated` und mit Sieg oder Sim-Zeit ≥
+Budget abgeschlossen ist; sonst werden Minute-1/endMB bewusst als `null` an das Tor
+übergeben (UNMESSBAR aus der Gate-Funktion selbst, nicht per Verdict-Override).
+
+## K2 — Mess-Retry (Karte #13425, Commit 27d3ba86 + Review-Fixes 3a0beb23)
+
+Umsetzung (Verhalten bei Erfolg bitgleich, nur umstrukturiert in `measureOnce`):
+- **Retry-Einheit = gesamter Messversuch** (`measureOnce`): Browser-Neustart +
+  Lauf + endMB. Begründung K1: nach Target-Tod bleibt kein valider Teilbeleg,
+  Minute-1-Referenz und endMB müssen aus demselben Lauf stammen.
+- `withRetry` (Muster harness.mjs startServer B5): 1 + 2 Retries
+  (`MEASUREMENT_ATTEMPTS = 3`), retryable Klassen `target-closed`,
+  `cdp-detached`, `timeout`; alles andere bricht sofort ab.
+- `classifyError`: die beiden historischen Beleg-Meldungen sind belegt
+  target-closed (`page.waitForTimeout:` / `page.evaluate:` Varianten).
+- Server wird 1× gestartet (`startServer` mit eigenem Port-Retry), Browser je Versuch.
+- Bei Erschöpfung: partielles JSON + `gate.cause` (Klasse, Versuchsprotokoll
+  `#1:target-closed …`, gekürzte Ursache), Console-Print führt `UNMESSBAR … cause`.
+
+Kontrolleure:
+- **test-auditor: PASS** — 10/10 Tests grün (`npx vitest run
+  tests/heap-budget-retry.test.ts`), echte Fehlermeldungen getestet, Retry-Grenze
+  3 Gesamtversuche, Nicht-Retry-Pfad, keine Gate-Mathematik dupliziert.
+- **reviewer: FAIL Runde 1** → 3 Findings, alle behoben in 3a0beb23:
+  1. *kritisch — hängender Prozess:* entferntes `process.exit(0)` war tragend;
+     Node blieb am lebenden `http.server`-Child hängen und hätte
+     `games/.lf-perf.lock` dauerhaft gehalten. Fix: `server.stop()` + Exit am
+     Ende von `main()`, dazu Flush vor Exit (`process.stdout.write("", cb)`)
+     — `process.exit` direkt nach `console.log` verlor gepufferte Pipe-Ausgabe
+     (stummer Smoke-Lauf als Beleg).
+  2. *Erfolgs-JSON bitgleich:* `lane` wieder `"m10-heap-budget"`, `startedAt`
+     wieder Run-Start (aus `measureOnce`), `attempts` nur als Erweiterungsfeld.
+  3. *UNMESSBAR-Vertrag erzwungen:* unvollständige Läufe (fatal/truncated/
+     vorzeitig abgebrochen) → `minute1MB/endMB = null` → Tor selbst liefert
+     UNMESSBAR; `gate.cause` nennt Ursache. PASS/FAIL auf Teilbeleg ist jetzt
+     ausgeschlossen.
+
+## K3 — Guard-Test (Karte #13426, Commit 4480c18e)
+
+`tests/heap-budget-retry.test.ts`: 10 Tests — Fehlerklassen (beide historischen
+Belegmeldungen, Session-/CDP-/Timeout-/Port-/Sonstige), Retry-Grenze (exakt
+`MEASUREMENT_ATTEMPTS` Aufrufe, letzter Fehler), Nicht-Retry (1 Aufruf),
+`buildCause`-Format, UNMESSBAR-Pfad über die echte `evaluateHeapGate`. Import des
+Skripts im Test ist selbst Teil der Abnahme: main-guard belegt Nebeneffektlosigkeit.
+`tests/heap-budget.test.ts` unangetastet.
