@@ -1,0 +1,28 @@
+Lane m10-fps-pacing-fix — Abschluss 2026-11-28 ~19:4xZ
+
+Ziel: Pacing-Fix nach strengem K3-Tor FAIL (janky-remeasure K2/K3: janky 0 %, aber
+fpsAvg natural 50,1/50,0 < 60, rAF p95 33,4 ms > 16 ms, bimodales 2-Vsync-Raster;
+Ursachenklasse Present-Pacing/Sim-Last, nicht Cap-Logik/Thermik/Gegner-Last).
+
+Geliefert:
+- #13686 K1: Baseline bestätigt, strenges Tor FAIL → Code-Pflicht (Commit 6ec062d6).
+- #13687 K2+K3: Hebel 1 Late-Frame-Toleranz — maxSimStepsForFrame() in
+  src/logic/fps-cap.ts (realDt > 17 ms → max 1 Sim-Substep, Fast-Forward ausgenommen),
+  verdrahtet im Substep-Loop src/scenes/Run.ts. Schrittfolge unverändert → Sim-Marken
+  bitgleich, Cap-60-Vertrag unangetastet (Commit 5399a5e3).
+- #13688 K4: tests/fps-pacing-fix.test.ts (Skip-Semantik, bitgleiche Schrittfolge,
+  Carry-Begrenzung, Cap-60). Suite 238 Dateien / 2575 Tests grün, tsc rc=0, build grün
+  (Commit a1f84404).
+
+Offen (Karte #13689 K5 = blocked, an Nachhol-Lauf übergeben):
+- Gerät-Nachmessung 10 min BILDRATE=60 (scripts/m10-janky-remeasure.mjs, nur ausführen).
+  Blockaden: /install?lane= baute keine Lane-APK (still Main-APK 11f929c7 statt Lane-HEAD
+  a1f84404 — Bedarf in .dispatch/requests.md), Proxy-Läufe gescheitert (ENOENT-Write-Falle,
+  .lf-perf.lock-Konflikt mit m10-heap-gate-retry), DOM_SPIELT-Sperre befolgt.
+  Nachhol-Pfad + Hebel-2-Eskalation (fx-medium-cap-Area) stehen in
+  docs/lanes/m10-fps-pacing-fix.md.
+
+Belege: Vorher ~/games/.evidence/m10-janky-remeasure/{k2-cap60-device,k3-max-device}.json;
+Nachher-Ordner ~/games/.evidence/m10-fps-pacing-fix/ angelegt (Geräte-/Proxy-JSON folgt im
+Nachhol-Lauf). Haupt-Board: #13686-#13688 done, #13689 blocked; fremde #13283 als mismatched
+abgelegt. Lane-Worktree sauber (nur .opencode/board.json finaler Stand).

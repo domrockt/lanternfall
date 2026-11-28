@@ -60,7 +60,7 @@ Ausnahme, Schrittfolgen-bitgleichheit (Prefix-Verhältnis vor/nach), Carry-Begre
 (kein unbegrenztes Wachstum, dt-Clamp 0,05 s), keine Spikes > 33 ms im Fixture-Muster,
 Cap-60-Vertrag unangetastet.
 
-## K5: Gerät-Nachmessung — **BLOCKED** (Stand 18:1xZ)
+## K5: Gerät-Nachmessung — **BLOCKED / an Nachhol-Lauf übergeben** (Lane-Abschluss 19:4xZ)
 
 10-min-Lauf BILDRATE=60 mit `scripts/m10-janky-remeasure.mjs` (nur ausgeführt, nicht geändert —
 fremde Area), `flock /home/ai/games/.lf-perf.lock`, Belege nach
@@ -73,15 +73,23 @@ Tor wie K1. Spieler-Sperre respektiert (HTTP 409 → lokal/Proxy messen, nicht w
    Build nach `/launch` weiter `11f929c7` (Main-Hourly 17:14Z) statt Lane-HEAD `a1f84404` —
    eine Messung jetzt würde den Main-Stand messen, nicht den Fix. Bedarf in
    `.dispatch/requests.md` gemeldet.
-2. Proxy-Ersatzbeleg (`scripts/android-proxy.mjs`, sanktioniert bei Spieler-Sperre)
-   unvollständig: Lauf ohne Output gestorben; unmittelbar danach `DOM_SPIELT` (Spieler-Sperre,
-   Regel befolgt: kein Retry am Gerät); die Mess-Sperre `.lf-perf.lock` ist durch die Lane
-   m10-heap-gate-retry ~60 min belegt (2×30-min-Läufe) — ein Retry würde dort einreihen.
+2. Proxy-Ersatzbeleg (`scripts/android-proxy.mjs`, sanktioniert bei Spieler-Sperre) zweimal
+   gescheitert: Lauf 1 starb am Write (ENOENT — Ausgabeverzeichnis fehlte, Skript gibt den
+   Pfad nicht selbst an), Lauf 2 (mit `mkdir` davor) hing hinter der durch m10-heap-gate-retry
+   ~60 min belegten `.lf-perf.lock` und wurde beim Lane-Abschluss gekillt (keinsleep-Warten).
+3. Danach `DOM_SPIELT` (Spieler-Sperre, Regel befolgt: kein Retry am Gerät).
 
-**Nachhol-Pfad (sobald frei):** Lane-APK-Build geklärt → Install → Launch →
-`flock /home/ai/games/.lf-perf.lock node scripts/m10-janky-remeasure.mjs
---out ~/games/.evidence/m10-fps-pacing-fix/after-cap60-device.json --fps 60 --minutes 10`
-→ Tor wie K1 auswerten. Fix + Test + Doku sind fertig und committet.
+**Offene Punkte für den Nachhol-Lauf (nicht neu bauen, nur ausführen):**
+- Lane-APK-Build für `m10-fps-pacing-fix` klären (device-bridge `/install?lane=` fällt
+  still auf Main zurück — siehe requests.md) ODER Fix über einen Main-Merge
+  (`/install` ohne Parameter baut Main-HEAD) messen, sobald gemergt.
+- Dann: Launch → `flock /home/ai/games/.lf-perf.lock node scripts/m10-janky-remeasure.mjs
+  --out ~/games/.evidence/m10-fps-pacing-fix/after-cap60-device.json --fps 60 --minutes 10`
+  → Tor wie K1 auswerten (janky < 10 % ∧ fpsAvg(natural) ≥ 60 ∧ rAF p95 ≤ 16 ms).
+- Proxy-Ersatzbeleg bei Spieler-Sperre: `mkdir -p` vor dem Lauf nicht vergessen
+  (ENOENT-Falle), `--out ~/games/.evidence/m10-fps-pacing-fix/proxy-after-hebel1.json`.
+- Falls Hebel 1 am Gerät das Tor nicht öffnet: Hebel 2 (GPU-Frame-Arbeit — Partikel-/ADD-
+  Flächen-Cap medium-Tier) über Area m10-fx-medium-cap beantragen, nicht selbst anfassen.
 
 ## Belege
 
