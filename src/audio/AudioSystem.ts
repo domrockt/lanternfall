@@ -159,9 +159,13 @@ export class AudioSystem {
       this.applyVolumes();
       return;
     }
+    // Alter Voice wird GESTOPPT, bevor der neue startet (kein Dopplerton).
     this.stopMusic();
-    this.musicTrack = track;
+    // Master-Mute/Load-Fail: gar keine Musik anlegen und musicTrack ehrlich auf
+    // "none" lassen — sonst behauptet der State eine Stufe, die nicht klingt,
+    // und nach dem Unmute startet der Wiederhol-Aufruf nicht mehr (No-op).
     if (track === "none" || this.muted || this.failed) return;
+    this.musicTrack = track;
     const settings = getSettings();
     try {
       const key = track === "boss" ? MUSIC_KEYS.boss : MUSIC_KEYS.run;
@@ -170,6 +174,7 @@ export class AudioSystem {
       this.music = sound;
     } catch {
       this.music = null;
+      this.musicTrack = "none"; // fehlgeschlagener Start fälscht keinen Zustand
     }
   }
 
