@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 11542,
+  "next": 11566,
   "cards": [
     {
       "id": 1,
@@ -15437,6 +15437,76 @@
       ],
       "created": "2026-11-28T11:07:56Z",
       "updated": "2026-11-28T11:15:09Z"
+    },
+    {
+      "id": 11562,
+      "title": "m10-quality-thermal-guard K1: Definition + evaluateThermalStep (rein, in quality.ts)",
+      "description": "Thermischer Absturz = FPS-Median ueber N Sekunden dauerhaft unter Schwelle trotz LOW-Stufe. Reine Funktion evaluateThermalStep(fpsSerie, state, dtMs) in src/logic/quality.ts (ohne Phaser/Uhr), plus ThermalTier 'thermal' + Budget. Abnahme: npx vitest run tests/quality-thermal.test.ts gruen (Grundfaelle), npx tsc --noEmit gruen, RENDER_SCALE/Aufloesung unberuehrt.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T11:24:12Z",
+          "by": "build",
+          "text": "doing → done: K1: evaluateThermalStep + ThermalTier/Budget in quality.ts; 22 Tests gruen (quality-thermal + quality-tier), tsc gruen; Commit c5e7c9af."
+        }
+      ],
+      "created": "2026-11-28T11:22:29Z",
+      "updated": "2026-11-28T11:24:12Z"
+    },
+    {
+      "id": 11563,
+      "title": "m10-quality-thermal-guard K2: Hysterese (Haltefenster + Erholung, kein Flapping)",
+      "description": "Abstieg erst nach Haltefenster (THERMAL_HOLD_MS), Aufstieg nur nach ununterbrochener Erholungszeit (THERMAL_RECOVERY_MS) — Muster stepQuality/scale.ts. Asset-Textur-/Aufloesungspfade nicht beruehrt; QUALITY_ORDER/stepQuality unveraendert (bestehende Tests bitgleich). Abnahme: tests/quality-thermal.test.ts Hysterese-Faelle gruen, npx vitest run tests/quality-tier.test.ts unveraendert gruen.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T11:24:12Z",
+          "by": "build",
+          "text": "backlog → doing"
+        },
+        {
+          "at": "2026-11-28T11:24:58Z",
+          "by": "build",
+          "text": "doing → done: K2: Erholung nur nach 20 s am Stueck, Abbruch setzt recoverMs zurueck, neuer Abstieg braucht volles Haltefenster; 26 Tests gruen, quality-tier bitgleich; Commit 33cc3b9c."
+        }
+      ],
+      "created": "2026-11-28T11:22:29Z",
+      "updated": "2026-11-28T11:24:58Z"
+    },
+    {
+      "id": 11564,
+      "title": "m10-quality-thermal-guard K3: Test-Matrix tests/quality-thermal.test.ts",
+      "description": "Abstiegs-/Erholungs-/Kein-Flapping-Matrix, Grenzfaelle (kurzer Einbruch ≠ thermisch, NaN/leere Serie = einfrieren), Verhalten bitgleich bei stabiler FPS, Budget 'thermal' streng unter 'low'. Abnahme: npx vitest run tests/quality-thermal.test.ts gruen + npm test (Ausschnitt) gruen.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T11:24:58Z",
+          "by": "build",
+          "text": "backlog → doing"
+        },
+        {
+          "at": "2026-11-28T11:25:25Z",
+          "by": "build",
+          "text": "doing → done: K3: 33 Tests (7 neue Grenzfaelle: Schwelle strikt, kurzer Einbruch, dt ungueltig, Flapping-Matrix, Bitgleichheit auf low); Commit b0416c3e."
+        }
+      ],
+      "created": "2026-11-28T11:22:29Z",
+      "updated": "2026-11-28T11:25:25Z"
+    },
+    {
+      "id": 11565,
+      "title": "m10-quality-thermal-guard K4: Beleg-Skript + Lane-Doku + .lane-done",
+      "description": "scripts/m10-thermal-guard.mjs mit deterministischen FPS-Serien (node --experimental-strip-types, kein Geraet noetig), JSON-Beleg nach ~/games/.evidence/m10-quality-thermal-guard/, Doku docs/lanes/m10-quality-thermal-guard.md (Hebel-Beschreibung, qualitaets-tier-Reaktion, config.ts-Verdrahtung als Folgekarte). Abnahme: Skript-Lauf belegt engage/hold/erholung deterministisch, npm run build + npm test gruen, .lane-done angelegt.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T11:25:25Z",
+          "by": "build",
+          "text": "backlog → doing"
+        }
+      ],
+      "created": "2026-11-28T11:22:29Z",
+      "updated": "2026-11-28T11:25:25Z"
     }
   ]
 }
