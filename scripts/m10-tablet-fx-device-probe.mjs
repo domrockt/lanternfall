@@ -1,7 +1,7 @@
 // Einmal-Probe (m10-tablet-fx-hotspot): GL-Zahlen auf dem Redmi Pad Pro,
 // EINE CDP-Verbindung, kein App-Relaunch (der killt connectOverCDP).
 // Misst base und stackA:+6 (cumulativ) auf dem Geraet.
-import { loadPlaywright } from "/home/ai/games/lf-lanes/m10-tablet-fx-hotspot/scripts/harness.mjs";
+import { loadPlaywright } from "/home/ai/games/lanternfall/scripts/harness.mjs";
 
 const CDP = "http://172.17.0.1:9333";
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));

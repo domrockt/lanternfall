@@ -1,0 +1,15 @@
+Lane m10-device-probe-path-fix abgeschlossen.
+
+Was: Import-Pfad in scripts/m10-tablet-fx-device-probe.mjs vom Lane-Worktree-Pfad
+(/home/ai/games/lf-lanes/m10-tablet-fx-hotspot/scripts/harness.mjs) auf den Repo-Pfad
+(/home/ai/games/lanternfall/scripts/harness.mjs) umgestellt — 1 Zeile, sonst keine Änderungen.
+Grund: Skript muss nach `git worktree remove` (Merge-Schritt 4) weiterhin laufen,
+da es das Werkzeug für Doms Wunsch „Gerätemessung nach jedem Perf-Merge" ist (09:45Z).
+
+Verifikation:
+- node --check scripts/m10-tablet-fx-device-probe.mjs → rc=0
+- grep "lf-lanes/" im Skript → keine Treffer mehr
+- Tests/Build unverändert grün (Skript ist nicht in Tests eingebunden, kein Lauf nötig)
+
+Board: Karte #11368 (doing → done nach Commit).
+Doku: docs/lanes/m10-device-probe-path-fix.md
