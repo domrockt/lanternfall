@@ -1,0 +1,41 @@
+# Lane m10-gamepad-nav-scenes-r2 — fertig (28.11.2026)
+
+Wiedereinreihung nach Disponent-Bug (Original 06:27Z getötet, 0 Läufe). Diese
+Lane verdrahtet alle Menü-Szenen auf die gemergte Kern-Fokus-API
+(m10-gamepad-menu-nav, 29c310e): MenuFocus (moveFocus/confirm/back) +
+menuRepeatTick. Kern-Dateien (src/ui/menu.ts, options-menu.ts, Gamepad.ts) und
+Run.ts unangetastet (git diff 0947eef..HEAD belegt, reviewer-geprüft).
+
+Karten (alle done, Reviewer PASS + Commit-Gate PASS):
+- K1 #9544 (fcc72e9): Befund — Pause-Overlay in UI.ts (in der Area); Pause-Trigger
+  Run.ts:457-461/1445-1471 = Nachfolgebedarf m10-pad-start-pause-r2.
+- K2 #9545 (94f1a6b): Title — Fokus-Kreis über alle 4 Knöpfe (inkl. VOLLBILD, wrap),
+  Hover-Sync AE=0; Kern-Harness 15/15 PASS.
+- K3 #9546 (e074967): CharSelect — reine charSelectPadNav, 2 Fokus-Reihen
+  (Panels/Hover-Strok + ZURÜCK/START via MenuFocus), A=auswählen, B=zurück.
+- K4 #9547 (83bb0b4): Results/Credits via MenuFocus; Scrollen N/A (keine
+  interaktiven Listen — Results max. 12 statische Zeilen, Credits 9).
+- K5 #9548 (f62d68f/c103cd9/38871fa): UI.ts Pause-Overlay via MenuFocus +
+  Flanken-/Repeat-Pflege jeden Frame (Sticky-Flanken-Bug per Probe belegt und
+  gefixt); 1 Pad-Frame = 1 Aktion.
+
+Messwerte / Belege:
+- Harness scripts/m10-gamepad-nav-scenes.mjs: 32/32 Checks PASS, 0 Sackgassen,
+  0 JS-Fehler — JSON ~/games/.evidence/m10-gamepad-nav-scenes-r2/
+  m10-gamepad-nav-scenes.json (+ PNGs, gleicher Ordner).
+- tests/gamepad-nav-scenes.test.ts 10/10; volle Suite 154 Files / 1665 Tests
+  grün; npx tsc --noEmit rc=0; npm run build rc=0.
+- Abnahme-Shots 640x360 mit Fokusrahmen (in git):
+  shots/abnahme/m10-gamepad-nav-scenes-{title,charselect-kael,pause-fortsetzen,
+  results,credits}.png (Sichtprüfung 2x nearest: Rahmen klar, Pixel knackscharf).
+- Reviewer: PASS (Kern unangetastet, keine Doppel-Events, Fokus-Resets OK).
+  Commit-Gate: PASS (je Karte ein Commit, keine Secrets).
+
+Offene Punkte (in docs/lanes/m10-gamepad-nav-scenes-r2.md, Abschnitt Befunde):
+1. Hover-Sync-Kontrakt „Hit-Zone = letztes Kind" ist fragil — Hit-Zone auf
+   MenuButton exponieren (Kern-API, Folge-Karte).
+2. Repeat-Verhalten = nur Tippen (InputState liefert nur Edges; menuRepeatTick
+   verdrahtet, greift erst bei künftigen held-states).
+3. Vorhandene Results-Optik im 640x360-Format (Untertitel/Header-Kollision,
+   AE=0) — Bedarf m10-results-overlap Follow-up.
+4. Run.ts Pad-Start/Toggle-Pflege → m10-pad-start-pause-r2.
