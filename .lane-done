@@ -1,0 +1,30 @@
+# m10-audio-music-dawn — LANE DONE (28.11.2026)
+
+Alle 4 Karten committed (K1 dea1c71, K2 6de8361, K3 5d18f0a, K4 404c114 + Board-Commits).
+
+## Ergebnis
+- Musik-Umschaltung Titel → Run → Boss → Morgendaemmerung/Sieg beleuchtet: bei jedem
+  Wechsel läuft max. 1 Musik-Sound, der alte Voice ist gestoppt/destroyed BEVOR der
+  neue startet (kein Dopplerton/Knackser) — Ist-Reihenfolge war bereits korrekt.
+- Realer Bug gefixt: `setMusic()` während Master-Mute setzte `musicTrack` ohne Sound
+  (Phantom-Track); nach Unmute blieb die Musik dauerhaft stumm, weil der Wiederhol-
+  Aufruf als No-op durchlief. Jetzt bleibt `musicTrack` ehrlich "none" (auch bei
+  fehlgeschlagenem `sound.add()`), späterer echter Wechsel startet sauber.
+- Master-Mute bitgleich zu A7 (0 Musik-Starts, SFX geblockt, sfxPlayed eingefroren,
+  voices im Budget); mixing.ts unangetastet (WEAPON/HIT-Bänder 12/12, 24/s).
+
+## Messwerte (scripts/m10-music-dawn.mjs, echte AudioSystem-Klasse + Ereignis-Stub)
+- Vorher shots/m10-music-dawn-before.json: FAIL reload_muted (silentTrackSteps=2,
+  stuckAfterUnmute=true). Alles andere sauber (maxLiveMusic=1, startBeforeStop=0).
+- Nachher shots/m10-music-dawn-after.json: PASS=true in allen 6 Szenarien;
+  Chaos (Boss+500-Naehe): maxMixerVoices 13 = 12 + 1 P3-Bypass (dokumentiertes
+  Verhalten, wie tests/audio-mix-chaos).
+
+## Checks
+- tests/music-dawn.test.ts 7/7, npm test 1306/1306 (121 Files), npm run build ok,
+  npx tsc --noEmit rc=0. audio-mix-chaos + audio-frost-gap unveraendert gruen.
+
+## Offene Punkte (docs/lanes/m10-audio-music-dawn.md)
+- Unmute mid-run: Musik kommt erst beim naechsten echten Stufenwechsel zurueck
+  (bitgleich belassen; Aenderung waere beobachtbares Mute-Verhalten).
+- Kein eigener Dawn-Track (Morgendaemmerung = stopMusic + victory-Stinger).
