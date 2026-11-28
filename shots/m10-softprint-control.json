@@ -1,0 +1,147 @@
+{
+  "script": "scripts/m10-heap-budget.mjs",
+  "lane": "m10-heap-budget",
+  "gitSha": "887388e",
+  "startedAt": "2026-11-28T05:46:11.313Z",
+  "endedAt": "2026-11-28T05:53:11.752Z",
+  "minutes": 2,
+  "renderer": {
+    "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+    "vendor": "Google Inc. (Intel)"
+  },
+  "victory": false,
+  "resultReason": null,
+  "truncated": false,
+  "simSeconds": 411.6,
+  "minute1MB": 55.3,
+  "timeline": [
+    {
+      "minute": 1,
+      "jsMB": 55.3
+    },
+    {
+      "minute": 2,
+      "jsMB": 53.9
+    },
+    {
+      "minute": 3,
+      "jsMB": 52.2
+    },
+    {
+      "minute": 4,
+      "jsMB": 50.8
+    },
+    {
+      "minute": 5,
+      "jsMB": 51.9
+    },
+    {
+      "minute": 6,
+      "jsMB": 54.7
+    }
+  ],
+  "minutePeaks": [
+    {
+      "minute": 0,
+      "peakMB": 81.9
+    },
+    {
+      "minute": 1,
+      "peakMB": 80.5
+    },
+    {
+      "minute": 2,
+      "peakMB": 62.5
+    },
+    {
+      "minute": 3,
+      "peakMB": 60.2
+    },
+    {
+      "minute": 4,
+      "peakMB": 55.8
+    },
+    {
+      "minute": 5,
+      "peakMB": 66.9
+    },
+    {
+      "minute": 6,
+      "peakMB": 61
+    }
+  ],
+  "windowPeaks": [
+    {
+      "window": 0,
+      "fromMin": 0,
+      "toMin": 5,
+      "peakMB": 81.9
+    },
+    {
+      "window": 1,
+      "fromMin": 5,
+      "toMin": 10,
+      "peakMB": 66.9
+    }
+  ],
+  "fps": {
+    "min": 59.7,
+    "median": 60.5,
+    "samples": 812
+  },
+  "errors": [],
+  "crashes": [],
+  "gate": {
+    "definition": "HARD: endMB(nach erzwungenem GC, Run-Ende) - Minute 1 <= +15 % | SOFT (Beobachtung): max Peak je 5-min-Fenster <= Minute 1 + 25 %",
+    "softDefinition": "SOFT robust (F1-Fix): max Floor (Min je 5-min-Fenster, rohe Peaks) <= Floor Fenster 0 + 25 %",
+    "minute1MB": 55.3,
+    "endMB": 55.5,
+    "endDeltaMB": 0.2,
+    "endDeltaPct": 0.4,
+    "gatePct": 15,
+    "softPct": 25,
+    "windowPeaks": [
+      {
+        "window": 0,
+        "fromMin": 0,
+        "toMin": 5,
+        "peakMB": 81.9
+      },
+      {
+        "window": 1,
+        "fromMin": 5,
+        "toMin": 10,
+        "peakMB": 66.9
+      }
+    ],
+    "maxWindowPeakMB": 81.9,
+    "maxWindowPeakPct": 48.1,
+    "windowFloors": [
+      {
+        "window": 0,
+        "fromMin": 0,
+        "toMin": 5,
+        "floorMB": 55.8
+      },
+      {
+        "window": 1,
+        "fromMin": 5,
+        "toMin": 10,
+        "floorMB": 61
+      }
+    ],
+    "maxWindowFloorMB": 61,
+    "maxWindowFloorPct": 9.3,
+    "softReferenceMB": 55.8,
+    "softFloorPass": true,
+    "hardPass": true,
+    "softPass": false,
+    "verdict": "PASS",
+    "softVerdict": "FAIL (Beobachtung)",
+    "softFloorVerdict": "PASS (Beobachtung, robust)",
+    "fallA": true,
+    "fallB": false,
+    "fatal": null
+  },
+  "fatal": null
+}
