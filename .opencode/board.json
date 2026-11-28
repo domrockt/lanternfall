@@ -7951,10 +7951,15 @@
           "at": "2026-11-28T00:35:07Z",
           "by": "build",
           "text": "doing → blocked: art-director Runde 2: Signaturen/projectile_ice PASS (4.5), aber Aura-Siegel auf hellem Moor-Grund 3.5/5 FAIL — Root Cause: multiplikativer fogBlue-Tint am FX-Spawn (CombatSystem.updateWinter, geparkte Datei). Fix (1 Zeile) per requests.md angefragt; gehört zur Folgelane m10-evo-fx-winter-w2 (mit geparktem Partikel-Scale/Windup-Diff). Doku docs/lanes/m10-evo-fx-winter.md mit Vorher/Nachher + beiden Urteilen; build rc=0, 32/32 Tests, 0 JS-Fehler."
+        },
+        {
+          "at": "2026-11-28T00:43:13Z",
+          "by": "build",
+          "text": "Versuch 3: K4-Blocker in dieser Lane gelöst — CombatSystem.ts ist laut claims.json von dieser Lane geclaimed, Phoenix-Lane gemerged, Folgelane w2 existiert nicht, Disponent-Antwort auf requests.md-Eintrag (00:4xZ) blieb aus. WIP-Commit 4787abc: fogBlue-Multiplikativtint an fx_ice-Partikeln (updateWinter ~710, Frostnova ~519) + Frostnova-ring_frost ~506 gestrichen (art-director-Runde-2-Root-Cause); tsc rc=0, 32/32. After-Lauf neu (iGPU, 0 JS-Fehler, 22/24 Gegner); art-director Runde 3 läuft."
         }
       ],
       "created": "2026-11-28T00:03:10Z",
-      "updated": "2026-11-28T00:35:07Z"
+      "updated": "2026-11-28T00:43:13Z"
     }
   ]
 }
