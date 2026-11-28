@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 7428,
+  "next": 7432,
   "cards": [
     {
       "id": 1,
@@ -8935,6 +8935,42 @@
       "notes": [],
       "created": "2026-11-28T01:30:29Z",
       "updated": "2026-11-28T01:30:29Z"
+    },
+    {
+      "id": 7428,
+      "title": "m10-evo-fx-phoenix #1: Ist-Beleg Phönixschwarm (Skript + before.png/json)",
+      "description": "Skript scripts/m10-evo-fx-phoenix.mjs stellt Evolution-Szene nach (10–30 lebende Gegner, je 640 und 960x540) → shots/m10-evo-fx-phoenix-before.png + -before.json (Textur-Pixelgröße, Draw-Scale, Farb-Stufen, WebGL-Renderer). EINMAL messen, committen. [lane #6498, Merge 9065fea; lane-Commit 97eec10]",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T01:36:33Z",
+      "updated": "2026-11-28T01:36:33Z"
+    },
+    {
+      "id": 7429,
+      "title": "m10-evo-fx-phoenix #2: Fix Feuer-Textur Zielgröße + Farbtreppe + Anim-Frames",
+      "description": "gen-fx.ts: projectile_phoenix ohne Ink-Rand (15x11, 0 Ink-Pixel), Kern hellgelb→orange→dunkelrot, 3 Flatter-Frames; Launch 14x14, Boom/Burn 64x64, Signatur 128x128 @Draw-Scale 1; PHOENIX_FX-Parameter in data/evolution-weapons.ts. [lane #6499, Merge 9065fea; lane-Commit 61083b0]",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T01:36:33Z",
+      "updated": "2026-11-28T01:36:33Z"
+    },
+    {
+      "id": 7430,
+      "title": "m10-evo-fx-phoenix #3: Tests tests/evo-fx-phoenix.test.ts",
+      "description": "Effekt-Texturgröße = Sprite-Pixelgröße, kein Scale >1, Farb-Stufen ohne Grau/Schwarz-Rand; bestehende Evolution-Tests bleiben grün. 8 Guards, Suite 1121/1121 grün. [lane #6500, Merge 9065fea; lane-Commit 45e9067]",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T01:36:33Z",
+      "updated": "2026-11-28T01:36:33Z"
+    },
+    {
+      "id": 7431,
+      "title": "m10-evo-fx-phoenix #4: Nachher-Beleg + art-director + Lane-Doku (Vorlage)",
+      "description": "shots/m10-evo-fx-phoenix-after.png + -after.json, art-director PASS 4.5/5, docs/lanes/m10-evo-fx-phoenix.md als Vorlage für die 4 Folge-Evo-Jobs (Ewiger Winter, Seelenleuchtfeuer, Zornpendel, Gewittersiegel). [lane #6501, Merge 9065fea; lane-Commits 74c7e91, 6b62468]",
+      "column": "done",
+      "notes": [],
+      "created": "2026-11-28T01:36:33Z",
+      "updated": "2026-11-28T01:36:33Z"
     }
   ]
 }
