@@ -18463,10 +18463,16 @@
       "id": 13147,
       "title": "m10-m25-density-mode K3: Messlauf scripts/m10-m25-density.mjs",
       "description": "10-min-Lauf (Spielminuten 20-30, timeScale 30, 50-ms-Top-up wie m10-v10-gate.mjs/m10-v10-device-m25.mjs), Flag an ab Minute 20, Baseline-Phase Flag aus (Befund-Reproduktion avg ~60). Beleg: avg Gegner >= 250 im Minute-25-Fenster + worstFrameMs. JSON nach shots/m10-m25-density-*.json (gitignored) + ~/games/.evidence/m10-m25-density-mode/. Aufruf unter flock /home/ai/games/.lf-perf.lock.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T16:22:00Z",
+          "by": "build",
+          "text": "todo → doing: K3 Messlauf gestartet: scripts/m10-m25-density.mjs nach Muster m10-v10-gate.mjs/m10-v10-device-m25.mjs"
+        }
+      ],
       "created": "2026-11-28T16:19:56Z",
-      "updated": "2026-11-28T16:19:56Z"
+      "updated": "2026-11-28T16:22:00Z"
     },
     {
       "id": 13148,
