@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 10688,
+  "next": 10774,
   "cards": [
     {
       "id": 1,
@@ -13923,6 +13923,66 @@
       "notes": [],
       "created": "2026-11-28T09:42:27Z",
       "updated": "2026-11-28T09:42:27Z"
+    },
+    {
+      "id": 10768,
+      "title": "m10-menu-contrast-fixes K1: Vorher-Scan an Branch-Basis",
+      "description": "Scan-Skript scripts/m10-menu-contrast.mjs (Muster m10-menu-quality.mjs, nur Kontrast+Overlap+KAEL-Gap, Szenen title/options/credits/charselect) einmal an Branch-Basis laufen lassen, JSON+Shots nach ~/games/.evidence/m10-menu-contrast-fixes/. AK: Vorher-Zahlen je betroffener Zeile in docs/lanes/m10-menu-contrast-fixes.md, Belegpfad genannt.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T09:54:53Z",
+          "by": "build",
+          "text": "todo → doing: Lane übernommen: Vorher-Scan an Branch-Basis (Worktree m10-menu-contrast-fixes)."
+        }
+      ],
+      "created": "2026-11-28T09:54:52Z",
+      "updated": "2026-11-28T09:54:53Z"
+    },
+    {
+      "id": 10769,
+      "title": "m10-menu-contrast-fixes K2: Title.ts Hint-/Subtitle-Kontrast",
+      "description": "3 Hint-Zeilen C.fog(7)->C.bone(10) (Ist 2.07), Subtitle C.mist(8)->C.paleMist(9) (Ist 4.34). AK: tsc rc=0, build+tests gruen, Commit nennt #Karte.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T09:54:52Z",
+      "updated": "2026-11-28T09:54:52Z"
+    },
+    {
+      "id": 10770,
+      "title": "m10-menu-contrast-fixes K3: options-menu.ts Footer Farbe+Position",
+      "description": "Footer C.mist->C.bone(>=10) und Footer so verschieben, dass Overlap mit Title-Hint (465 px^2) = 0 ist, ohne neue Overlaps. AK: Scan nachher zeigt 0 Overlap options, tsc+build+tests gruen.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T09:54:52Z",
+      "updated": "2026-11-28T09:54:52Z"
+    },
+    {
+      "id": 10771,
+      "title": "m10-menu-contrast-fixes K4: Credits.ts + CharSelect.ts Label-Kontrast",
+      "description": "Credits Zeilen-Labels/ESC C.fog(7)->C.bone(10) (Ist 2.73/2.95), mist(8)->paleMist(9) (Ist 4.16); CharSelect SEED-/START-Zeilen fog->bone (Ist 2.77/2.48), Bonus-Zeilen mist->paleMist (Ist 3.78). AK: tsc rc=0, build+tests gruen.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T09:54:52Z",
+      "updated": "2026-11-28T09:54:52Z"
+    },
+    {
+      "id": 10772,
+      "title": "m10-menu-contrast-fixes K5: Title.ts Freiraum KAEL-Zeile <-> Knopfreihe",
+      "description": "Bestwerte-Block (BESTWERTE/MIRA/KAEL) so verschieben, dass >=4-6 interne px zwischen KAEL-Zeile und oberem Knopf-Rahmen liegen (Ist 1 px), keine neuen Overlaps. AK: Scan misst Gap >= 4 px beide Profile.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T09:54:52Z",
+      "updated": "2026-11-28T09:54:52Z"
+    },
+    {
+      "id": 10773,
+      "title": "m10-menu-contrast-fixes K6: Nachher-Scan + Regressionstest + Doku + Abnahme",
+      "description": "After-Scan nach .evidence, tests/menu-contrast-fixes.test.ts (Kontrast-/Overlap-Assertions fuer genau die 4 Dateien), docs/lanes/m10-menu-contrast-fixes.md Vorher/Nachher, shots/abnahme/m10-menu-contrast-*.png, .lane-done. AK: alle 4 Dateien 0 Kontrast-Fails <4.5, 0 Overlap, tsc+build+test gruen, 0 JS-Fehler.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T09:54:52Z",
+      "updated": "2026-11-28T09:54:52Z"
     }
   ]
 }
