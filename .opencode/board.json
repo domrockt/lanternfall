@@ -15747,7 +15747,7 @@
       "id": 11638,
       "title": "m10-verify-output-hygiene K1: Inventur verify-Outputs",
       "description": "Inventur der verify-Skripte verify-final/verify-menus/verify-terrain: welche Outputs wohin, Klassifikation (a) getracktes Abnahme-Fixture vs (b) Neben-Output. Beleg: shots/m10-verify-hygiene-before.json (+ Kopie ~/games/.evidence/verify-hygiene/). Abnahme: Inventur-JSON existiert, Klassifikation je Output belegt, Doku in docs/lanes/m10-verify-output-hygiene.md committed.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-28T11:37:18Z",
@@ -15758,25 +15758,35 @@
           "at": "2026-11-28T11:37:18Z",
           "by": "build",
           "text": "todo → doing: K1 Inventur gestartet"
+        },
+        {
+          "at": "2026-11-28T11:38:04Z",
+          "by": "build",
+          "text": "doing → review: K1 fertig: Inventur-JSON in ~/games/.evidence/verify-hygiene/, Klassifikation in Doku, Commit ea367f54"
         }
       ],
       "created": "2026-11-28T11:37:16Z",
-      "updated": "2026-11-28T11:37:18Z"
+      "updated": "2026-11-28T11:38:04Z"
     },
     {
       "id": 11639,
       "title": "m10-verify-output-hygiene K2: --out-Flag + Evidence-Default",
       "description": "Fix in den drei Skripten: --out <dir>-CLI-Flag, Default ~/games/.evidence/verify-hygiene/ fuer Kategorie-(b)-Outputs; getrackte Fixtures unveraendert. verify-input.mjs und fremde verify-*/Skripte NICHT anfassen. Abnahme: npx tsc --noEmit gruen, alle 3 Skripte schreiben nicht mehr nach shots/.",
-      "column": "todo",
+      "column": "doing",
       "notes": [
         {
           "at": "2026-11-28T11:37:18Z",
           "by": "build",
           "text": "todo → todo: Lane gebucht (Briefing #11638-#11641)"
+        },
+        {
+          "at": "2026-11-28T11:38:04Z",
+          "by": "build",
+          "text": "todo → doing: K2 Fix gestartet"
         }
       ],
       "created": "2026-11-28T11:37:16Z",
-      "updated": "2026-11-28T11:37:18Z"
+      "updated": "2026-11-28T11:38:04Z"
     },
     {
       "id": 11640,
