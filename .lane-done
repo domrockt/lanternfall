@@ -1,0 +1,25 @@
+# Lane m10-ai-rng-seed — fertig (2026-11-28)
+
+Gegner-KI-RNG deterministisch (Teil 3 des Determinismus-Schnitts).
+
+- Fix: `src/systems/EnemyPool.ts` — Math.random-Fallback (DEFAULT_AI_RNG) ersetzt durch
+  pool-eigenen `SeededRng(aiSeed)` (Muster Run-SeededRng); `createRuntime` nutzt gesätes
+  `INIT_AI_RNG`. Run.ts 1 Zeile: `new EnemyPool(this, this.seed)` (Datei war unclaimed).
+- Recycle-Reset der AiState-Felder (aiStepIn/aiMoveX/aiMoveY/aiSpeedMul) war durch
+  m10-ai-budget (`resetAiState`) schon vorhanden — nicht doppelt gebaut, per Test abgesichert;
+  `aiSkip` bleibt bewusst (wird vor jeder Nutzung überschrieben).
+- Messwerte: before 2 Kontrollläufe gleicher Seed divergieren (6fbb1086 vs 75571c0b,
+  shots/m10-ai-rng-before.json); after bitgleich (fa543c71==fa543c71,
+  shots/m10-ai-rng-after.json). Skript: scripts/m10-ai-rng.mjs (--fallback=math|seeded).
+- Balance-Korridor A/B gegen shots/m10-balance-kael-final.json: Drift (allRunsPass=false,
+  boss/level-Korridor) ist A/B-belegt VORBESTEHEND — Kontrolle ohne Fix (8e01e16) liefert
+  dieselbe Drift (shots/m10-ai-rng-balance-prefix.json vs -afterfix.json). Fix ist auf dem
+  Laufzeitpfad neutral (Fallback im Spiel unbenutzt). Drift gehört zu m10-balance-endgame.
+- Verifikation: tsc grün, npm test grün, build grün; tests/enemy-ai-rng.test.ts 4/4,
+  bestehende Pool/AI-Tests 33/33.
+- Fremdberührungen: 1 Zeile Run.ts (begründet, unclaimed); erster Balance-Lauf schrieb mit
+  Default--doc docs/lanes/balance.md + shots/balance-main* (im Supervisor-Snapshot 0efac34
+  gelandet) — beim Merge als fremd behandeln.
+- Commits: 8e01e16 (#7798 K1), c011202 (#7799 K2), 0efac34 (Supervisor-Snapshot), 831cd13 (#7800 K3).
+- Offen (Bedarfsmeldung): KI hängt noch von Frame-Kadenz ab (gemeinsamer Run-RNG-Stream +
+  Stagger) — Teil 4: pro-Gegner-Streams aus Seed+UID. Siehe docs/lanes/m10-ai-rng-seed.md.
