@@ -1,0 +1,776 @@
+{
+  "generatedAt": "2026-11-28T02:14:53.614Z",
+  "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+  "valid": true,
+  "errors": [],
+  "configs": {
+    "640": {
+      "renderer": {
+        "generatedAt": "2026-11-28T02:14:47.923Z",
+        "context": "webgl1",
+        "version": "WebGL 1.0 (OpenGL ES 2.0 Chromium)",
+        "shadingLanguage": "WebGL GLSL ES 1.0 (OpenGL ES GLSL ES 1.0 Chromium)",
+        "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+        "vendor": "Google Inc. (Intel)",
+        "maxTextureSize": 16384,
+        "maxTextureImageUnits": 32,
+        "extensions": [
+          "ANGLE_instanced_arrays",
+          "EXT_blend_minmax",
+          "EXT_clip_control",
+          "EXT_color_buffer_half_float",
+          "EXT_depth_clamp",
+          "EXT_disjoint_timer_query",
+          "EXT_float_blend",
+          "EXT_frag_depth",
+          "EXT_polygon_offset_clamp",
+          "EXT_texture_compression_bptc",
+          "EXT_texture_compression_rgtc",
+          "EXT_texture_filter_anisotropic",
+          "EXT_texture_mirror_clamp_to_edge",
+          "EXT_sRGB",
+          "KHR_parallel_shader_compile",
+          "OES_element_index_uint",
+          "OES_fbo_render_mipmap",
+          "OES_standard_derivatives",
+          "OES_texture_float",
+          "OES_texture_float_linear",
+          "OES_texture_half_float",
+          "OES_texture_half_float_linear",
+          "OES_vertex_array_object",
+          "WEBGL_blend_func_extended",
+          "WEBGL_color_buffer_float",
+          "WEBGL_compressed_texture_astc",
+          "WEBGL_compressed_texture_etc",
+          "WEBGL_compressed_texture_etc1",
+          "WEBGL_compressed_texture_s3tc",
+          "WEBGL_compressed_texture_s3tc_srgb",
+          "WEBGL_debug_renderer_info",
+          "WEBGL_debug_shaders",
+          "WEBGL_depth_texture",
+          "WEBGL_draw_buffers",
+          "WEBGL_lose_context",
+          "WEBGL_multi_draw"
+        ],
+        "contextAttributes": {
+          "alpha": false,
+          "antialias": false,
+          "depth": true,
+          "desynchronized": false,
+          "failIfMajorPerformanceCaveat": false,
+          "powerPreference": "high-performance",
+          "premultipliedAlpha": true,
+          "preserveDrawingBuffer": false,
+          "stencil": true,
+          "xrCompatible": false
+        },
+        "precision": {
+          "fragmentHighp": {
+            "rangeMin": 127,
+            "rangeMax": 127,
+            "precision": 23
+          },
+          "fragmentMediump": {
+            "rangeMin": 127,
+            "rangeMax": 127,
+            "precision": 23
+          },
+          "vertexHighp": {
+            "rangeMin": 127,
+            "rangeMax": 127,
+            "precision": 23
+          }
+        },
+        "fps": {
+          "target": 60,
+          "limit": 60,
+          "cappedAt60": true
+        },
+        "powerPreference": "high-performance",
+        "canvas": {
+          "attrWidth": 640,
+          "attrHeight": 360,
+          "logicalWidth": 640,
+          "logicalHeight": 360,
+          "rendersDevicePixels": false
+        },
+        "textures": {
+          "count": 0,
+          "pixels": 0,
+          "approxBytes": 0,
+          "maxEdge": 0,
+          "oversized": []
+        }
+      },
+      "textures": {
+        "flail_ball": {
+          "sourceW": 9,
+          "sourceH": 9,
+          "frameW": 9,
+          "frameH": 9
+        },
+        "chain_link": {
+          "sourceW": 2,
+          "sourceH": 8,
+          "frameW": 2,
+          "frameH": 8
+        },
+        "fx_smear": {
+          "sourceW": 44,
+          "sourceH": 16,
+          "frameW": 44,
+          "frameH": 16
+        },
+        "fx_halo": {
+          "sourceW": 24,
+          "sourceH": 24,
+          "frameW": 24,
+          "frameH": 24
+        },
+        "fx_wrath_ring": {
+          "sourceW": 208,
+          "sourceH": 208,
+          "frameW": 208,
+          "frameH": 208
+        },
+        "fx_wrath_glow": {
+          "sourceW": 17,
+          "sourceH": 17,
+          "frameW": 17,
+          "frameH": 17
+        },
+        "fx_evo_hit_wrath_pendulum": {
+          "sourceW": 96,
+          "sourceH": 96,
+          "frameW": 96,
+          "frameH": 96
+        },
+        "fx_evo_death_wrath_pendulum": {
+          "sourceW": 96,
+          "sourceH": 96,
+          "frameW": 96,
+          "frameH": 96
+        }
+      },
+      "live": {
+        "chain_link": {
+          "maxScaleX": 1,
+          "maxScaleY": 1,
+          "samples": [
+            {
+              "scaleX": 1,
+              "scaleY": 1,
+              "dispW": 2,
+              "dispH": 8,
+              "blend": 0,
+              "tint": 16777215
+            },
+            {
+              "scaleX": 1,
+              "scaleY": 1,
+              "dispW": 2,
+              "dispH": 8,
+              "blend": 0,
+              "tint": 16777215
+            },
+            {
+              "scaleX": 1,
+              "scaleY": 1,
+              "dispW": 2,
+              "dispH": 8,
+              "blend": 0,
+              "tint": 16777215
+            },
+            {
+              "scaleX": 1,
+              "scaleY": 1,
+              "dispW": 2,
+              "dispH": 8,
+              "blend": 0,
+              "tint": 16777215
+            },
+            {
+              "scaleX": 1,
+              "scaleY": 1,
+              "dispW": 2,
+              "dispH": 8,
+              "blend": 0,
+              "tint": 16777215
+            },
+            {
+              "scaleX": 1,
+              "scaleY": 1,
+              "dispW": 2,
+              "dispH": 8,
+              "blend": 0,
+              "tint": 16777215
+            },
+            {
+              "scaleX": 1,
+              "scaleY": 1,
+              "dispW": 2,
+              "dispH": 8,
+              "blend": 0,
+              "tint": 16777215
+            },
+            {
+              "scaleX": 1,
+              "scaleY": 1,
+              "dispW": 2,
+              "dispH": 8,
+              "blend": 0,
+              "tint": 16777215
+            }
+          ]
+        },
+        "fx_wrath_glow": {
+          "maxScaleX": 1,
+          "maxScaleY": 1,
+          "samples": [
+            {
+              "scaleX": 1,
+              "scaleY": 1,
+              "dispW": 17,
+              "dispH": 17,
+              "blend": 1,
+              "tint": 16777215
+            }
+          ]
+        },
+        "fx_wrath_ring": {
+          "maxScaleX": 1,
+          "maxScaleY": 1,
+          "samples": [
+            {
+              "scaleX": 1,
+              "scaleY": 1,
+              "dispW": 208,
+              "dispH": 208,
+              "blend": 0,
+              "tint": 16777215
+            }
+          ]
+        },
+        "flail_ball": {
+          "maxScaleX": 1,
+          "maxScaleY": 1,
+          "samples": [
+            {
+              "scaleX": 0.547,
+              "scaleY": 0.547,
+              "dispW": 5,
+              "dispH": 5,
+              "blend": 0,
+              "tint": 16758861
+            },
+            {
+              "scaleX": 1,
+              "scaleY": 1,
+              "dispW": 9,
+              "dispH": 9,
+              "blend": 0,
+              "tint": 16777215
+            }
+          ]
+        },
+        "fx_evo_death_wrath_pendulum": {
+          "maxScaleX": 1,
+          "maxScaleY": 1,
+          "samples": [
+            {
+              "scaleX": 1,
+              "scaleY": 1,
+              "dispW": 96,
+              "dispH": 96,
+              "blend": 0,
+              "tint": 16777215
+            }
+          ]
+        }
+      },
+      "colors": {
+        "flail_ball": {
+          "width": 9,
+          "height": 9,
+          "opaque": 49,
+          "inkPixels": 22,
+          "grayPixels": 2,
+          "edgeOpaquePixels": 6,
+          "edgeSample": [
+            {
+              "x": 2,
+              "y": 0,
+              "i": 0
+            },
+            {
+              "x": 6,
+              "y": 0,
+              "i": 0
+            },
+            {
+              "x": 0,
+              "y": 4,
+              "i": 0
+            },
+            {
+              "x": 8,
+              "y": 4,
+              "i": 0
+            },
+            {
+              "x": 2,
+              "y": 8,
+              "i": 0
+            },
+            {
+              "x": 6,
+              "y": 8,
+              "i": 0
+            }
+          ],
+          "histogram": {
+            "pal0": 22,
+            "pal11": 16,
+            "pal12": 9,
+            "pal9": 2
+          }
+        },
+        "fx_evo_death_wrath_pendulum": {
+          "width": 96,
+          "height": 96,
+          "opaque": 874,
+          "inkPixels": 0,
+          "grayPixels": 0,
+          "edgeOpaquePixels": 0,
+          "edgeSample": [],
+          "histogram": {
+            "pal25": 65,
+            "pal27": 9,
+            "pal26": 142,
+            "pal23": 42,
+            "pal20": 142,
+            "pal22": 306,
+            "pal21": 168
+          }
+        },
+        "fx_wrath_ring": {
+          "width": 208,
+          "height": 208,
+          "opaque": 390,
+          "inkPixels": 0,
+          "grayPixels": 0,
+          "edgeOpaquePixels": 0,
+          "edgeSample": [],
+          "histogram": {
+            "pal27": 29,
+            "pal26": 82,
+            "pal20": 32,
+            "pal25": 37,
+            "pal23": 19,
+            "pal21": 77,
+            "pal22": 114
+          }
+        }
+      },
+      "errors": [],
+      "liveCounts": {
+        "chain_link": 8,
+        "fx_wrath_glow": 1,
+        "fx_wrath_ring": 1,
+        "flail_ball": 2,
+        "fx_evo_death_wrath_pendulum": 1
+      },
+      "view": {
+        "configW": 640,
+        "configH": 360,
+        "zoom": 1,
+        "cameraW": 640
+      },
+      "aliveEnemies": 16
+    },
+    "960x540": {
+      "renderer": {
+        "generatedAt": "2026-11-28T02:14:51.028Z",
+        "context": "webgl1",
+        "version": "WebGL 1.0 (OpenGL ES 2.0 Chromium)",
+        "shadingLanguage": "WebGL GLSL ES 1.0 (OpenGL ES GLSL ES 1.0 Chromium)",
+        "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+        "vendor": "Google Inc. (Intel)",
+        "maxTextureSize": 16384,
+        "maxTextureImageUnits": 32,
+        "extensions": [
+          "ANGLE_instanced_arrays",
+          "EXT_blend_minmax",
+          "EXT_clip_control",
+          "EXT_color_buffer_half_float",
+          "EXT_depth_clamp",
+          "EXT_disjoint_timer_query",
+          "EXT_float_blend",
+          "EXT_frag_depth",
+          "EXT_polygon_offset_clamp",
+          "EXT_texture_compression_bptc",
+          "EXT_texture_compression_rgtc",
+          "EXT_texture_filter_anisotropic",
+          "EXT_texture_mirror_clamp_to_edge",
+          "EXT_sRGB",
+          "KHR_parallel_shader_compile",
+          "OES_element_index_uint",
+          "OES_fbo_render_mipmap",
+          "OES_standard_derivatives",
+          "OES_texture_float",
+          "OES_texture_float_linear",
+          "OES_texture_half_float",
+          "OES_texture_half_float_linear",
+          "OES_vertex_array_object",
+          "WEBGL_blend_func_extended",
+          "WEBGL_color_buffer_float",
+          "WEBGL_compressed_texture_astc",
+          "WEBGL_compressed_texture_etc",
+          "WEBGL_compressed_texture_etc1",
+          "WEBGL_compressed_texture_s3tc",
+          "WEBGL_compressed_texture_s3tc_srgb",
+          "WEBGL_debug_renderer_info",
+          "WEBGL_debug_shaders",
+          "WEBGL_depth_texture",
+          "WEBGL_draw_buffers",
+          "WEBGL_lose_context",
+          "WEBGL_multi_draw"
+        ],
+        "contextAttributes": {
+          "alpha": false,
+          "antialias": false,
+          "depth": true,
+          "desynchronized": false,
+          "failIfMajorPerformanceCaveat": false,
+          "powerPreference": "high-performance",
+          "premultipliedAlpha": true,
+          "preserveDrawingBuffer": false,
+          "stencil": true,
+          "xrCompatible": false
+        },
+        "precision": {
+          "fragmentHighp": {
+            "rangeMin": 127,
+            "rangeMax": 127,
+            "precision": 23
+          },
+          "fragmentMediump": {
+            "rangeMin": 127,
+            "rangeMax": 127,
+            "precision": 23
+          },
+          "vertexHighp": {
+            "rangeMin": 127,
+            "rangeMax": 127,
+            "precision": 23
+          }
+        },
+        "fps": {
+          "target": 60,
+          "limit": 60,
+          "cappedAt60": true
+        },
+        "powerPreference": "high-performance",
+        "canvas": {
+          "attrWidth": 640,
+          "attrHeight": 360,
+          "logicalWidth": 640,
+          "logicalHeight": 360,
+          "rendersDevicePixels": false
+        },
+        "textures": {
+          "count": 0,
+          "pixels": 0,
+          "approxBytes": 0,
+          "maxEdge": 0,
+          "oversized": []
+        }
+      },
+      "textures": {
+        "flail_ball": {
+          "sourceW": 9,
+          "sourceH": 9,
+          "frameW": 9,
+          "frameH": 9
+        },
+        "chain_link": {
+          "sourceW": 2,
+          "sourceH": 8,
+          "frameW": 2,
+          "frameH": 8
+        },
+        "fx_smear": {
+          "sourceW": 44,
+          "sourceH": 16,
+          "frameW": 44,
+          "frameH": 16
+        },
+        "fx_halo": {
+          "sourceW": 24,
+          "sourceH": 24,
+          "frameW": 24,
+          "frameH": 24
+        },
+        "fx_wrath_ring": {
+          "sourceW": 208,
+          "sourceH": 208,
+          "frameW": 208,
+          "frameH": 208
+        },
+        "fx_wrath_glow": {
+          "sourceW": 17,
+          "sourceH": 17,
+          "frameW": 17,
+          "frameH": 17
+        },
+        "fx_evo_hit_wrath_pendulum": {
+          "sourceW": 96,
+          "sourceH": 96,
+          "frameW": 96,
+          "frameH": 96
+        },
+        "fx_evo_death_wrath_pendulum": {
+          "sourceW": 96,
+          "sourceH": 96,
+          "frameW": 96,
+          "frameH": 96
+        }
+      },
+      "live": {
+        "chain_link": {
+          "maxScaleX": 1,
+          "maxScaleY": 1,
+          "samples": [
+            {
+              "scaleX": 1,
+              "scaleY": 1,
+              "dispW": 2,
+              "dispH": 8,
+              "blend": 0,
+              "tint": 16777215
+            },
+            {
+              "scaleX": 1,
+              "scaleY": 1,
+              "dispW": 2,
+              "dispH": 8,
+              "blend": 0,
+              "tint": 16777215
+            },
+            {
+              "scaleX": 1,
+              "scaleY": 1,
+              "dispW": 2,
+              "dispH": 8,
+              "blend": 0,
+              "tint": 16777215
+            },
+            {
+              "scaleX": 1,
+              "scaleY": 1,
+              "dispW": 2,
+              "dispH": 8,
+              "blend": 0,
+              "tint": 16777215
+            },
+            {
+              "scaleX": 1,
+              "scaleY": 1,
+              "dispW": 2,
+              "dispH": 8,
+              "blend": 0,
+              "tint": 16777215
+            },
+            {
+              "scaleX": 1,
+              "scaleY": 1,
+              "dispW": 2,
+              "dispH": 8,
+              "blend": 0,
+              "tint": 16777215
+            },
+            {
+              "scaleX": 1,
+              "scaleY": 1,
+              "dispW": 2,
+              "dispH": 8,
+              "blend": 0,
+              "tint": 16777215
+            },
+            {
+              "scaleX": 1,
+              "scaleY": 1,
+              "dispW": 2,
+              "dispH": 8,
+              "blend": 0,
+              "tint": 16777215
+            }
+          ]
+        },
+        "fx_wrath_glow": {
+          "maxScaleX": 1,
+          "maxScaleY": 1,
+          "samples": [
+            {
+              "scaleX": 1,
+              "scaleY": 1,
+              "dispW": 17,
+              "dispH": 17,
+              "blend": 1,
+              "tint": 16777215
+            }
+          ]
+        },
+        "fx_wrath_ring": {
+          "maxScaleX": 1,
+          "maxScaleY": 1,
+          "samples": [
+            {
+              "scaleX": 1,
+              "scaleY": 1,
+              "dispW": 208,
+              "dispH": 208,
+              "blend": 0,
+              "tint": 16777215
+            }
+          ]
+        },
+        "flail_ball": {
+          "maxScaleX": 1,
+          "maxScaleY": 1,
+          "samples": [
+            {
+              "scaleX": 0.547,
+              "scaleY": 0.547,
+              "dispW": 5,
+              "dispH": 5,
+              "blend": 0,
+              "tint": 16758861
+            },
+            {
+              "scaleX": 1,
+              "scaleY": 1,
+              "dispW": 9,
+              "dispH": 9,
+              "blend": 0,
+              "tint": 16777215
+            }
+          ]
+        },
+        "fx_evo_death_wrath_pendulum": {
+          "maxScaleX": 1,
+          "maxScaleY": 1,
+          "samples": [
+            {
+              "scaleX": 1,
+              "scaleY": 1,
+              "dispW": 96,
+              "dispH": 96,
+              "blend": 0,
+              "tint": 16777215
+            }
+          ]
+        }
+      },
+      "colors": {
+        "flail_ball": {
+          "width": 9,
+          "height": 9,
+          "opaque": 49,
+          "inkPixels": 22,
+          "grayPixels": 2,
+          "edgeOpaquePixels": 6,
+          "edgeSample": [
+            {
+              "x": 2,
+              "y": 0,
+              "i": 0
+            },
+            {
+              "x": 6,
+              "y": 0,
+              "i": 0
+            },
+            {
+              "x": 0,
+              "y": 4,
+              "i": 0
+            },
+            {
+              "x": 8,
+              "y": 4,
+              "i": 0
+            },
+            {
+              "x": 2,
+              "y": 8,
+              "i": 0
+            },
+            {
+              "x": 6,
+              "y": 8,
+              "i": 0
+            }
+          ],
+          "histogram": {
+            "pal0": 22,
+            "pal11": 16,
+            "pal12": 9,
+            "pal9": 2
+          }
+        },
+        "fx_evo_death_wrath_pendulum": {
+          "width": 96,
+          "height": 96,
+          "opaque": 874,
+          "inkPixels": 0,
+          "grayPixels": 0,
+          "edgeOpaquePixels": 0,
+          "edgeSample": [],
+          "histogram": {
+            "pal25": 65,
+            "pal27": 9,
+            "pal26": 142,
+            "pal23": 42,
+            "pal20": 142,
+            "pal22": 306,
+            "pal21": 168
+          }
+        },
+        "fx_wrath_ring": {
+          "width": 208,
+          "height": 208,
+          "opaque": 390,
+          "inkPixels": 0,
+          "grayPixels": 0,
+          "edgeOpaquePixels": 0,
+          "edgeSample": [],
+          "histogram": {
+            "pal27": 29,
+            "pal26": 82,
+            "pal20": 32,
+            "pal25": 37,
+            "pal23": 19,
+            "pal21": 77,
+            "pal22": 114
+          }
+        }
+      },
+      "errors": [],
+      "liveCounts": {
+        "chain_link": 8,
+        "fx_wrath_glow": 1,
+        "fx_wrath_ring": 1,
+        "flail_ball": 2,
+        "fx_evo_death_wrath_pendulum": 1
+      },
+      "view": {
+        "configW": 640,
+        "configH": 360,
+        "zoom": 1,
+        "cameraW": 640
+      },
+      "aliveEnemies": 16
+    }
+  }
+}

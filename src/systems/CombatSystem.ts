@@ -11,7 +11,7 @@ import type { Rng } from "../logic/rng";
 import type { EnemyRuntime } from "./EnemyPool";
 import { FxSystem, ParticleSystem } from "./FxSystem";
 import { FX_FRAME_COUNTS, fxFrames } from "../gfx/gen-fx";
-import { PHOENIX_FX, SOUL_FX } from "../data/evolution-weapons";
+import { PHOENIX_FX, SOUL_FX, WRATH_FX } from "../data/evolution-weapons";
 import { DEPTH } from "../gfx/depth";
 import { applyTexture, currentFrame, makeImage } from "../gfx/atlas";
 import { DamageNumberSystem } from "./DamageNumbers";
@@ -66,6 +66,8 @@ interface Orb {
 interface Swing {
   sprite: Phaser.GameObjects.Image;
   halo: Phaser.GameObjects.Image;
+  /** Zornpendel: Pendel-Ring in Zielgroesse (208x208, Draw-Scale 1). */
+  ring?: Phaser.GameObjects.Image;
   links: Phaser.GameObjects.Image[];
   weaponId: string;
   baseAngle: number;
@@ -357,24 +359,45 @@ export class CombatSystem {
     const dur = evolved ? 0.32 : 0.24;
     for (let i = 0; i < count; i++) {
       const side = i === 0 ? 1 : -1;
+      // M10-evo-fx-zornpendel: Zorn-Kugel mit Draw-Scale 1 (9x9 crisp), der Glut-
+      // Glow (fx_wrath_glow 17x17, Scale 1) liefert die Größe — vorher 9x9 @ 1,69x.
       const sprite = makeImage(this.scene, ctx.playerX, ctx.playerY, "flail_ball")
         .setDepth(DEPTH.fxLow)
-        .setScale(1 + radius / 140)
+        .setScale(evolved ? 1 : 1 + radius / 140)
         .setBlendMode(Phaser.BlendModes.NORMAL);
       const links: Phaser.GameObjects.Image[] = [];
       for (let li = 0; li < 8; li++) {
         links.push(makeImage(this.scene, ctx.playerX, ctx.playerY, "chain_link")
           .setDepth(DEPTH.trail).setScale(1).setAlpha(0.85));
       }
-      const halo = makeImage(this.scene, ctx.playerX, ctx.playerY, "fx_halo")
-        .setDepth(DEPTH.trail)
-        .setBlendMode(Phaser.BlendModes.ADD)
-        .setTint(evolved ? PAL[C.fogBlue] : PAL[C.boneLight])
-        .setScale(radius / 18)
-        .setAlpha(0.55);
+      // Zornpendel: gebackener Glut-Glow (17x17 @ 1) statt fx_halo 24x24 @ radius/18.
+      const halo = evolved
+        ? makeImage(this.scene, ctx.playerX, ctx.playerY, WRATH_FX.glowTexture)
+          .setDepth(DEPTH.trail)
+          .setBlendMode(Phaser.BlendModes.ADD)
+          .setScale(1)
+          .setAlpha(WRATH_FX.glowAlpha)
+        : makeImage(this.scene, ctx.playerX, ctx.playerY, "fx_halo")
+          .setDepth(DEPTH.trail)
+          .setBlendMode(Phaser.BlendModes.ADD)
+          .setTint(PAL[C.boneLight])
+          .setScale(radius / 18)
+          .setAlpha(0.55);
+      // Zornpendel: Pendel-Ring in Zielgröße (208x208, Draw-Scale 1) — wachsender
+      // Schwung-Bogen (Aufbau → Impact) mit Glut-Treppe, ersetzt fx_smear @ 4,8x
+      // und fx_halo @ 8–10,7x am Spieler. Spitze an der Kugel, Spur dahinter.
+      let ring: Phaser.GameObjects.Image | undefined;
+      if (evolved) {
+        ring = makeImage(this.scene, ctx.playerX, ctx.playerY, WRATH_FX.ringFrames[0])
+          .setDepth(DEPTH.trail)
+          .setBlendMode(Phaser.BlendModes.NORMAL)
+          .setScale(1, side)
+          .setAlpha(WRATH_FX.ringAlpha);
+      }
       state.swings.push({
         sprite,
         halo,
+        ring,
         links,
         weaponId: owned.id,
         baseAngle: i === 0 ? base : base + Math.PI,
@@ -393,17 +416,15 @@ export class CombatSystem {
       tint: PAL[C.fog], life: 0.18, additive: false,
     });
     // Bewegungsunschärfe-Bogen (Smear-Frames): Metallbogen mit hellem Kern.
-    this.fx.spawnAnim("fx_smear", ctx.playerX, ctx.playerY, {
-      life: dur * 1.25, scaleFrom: radius / 20, scaleTo: radius / 19,
-      alphaFrom: evolved ? 0.95 : 0.75, alphaTo: 0,
-      rotation: base + Math.PI / 2,
-      tint: evolved ? PAL[C.amber] : PAL[C.boneLight],
-      additive: false,
-    });
-    if (evolved) {
-      this.fx.spawnAnim("fx_halo", ctx.playerX, ctx.playerY, {
-        life: 0.3, scaleFrom: radius / 12, scaleTo: radius / 9,
-        alphaFrom: 0.8, alphaTo: 0, additive: true,
+    // Zornpendel: der Pendel-Ring in Zielgröße übernimmt die Schwung-Spur
+    // (vorher fx_smear 44x16 @ radius/20 ≈ 4,8x = Mixel).
+    if (!evolved) {
+      this.fx.spawnAnim("fx_smear", ctx.playerX, ctx.playerY, {
+        life: dur * 1.25, scaleFrom: radius / 20, scaleTo: radius / 19,
+        alphaFrom: 0.75, alphaTo: 0,
+        rotation: base + Math.PI / 2,
+        tint: PAL[C.boneLight],
+        additive: false,
       });
     }
   }
@@ -422,6 +443,18 @@ export class CombatSystem {
         s.sprite.setRotation(angle + this.clock * 7);
         s.halo.setPosition(Math.round(bx), Math.round(by));
         s.halo.setAlpha(0.35 + Math.sin(this.clock * 14) * 0.18);
+        // Zornpendel: Ring folgt dem Schwung — Rotation an der Kugelspitze,
+        // 3 Frames nach Fortschritt (Aufbau → Impact), Ausblend-Fade am Ende.
+        if (s.ring) {
+          s.ring.setPosition(Math.round(ctx.playerX), Math.round(ctx.playerY));
+          s.ring.setRotation(angle);
+          const frameIdx = Math.min(WRATH_FX.ringFrames.length - 1, Math.floor(p * WRATH_FX.ringFrames.length));
+          const frameKey = WRATH_FX.ringFrames[frameIdx];
+          if (currentFrame(s.ring) !== frameKey) applyTexture(s.ring, frameKey);
+          s.ring.setAlpha(p < WRATH_FX.fadeStart
+            ? WRATH_FX.ringAlpha
+            : WRATH_FX.ringAlpha * (1 - (p - WRATH_FX.fadeStart) / (1 - WRATH_FX.fadeStart)));
+        }
         // Bewegungsunschärfe-Bogen direkt am Kugelkopf (deutlich sichtbar).
         if (this.fx.trailsEnabled && (Math.floor(s.t * 60) & 1) === 0) {
           this.fx.spawnAnim("fx_smear", bx, by, {
@@ -481,7 +514,15 @@ export class CombatSystem {
         if (p >= 1) {
           s.sprite.destroy();
           s.halo.destroy();
+          s.ring?.destroy();
           for (const link of s.links) link.destroy();
+          // Zornpendel Ausklang: kurzer Glut-Rest des vollen Rings (Draw-Scale 1).
+          if (s.weaponId === "wrath_pendulum") {
+            this.fx.spawnAnim(WRATH_FX.ringFrames[WRATH_FX.ringFrames.length - 1], ctx.playerX, ctx.playerY, {
+              life: WRATH_FX.fadeOut, scaleFrom: 1, scaleTo: 1,
+              alphaFrom: 0.45, alphaTo: 0, rotation: angle, additive: false,
+            });
+          }
           state.swings.splice(i, 1);
         }
       }
@@ -1235,14 +1276,14 @@ export class CombatSystem {
   clearWeaponState(id: string): void {
     const state = this.states.get(id);
     if (!state) return;
-    for (const s of state.swings) { s.sprite.destroy(); s.halo.destroy(); for (const link of s.links) link.destroy(); }
+    for (const s of state.swings) { s.sprite.destroy(); s.halo.destroy(); s.ring?.destroy(); for (const link of s.links) link.destroy(); }
     for (const orb of state.orbs) { orb.sprite.destroy(); orb.halo?.destroy(); }
     this.states.delete(id);
   }
 
   clear(): void {
     for (const state of this.states.values()) {
-      for (const s of state.swings) { s.sprite.destroy(); s.halo.destroy(); for (const link of s.links) link.destroy(); }
+      for (const s of state.swings) { s.sprite.destroy(); s.halo.destroy(); s.ring?.destroy(); for (const link of s.links) link.destroy(); }
       for (const orb of state.orbs) { orb.sprite.destroy(); orb.halo?.destroy(); }
     }
     this.states.clear();
