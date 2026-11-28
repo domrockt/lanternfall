@@ -261,20 +261,34 @@ try {
   const box = await canvasBox();
   const cx = box.x + box.width / 2;
   const cy = box.y + box.height / 2;
-  // Erwartete Canvas-Größe aus dem Viewport rechnen (gleiche Regel wie computeView, dpr=1):
-  const nFit = Math.floor(Math.min(VIEWPORT.height / 360, VIEWPORT.width / 480));
-  const nEff = Math.max(1, Math.min(2, nFit));
-  const expectW = nFit < 2
-    ? Math.round(Math.min(VIEWPORT.width / 480, VIEWPORT.height / 360) * 480)
-    : Math.min(860, Math.max(480, Math.round(VIEWPORT.width / nEff))) * nEff;
-  const expectH = nFit < 2
-    ? Math.round(Math.min(VIEWPORT.width / 480, VIEWPORT.height / 360) * 360)
-    : 360 * nEff;
+  // Erwartete Canvas-Größe aus dem Viewport rechnen — verbindliche Regel wie
+  // computeView (src/logic/view.ts, dpr=1, siehe Lane-Doku #9964): Der alte
+  // 4:3-Letterbox-Pfad hier (720x540 bei 960x540) war pra-M10-view-fill und
+  // liess den Check fälschlich FAILen; seit M10-view-fill füllt der n<2-Rückfall
+  // das Fenster (scale = Höhe/360, Breite = Fenster/scale, 960x540 -> 640x360@1.5).
+  const maxFitN = Math.floor(Math.min(VIEWPORT.height / 360, VIEWPORT.width / 480));
+  const requested = 2; // "SKALIERUNG" wurde oben auf 2X geklickt (0 = AUTO)
+  const n = Math.min(requested, maxFitN);
+  let expectW; let expectH; let expectLogicalW;
+  if (n < 2) {
+    const scale = VIEWPORT.height / 360;
+    expectLogicalW = Math.min(860, Math.max(480, Math.floor(VIEWPORT.width / scale)));
+    expectW = Math.round(expectLogicalW * scale * 1000) / 1000;
+    expectH = Math.round(360 * scale * 1000) / 1000;
+  } else {
+    expectLogicalW = Math.min(860, Math.max(480, Math.round(VIEWPORT.width / n)), Math.floor(VIEWPORT.width / n));
+    expectW = expectLogicalW * n;
+    expectH = 360 * n;
+  }
+  // Gegenprobe gegen die logische View des Spiels: driftet diese Harness-Formel
+  // erneut von computeView weg, fällt der Check sichtbar auf (statt still falsch zu bestehen).
+  const vAfterScale = await view();
   check(
     "Skalierung 2X gestellt, Fit-View zentriert",
     Math.abs(cx - VIEWPORT.width / 2) <= 2 && Math.abs(cy - VIEWPORT.height / 2) <= 2
-      && box.width === expectW && box.height === expectH,
-    `center ${cx}/${cy}, ${box.width}x${box.height} (erwartet ${expectW}x${expectH})`,
+      && box.width === expectW && box.height === expectH
+      && vAfterScale.w === expectLogicalW && vAfterScale.h === 360,
+    `center ${cx}/${cy}, ${box.width}x${box.height}, logisch ${vAfterScale.w}x${vAfterScale.h} (erwartet ${expectW}x${expectH}, logisch ${expectLogicalW}x360)`,
   );
   await snap("options-changed");
   const beforeReload = await options();
