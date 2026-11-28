@@ -1,0 +1,21 @@
+Lane m10-gamepad-charselect-start — abgeschlossen 2026-11-28
+
+Ziel: Befund B1 (Major, docs/lanes/m10-sightprep-smoke.md) behoben —
+Gamepad-Start aus CharSelect warf zum Titel zurück (Pad-Startfokus lag in der
+Knopfreihe; d-right wrappte auf ZURÜCK, A löste "back" aus).
+
+Fix (Commit 9f7aa4b1, Karte #10414): src/scenes/CharSelect.ts —
+padRow = 0 (Startfokus Charakter-Panel), row-0-Confirm startet den Run
+(CharSelectAction ohne "pick"), d-left/d-right wechselt IMMER den Charakter;
+back bleibt via B-Knopf und via down→left→A auf ZURÜCK erreichbar.
+Regressionstests (Commit 6a0be0ac, #10415): tests/gamepad-charselect-start.test.ts
+neu (Harness-Druckfolge + back-Negativfälle); tests/gamepad-nav-scenes.test.ts
+auf neuen Nav-Vertrag angepasst (Begründung in docs/lanes/m10-gamepad-charselect-start.md).
+Gates (Commit e6faa806, #10416):
+- npm run verify:input: Baseline FAIL 11/12 -> nach Fix 2x hintereinander PASS 29/29 (rc=0)
+- Renderer je Lauf: ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2) — kein SwiftShader
+- npx tsc --noEmit rc=0; npm test 172 Dateien / 1856 Tests grün
+- Reviewer-Subagent: PASS (menu.ts/UI.ts unangetastet, Diff-Umfang sauber)
+Belege: ~/games/.evidence/m10-gamepad-charselect-start/ (verify-input-run{1,2}.log,
+verify-input-baseline-FAIL.log, m10-verify-input-{baseline,run1,run2}.json).
+Doku: docs/lanes/m10-gamepad-charselect-start.md. Board #10414–#10416 done.
