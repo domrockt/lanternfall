@@ -273,6 +273,13 @@ export function resolveBossStackSeparation(
  */
 export const PLAYER_GAP_EDGE = 14;
 /**
+ * Spieler-Hitradius (Run.ts-Kontaktprüfung: Treffer bei dist < e.radius + 6).
+ * Der Ring zielt auf den SPRITE-Kantenabstand, also muss der Spielerradius in
+ * die Ziel-Zentrierdistanz einfließen — sonst liegt das Gleichgewicht bei
+ * Kante 8 px und die Metrik-Schwelle "< 8 px" wird knapp gerissen.
+ */
+export const PLAYER_GAP_PLAYER_RADIUS = 6;
+/**
  * Korrekturanteil am Abstandsdefizit pro Frame (Muster STACK_STRENGTH).
  * < 0.5 heißt: der Abstand nähert sich dem Ziel monoton an, kein Überschwingen.
  */
@@ -356,7 +363,7 @@ export function resolvePlayerGap<T extends CrowdNode>(
     if (n.alive === false) continue;
     checked++;
     if (ignore && ignore(n)) continue;
-    const minCenter = n.radius + edge;
+    const minCenter = PLAYER_GAP_PLAYER_RADIUS + n.radius + edge;
     const dx = n.x - playerX;
     const dy = n.y - playerY;
     const d2 = dx * dx + dy * dy;
