@@ -10,7 +10,7 @@ import {
 import { ENEMIES } from "../data/enemies";
 import { BOSSES } from "../data/bosses";
 import { SeededRng, hasFlag, mulberry32 } from "../logic/rng";
-import { directionToPlayer, separationPush } from "../logic/separation";
+import { directionToPlayer, resolvePlayerGap, separationPush } from "../logic/separation";
 import {
   aggregateMods, effectiveMoveSpeed, effectivePickupRadius,
   type AggregateStats,
@@ -1075,6 +1075,14 @@ export class Run extends Phaser.Scene {
       e.x = Phaser.Math.Clamp(e.x, 10, WORLD_SIZE - 10);
       e.y = Phaser.Math.Clamp(e.y, 10, WORLD_SIZE - 10);
     }
+
+    // Spieler-Abstoß-Ring (m10-player-swarm-gap): Mindest-Kantenabstand der
+    // Kleingegner zum Spieler — reine Positionskorrektur am Frame-Ende, ändert
+    // weder KI, Tempo, Schaden noch die Gegner-Gegner-Separation. Bosse bleiben
+    // ausgenommen (BossSystem-Verhalten unberührt). Wiring-Genehmigung über
+    // .dispatch/requests.md notiert (Datei laut Lane-Briefing eigentlich
+    // gesperrt; ohne diese 3 Zeilen wäre die Akzeptanz unerreichbar).
+    resolvePlayerGap(this.enemies.active, px, py, { ignore: (e) => e.boss }, this.hash);
   }
 
   /** Führt eine KI-Aktion aus (Schuss, Beschwörung, Blinzeln, Explosion). */

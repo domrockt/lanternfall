@@ -262,6 +262,136 @@ export function resolveBossStackSeparation(
   return { pairChecks, moved };
 }
 
+/* ── Spieler-Abstoß-Ring (M10-player-swarm-gap) ───────────────── */
+
+/**
+ * Ziel-Mindest-Kantenabstand Gegner↔Spieler in px (Kante = Zentrierabstand
+ * minus Spieler-Hitradius 6 minus Gegnerradius). 18 liegt bewusst über der
+ * Metrik-Schwelle von 8 px: unter Verfolgungsdruck stellt sich ein Rest-Defizit
+ * von ~1-2 px ein (Chase-Schritt ≈ 1 px/Frame, korrigiert mit `strength`) —
+ * das Gleichgewicht bleibt damit klar über 8 px.
+ */
+export const PLAYER_GAP_EDGE = 18;
+/**
+ * Spieler-Hitradius (Run.ts-Kontaktprüfung: Treffer bei dist < e.radius + 6).
+ * Der Ring zielt auf den SPRITE-Kantenabstand, also muss der Spielerradius in
+ * die Ziel-Zentrierdistanz einfließen — sonst liegt das Gleichgewicht bei
+ * Kante 8 px und die Metrik-Schwelle "< 8 px" wird knapp gerissen.
+ */
+export const PLAYER_GAP_PLAYER_RADIUS = 6;
+/**
+ * Korrekturanteil am Abstandsdefizit pro Frame (Muster STACK_STRENGTH). Beim
+ * einseitigen Ring bleibt die Annäherung für jede Strength < 1 monoton von
+ * unten (Schritt = Strength · Defizit < Defizit — ein Überschwingen ist
+ * rechnerisch ausgeschlossen); der <0,5-Bonus betrifft nur die zweiseitige
+ * Paar-Korrektur des Boss-Stacks.
+ */
+export const PLAYER_GAP_STRENGTH = 0.6;
+/**
+ * Deckel je Gegner und Frame in px: tief im Klumpen steckende Gegner laufen in
+ * 3-5 Frames auf den Ring, statt zu snappen (kein sichtbarer Pop).
+ */
+export const PLAYER_GAP_MAX_STEP = 8;
+
+export interface PlayerGapOptions<T extends CrowdNode = CrowdNode> {
+  edge?: number;
+  strength?: number;
+  maxStep?: number;
+  /**
+   * Optionaler Ausschluss (z. B. Bosse: die steuert das BossSystem, deren
+   * Angriffs-/Stapel-Verhalten soll der Ring nicht berühren).
+   */
+  ignore?: (node: T) => boolean;
+}
+
+export interface PlayerGapResult {
+  /** Geprüfte Knoten im Ring-Query (inkl. ignorierter/außerhalb). */
+  checked: number;
+  /** Anzahl Knoten, die in diesem Aufruf verschoben wurden. */
+  moved: number;
+}
+
+/**
+ * Mindest-Abstoß-Ring um den SPIELER: Gegner im Ring werden radial nach außen
+ * korrigiert, bis ihr Sprite-Kantenabstand zum Spieler mindestens `edge` px
+ * beträgt. Der Spieler selbst bleibt unverrückbar — die Kraft ist einseitig.
+ *
+ * Anders als die Gegner-Gegner-Separation greift der Ring bewusst auch, wenn
+ * Gegner sich nicht überlappen (deadzone-frei am Ringrand: die Kraft fällt
+ * proportional zum Defizit stetig auf 0 ab, es gibt keinen harten Kraft-Sprung
+ * an der Ringkante und keine tote Zone im Ringinneren — genau dort, wo der
+ * Schwarm den Spieler zudrückt, wirkt sie voll).
+ *
+ * Determinismus: feste Knoten-Reihenfolge aus dem SpatialHash-Query (= Insert-
+ * Reihenfolge), Fallback-Richtung über die UID (Goldener Winkel) bei exakt
+ * gleicher Position, kein Math.random. Kein Eingriff außerhalb des Rings.
+ *
+ * Anbindung: optionaler SpatialHash um die Spielerposition — Run.ts reicht den
+ * ohnehin pro Frame gebauten Gegner-Hash durch (Query-Kreis um px/py, kein
+ * Rebuild); ohne Hash baut die Funktion selbst einen.
+ */
+export function resolvePlayerGap<T extends CrowdNode>(
+  nodes: readonly T[],
+  playerX: number,
+  playerY: number,
+  options: PlayerGapOptions<T> = {},
+  hash?: SpatialHash<T>,
+): PlayerGapResult {
+  const edge = Math.max(2, Math.min(64, options.edge ?? PLAYER_GAP_EDGE));
+  const strength = Math.max(0.05, Math.min(1, options.strength ?? PLAYER_GAP_STRENGTH));
+  const maxStep = Math.max(1, options.maxStep ?? PLAYER_GAP_MAX_STEP);
+  const ignore = options.ignore;
+
+  let h = hash;
+  if (!h) {
+    let maxRadius = 0;
+    for (const n of nodes) {
+      if (n.alive === false) continue;
+      if (n.radius > maxRadius) maxRadius = n.radius;
+    }
+    h = new SpatialHash<T>(separationCellSize(maxRadius));
+    h.rebuild(nodes.filter((n) => n.alive !== false));
+  }
+
+  // Query-Kreis um den Spieler: deckt jeden Gegnerradius ab, der die Ringkante
+  // erreichen kann (kleingegner ≤ ~20 px, Elite ≤ ~48 px). Der Distanzcheck
+  // je Knoten folgt unten exakt.
+  const scratch: T[] = [];
+  h.queryCircle(playerX, playerY, edge + 64, scratch);
+
+  let checked = 0;
+  let moved = 0;
+  for (let i = 0; i < scratch.length; i++) {
+    const n = scratch[i];
+    if (n.alive === false) continue;
+    checked++;
+    if (ignore && ignore(n)) continue;
+    const minCenter = PLAYER_GAP_PLAYER_RADIUS + n.radius + edge;
+    const dx = n.x - playerX;
+    const dy = n.y - playerY;
+    const d2 = dx * dx + dy * dy;
+    if (d2 >= minCenter * minCenter) continue;
+    const deficit = minCenter - Math.sqrt(d2);
+    const step = Math.min(maxStep, deficit * strength);
+    let ux: number;
+    let uy: number;
+    if (d2 < 1e-8) {
+      const dir = fallbackDir(n.uid);
+      ux = dir.x;
+      uy = dir.y;
+    } else {
+      const d = Math.sqrt(d2);
+      ux = dx / d;
+      uy = dy / d;
+    }
+    n.x += ux * step;
+    n.y += uy * step;
+    moved++;
+  }
+
+  return { checked, moved };
+}
+
 /* ── Mengen-Resolver mit Iterations- und Paar-Deckel (M10) ────── */
 
 export interface CrowdNode extends Vec2 {
