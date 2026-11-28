@@ -58,6 +58,10 @@ Sichtungsende via HUD-Poll). 33 Bosse erschienen und besiegt, 29/33 im Korridor
   gegenüber Boss-HP; die Endboss-Werte fallen zudem in die Dawn-Phase (Sieg bei 30,3 min ≈ 20 s
   nach Endboss-Spawn). Boss-HP/Tempo liegen in `src/data/bosses` und wurden von keiner Lane
   angefasst — siehe Befundliste B2.
+- Messgenauigkeit (Reviewer-Nit, nicht blockierend): exakte Dauern kommen aus dem
+  `bossDefeated`-Event (alle 33 Bosse besiegt → exakt); nur der Fallback für nicht besiegte
+  Bosse nutzt den ~0,5-s-HUD-Poll und sieht bei gleichzeitig lebenden Bossen nur den
+  zuletzt gesichteten — hier ohne Auswirkung.
 
 ## K4 — Befundliste (für Dora's Fix-Job, Messung im selben Lauf)
 
@@ -70,7 +74,7 @@ Sichtungsende via HUD-Poll). 33 Bosse erschienen und besiegt, 29/33 im Korridor
   und HP-Relief (−25 % ab Minute 18).
 - *Hebel 1 (empfohlen):* `src/data/waves.ts` — **Ankunftsrate statt Deckel dämpfen**:
   dedizierte Spawnraten-Dämpfung Minute 18–24 (z. B. Faktor auf `lateGameSpawnRate`/Basis-Rate
-  mit Rampe, analogous zum HP-Relief-Muster). Erwarteter Gewinn: Gegner-Dichte im Todesfenster
+  mit Rampe, analog zum HP-Relief-Muster). Erwarteter Gewinn: Gegner-Dichte im Todesfenster
   sinkt auch bei niedrigerem Spieler-Level; Minute 0–17 und 25+ bleiben unberührt.
 - *Hebel 2 (Alternative, riskanter):* `src/logic/scaling.ts` — HP-Relief früher/steiler
   (`HP_RELIEF_START_S` 1080 → 960 oder max −25 % → −30 %). Risiko: Boss-Dauern sind bereits

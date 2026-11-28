@@ -1,0 +1,11 @@
+# Lane m10-balance-band-verify — fertig (Verifikation Endgame-Balancing auf main)
+
+**Gesamtergebnis: FAIL → Fix-Job nötig (Dora, Briefing siehe docs/lanes/m10-balance-band-verify.md K4).**
+
+- K1 PASS (1fa59d1): Renderer-String vor jedem Lauf belegt — `ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)`, kein SwiftShader; Boss-Aufzeichnung (bossesSpawned + bossDefeated-Event + lastSeen) nur im Ausgabe-JSON, Spielparameter unangetastet (AutoPlay, kein god, timeScale 30, Seeds 101/7/42 × Kael/Mira, 960x540 @dpr 1).
+- K2 FAIL (530764a): 5/6 Endzeit im Fenster [25,40] — mira/7 stirbt bei 21,21 min (Level 30, Kills −62 % ggü. Branch-Beleg); Streuung 9,32 min > 4. Endlevel 6/6 in [25,40] ok, 0 JS-Fehler. Keine Wiederholung (deterministische Substeps je Seed).
+- K3 FAIL (7ca3748): 29/33 Boss-Dauern im Korridor [20,60] s; 4 Verstöße alle in Seed-42-Läufen (8,4/19,2/16,9/15,8 s). Beleg shots/m10-balance-band-bosses.json.
+- K4 (dc79e05): Befundliste — B1 Hauptbefund: XP-Aufschlag ab Level 28 (635ad50, nicht auf Branch-Basis 5f0a6d7) trifft auf Ankunftsrate +25 % im Fenster 18–24 (1,484→1,852/s); Deckel begrenzt nur Gleichzeitigkeit, nicht Ankunft. Hebel 1: Spawnraten-Dämpfung Minute 18–24 in src/data/waves.ts (Rampe analog HP-Relief, Minute 25+ unverändert); Hebel 2: HP-Relief früher/steiler (riskant wegen B2); XP-Kurve nicht anfassen (A5-Band 6/6 erfüllt). B2 erst nach B1 neu bewerten.
+- Reviewer PASS (3 Nits, behoben/dokumentiert); 1394/1394 Tests grün auf dem Stand.
+
+Belege: shots/m10-balance-band-after.json, shots/m10-balance-band-bosses.json, docs/lanes/m10-balance-band-verify.md. Kein Spielcode geändert; Commits 1fa59d1, 530764a, 7ca3748, dc79e05 (+ Review-Fix).
