@@ -16513,10 +16513,16 @@
       "id": 12033,
       "title": "Merge-Fix m10-phaser-lazy-import: loading-warmup-Test an dynamische Boot-Verdrahtung repointet",
       "description": "Abnahmekriterium: tests/loading-warmup.test.ts 'main.ts registriert die Loading-Szene nach Boot' prueft die dynamische Phase-1-Verdrahtung (import(\"./scenes/Loading\") + scene: [bootMod.Boot, loadingMod.Loading, ...]); npm test 0 fail; npm run build rc=0. Lane m10-phaser-lazy-import, Merge 9ba59895.",
-      "column": "doing",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T12:30:13Z",
+          "by": "build",
+          "text": "doing → done: Merge-Fix Lane m10-phaser-lazy-import, Merge 9ba59895. Beleg: tests/loading-warmup.test.ts repointet, npm test 2279/2279 gruen, build rc=0, Kontroll-Shots shots/merge-m10-phaser-lazy-import-check-{960,1280}.png (Spielfeld nicht schwarz). Commits 7e776f37/2558c56f."
+        }
+      ],
       "created": "2026-11-28T12:29:16Z",
-      "updated": "2026-11-28T12:29:16Z"
+      "updated": "2026-11-28T12:30:13Z"
     }
   ]
 }
