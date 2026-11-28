@@ -270,7 +270,7 @@ async function measureOnce({ chromium, port, attempt }) {
     return {
       startedAt: new Date(started).toISOString(),
       renderer, victory, resultReason, truncated, simSeconds: round1(simSeconds),
-      minute1, timeline, minutePeaks, fps, errors, crashes, fatal,
+      minute1, endMB, timeline, minutePeaks, fps, errors, crashes, fatal,
     };
   } finally {
     // Haertung (Karte m10-heap-regression-fix K4): Nach "Target page closed"
