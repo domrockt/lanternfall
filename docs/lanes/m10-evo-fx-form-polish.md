@@ -51,7 +51,51 @@ Winter-Skript (dokumentiert, korrigiert in der Auswertung; kein Spieleffekt).
 
 ## Status
 
-- [x] K1 Befundtabelle + Vorher-Belege (#8558)
-- [ ] K2a/K2b Fixes (#8560, #8559)
+- [x] K1 Befundtabelle + Vorher-Belege (#8558, Commit 5a01965)
+- [x] K2a/K2b Fixes (#8560, #8559) — siehe unten
 - [ ] K3 art-director-Abnahme ≥ 4/5 je geändertem Evo (#8561)
 - [ ] K4 Tests/FPS/Doku/lane-done (#8562)
+
+## K2 — Umsetzung (Commits, in Reihenfolge)
+
+| Evo | Kriterien-Fix | Commits |
+|---|---|---|
+| thunder_seal | E: Siegel-Ring/Zacken der Anticipation+Dauer lantern(21) statt nightSlate(4) → Ankündigung sichtbar; K1–K3: Signatur 96x96 gebacken, 0 Ink, Gelb-Weiß-Kern | 84f577c (Shot/JSON; Code über c1e9be9) |
+| thorn_storm | K1–K3+F: Signatur 96x96 gebacken (inverses Mapping, organische Ranken, Kern flächig 31, Widerhaken 24, Kontur 29 statt Ink-Flut); fx_thorn + projectile_thorn giftgrün/rotbraun statt Glutrampe | b078632 (Shot) + e5e1e59/9eeee03 (Code) |
+| wrath_pendulum | F/E: Treffer-Funken hotRed(26)/crimson(25); Burst-Tod-Wolken bei Zorn-Kills x0.55/Spread x0.7 (klein statt schlammig) | c90ffa6 |
+| phoenix | K1/K2: phoenixSignatureFrame invers gemappt — Alias-Löcher (Flächendither) weg, Kern flächig, Feuer-Rampe unverändert | c1e9be9 |
+| eternal_winter | F/E: frostRingFrame fogBlue-Bänder innen+außen + Reif-Kante (24 Kristalle 12/13); Signatur weiß-dominant; updateWinter: Eiskristall-Overlay an gefrorenen Gegnern + Bodenfrost; blauer Freeze-Tint existiert in Run.ts (fremd, unangetastet); w2-Tint/Alpha-Invariante unberührt | e5e1e59 + 6a013b8 |
+| soul_beacon | unverändert (K1-Befund: i.O.); after-Shot als Beleg | (Shot-Commit) |
+
+**Historie-Hinweis (ehrlich):** Durch einen `git stash`/`git stash pop`-Zyklus bei der
+Zwischenvalidierung wurden Staging-Areas geleert und Inhalte/Messages verschoben:
+thunder/thorn-Code landete über den Phönix-Commit c1e9be9 bzw. die Nachträge
+e5e1e59/9eeee03 in HEAD; e5e1e59 trägt eine thorn-Message, enthält aber die
+Winter-Code-Änderungen. Der ENDSTAND in HEAD ist vollständig und wird von den
+Commits 9eeee03/6a013b8 abgedeckt; alle Commits nennen genau eine Karte (#8560/#8559).
+
+**Guard-Tests:** tests/evo-fx-form-polish.test.ts (7 Tests): Loch-Guard (keine
+voll umschlossenen transparenten Pixel = kein Flächendither) für phoenix/thorn/
+thunder-Signaturen, Farbidentität (Ink=0, Kern-Dominanz), Siegel-Ankündigung
+(frame 0/3 enthält lantern-Ring). FX-Guard-Fixture neu generiert: ring_frost
+Dither-Band 3→6 px = beabsichtigte Reif-Kante (Commit 5580c28/9eeee03).
+
+## K4 — Messwerte
+
+- `npm test`: **1401/1401 grün** (132 Dateien), `npx tsc --noEmit` rc=0, `npm run build` grün.
+- **FPS Vorher/Nachher im selben flock-Lauf** (Burst 500 Gegner + Minute 25 mit 300 Gegnern
+  + 6 Evolutionen; Vorher = Lane-Start-Commit 5a01965, Nachher = HEAD, beide Builds
+  back-to-back unter `/home/ai/games/.lf-perf.lock`):
+  - Burst: 60,0 → 59,8 FPS (worstFrame 16,8 ms → 16,8 ms, je 500 Gegner)
+  - Minute 25: 60,2 → 60,4 FPS
+  - 0 JS-Fehler in beiden Läufen. **Kein Regression**, JSON: `shots/perf-m3-evo-before.json`
+    und `shots/perf-m3-evo-after.json`. Kein absolutes Tor (Anforderung K4).
+
+## Dispo / Fremd-Dateien
+
+- `src/logic/death.ts` (burst-Tod-Wolke, marshLight) ist fremd — Dispo-Notiz in
+  `.dispatch/requests.md` (05:3xZ): globale Verkleinerung bitte als Folgekarte beim
+  Owner vergeben; diese Lane dämpft nur Zorn-Kills (CombatSystem, eigenes Area).
+- `src/scenes/Run.ts` (blaue Freeze-Tönung, freeze → paleMist) nicht angefasst.
+- `m10-chaos-fix-raster-glow` hat gen-fx.ts NICHT geclaimt (claims.json geprüft
+  bei Lane-Start) — keine Meldung an Dora nötig.
