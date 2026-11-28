@@ -70,10 +70,23 @@ Renderer-String je Lauf in `~/games/.evidence/m10-sightprep-smoke/k2-shots-summa
 - **Fix-Job-Schnitt:** disjunkt zu B1 (CharSelect) — nur UI.ts + ggf. depth.ts.
 
 ### Kein Befund in diesen Proben (Sichtprüfung einmalig, mit Beleg)
-
 - **Mixel/fraktionale Skalierung:** Titel-Logo-Zoom 640 (`title-logo-zoom-640.png`) und 960 (`title-logo-zoom-960.png`)
   sauber, Pixelraster regelmäßig; HUD/Results/Level-up-Dialog crisp.
 - **Near-White:** keine Blowout-Flächen in den 12 Shots; M25-Chaos hell, aber konturiert.
 - **Schwarze Flächen:** Results- und Menü-Hintergründe dunkel, aber strukturiert — keine Schwarz-Block-Regression sichtbar
   (Merge-Checkliste Punkt "schwarze Flächen").
 - **UI-Überlappung:** Results (`results-*.png`), Level-up (`m2-640x360.png`), Boss-Banner M6 (`m6-*.png`) ohne Überlappung.
+
+## K3 — Burst + M25-Gegenprobe unter flock (#10199)
+
+Beide Läufe mit `flock /home/ai/games/.lf-perf.lock`, Renderer-String belegt
+(`renderer.txt`: `ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)` — auch mit den perf-Chrome-Flags;
+kein SwiftShader). Nur Vergleichswerte, **kein FPS-Tor-Urteil** (Headless-Chrome auf iGPU ist nicht Doms Abnahme-Maßstab).
+
+| Lauf | Ergebnis | passed | Beleg |
+|---|---|---|---|
+| `npm run perf` (Burst 500 / 300) | **59,7 FPS @ 500 Gegnern**; 60,5 FPS @ 300 | true/true | perf-burst.log |
+| `scripts/m10-realtime-probe.mjs` (Minute 18→25, Zeitraffer 4x) | **min 46,8 / median 60,4 FPS** (470 Samples), Sim bis Minute 25 | true | m25-probe.json/.log |
+
+Einordnung: Minute-25-Lastphase mediant stabil bei 60, min-Dip 46,8 (Spawn-/Effekt-Spitzen) — konsistent mit den
+M25-Sicht-Shots (53–55 FPS im Batch). Keine Anomalie gegenüber den Merge-Checklisten-Werten.
