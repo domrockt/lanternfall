@@ -200,6 +200,7 @@ const startStatus = await deviceStatus();
 const N = minutes * 6; // 6 Fenster je Minute
 
 let windowsSinceRestart = 0;
+let frozenStreak = 0; // Fenster mit presented<5 (Frozen-Loop: rAF lebt, Game-Loop schlaeft)
 const ensureRun = async () => {
   if (!page) await connectSession();
   const sc = await page.evaluate(() => window.__lf?.state?.()?.scene ?? "unknown").catch(() => "dead");
@@ -281,7 +282,14 @@ for (let w = 0; w < N; w++) {
     ...win,
   });
   console.log(`w${w} (${samples[samples.length - 1].elapsedMin} min): presented=${samples[samples.length - 1].presentedFps}fps chromeJanky=${samples[samples.length - 1].chromeJankyPct}% janky16.7=${hStats?.gt16_7Pct}% p95=${hStats?.p95}ms p99=${hStats?.p99}ms enemies=${win.avgEnemies}${win.aborted ? " ABORTED(run-end)" : ""}`);
-  if (win.aborted || windowsSinceRestart >= 24) { console.log("  -> neues Run-Segment"); await ensureRun(); }
+  if (!win.aborted && samples[samples.length - 1].presentedFps < 5) frozenStreak++; else frozenStreak = 0;
+  if (frozenStreak >= 2) {
+    // Frozen-Loop-Heilung (Lane-Handoff 28.11.): page.reload/Neustart des Runs.
+    console.log("  -> Frozen-Loop erkannt (2 Fenster presented<5): reload + waitRunScene");
+    frozenStreak = 0;
+    await waitRunScene();
+    windowsSinceRestart = 0;
+  } else if (win.aborted || windowsSinceRestart >= 24) { console.log("  -> neues Run-Segment"); await ensureRun(); }
   if (w % 6 === 5) {
     const st = await deviceStatus();
     console.log(`  status: ${(st.thermal || []).join(" ")} | ${(st.battery || []).join(" ")}`);
@@ -297,6 +305,7 @@ const totalJanky = Math.max(0, (gfxAfter.jankyFrames ?? 0) - (gfxBefore.jankyFra
 const allBuckets = diffBuckets(gfxBefore.histogram, gfxAfter.histogram);
 const overall = histogramStats(allBuckets, total);
 const presentedFpsSeries = samples.map((s) => s.presentedFps);
+const cleanSeries = samples.filter((s) => s.presentedFps >= 5); // Frozen-Fenster ohne Frames raus
 const median = (arr) => {
   if (!arr.length) return null;
   const s = [...arr].sort((a, b) => a - b);
@@ -316,7 +325,9 @@ const result = {
   batteryTempC: { before: tempBefore, after: tempAfter, delta: tempBefore != null && tempAfter != null ? Math.round((tempAfter - tempBefore) * 10) / 10 : null },
   startStatus, endStatus,
   overall: {
-    presentedFps: median(presentedFpsSeries),
+    presentedFps: median(cleanSeries.map((s) => s.presentedFps)),
+    presentedFpsWindowsClean: cleanSeries.length,
+    frozenWindows: samples.length - cleanSeries.length,
     presentedFpsMin: presentedFpsSeries.length ? Math.min(...presentedFpsSeries) : null,
     presentedFpsMax: presentedFpsSeries.length ? Math.max(...presentedFpsSeries) : null,
     chromeJankyPct,
