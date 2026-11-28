@@ -13,9 +13,9 @@ export interface TouchControlsOptions {
   canMove(): boolean;
 }
 
-/** Logische Radien (interne 480x270-Auflösung), Positionen bleiben ganzzahlig. */
-const RING_RADIUS = 44;
-const KNOB_RADIUS = 14;
+/** Logische Radien (interne 480x270-Auflösung), Positionen bleiben ganzzahlig. Exportiert fuer tests/touch-overlay-crisp.test.ts. */
+export const RING_RADIUS = 44;
+export const KNOB_RADIUS = 14;
 const TOUCH_DEPTH = 200;
 
 /**
