@@ -8610,16 +8610,21 @@
       "id": 7302,
       "title": "m10-chaos-fix-glow-runpath K5: after-Belege + Doku + .lane-done",
       "description": "Akzeptanz: after-Screenshots derselben Szenario-Frames wie before (gleiche Seeds/Profile), Zusammenfassung in docs/lanes/m10-chaos-fix-glow-runpath.md (Messwerte, offene Punkte zu gen-fx/textures-Claims), .lane-done mit 5-10 Zeilen Summary committet. git status --ignored ohne eigene Reste.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-28T01:15:25Z",
           "by": "build",
           "text": "todo → doing: K5 gestartet: Lane-Doku + .lane-done; Kontrolleure (reviewer) laufen lassen; git status --ignored aufräumen."
+        },
+        {
+          "at": "2026-11-28T01:21:35Z",
+          "by": "build",
+          "text": "doing → review: K5 fertig (Commit nach 659ab09): Lane-Doku + .lane-done committet; Kontrolleure: art-director 4/5 streng PASS, reviewer PASS (Sollte-Punkte in 659ab09 umgesetzt); volle Suite 1053/1055 gruen. Lane abgeschlossen, Merge-Job uebernimmt."
         }
       ],
       "created": "2026-11-28T01:04:29Z",
-      "updated": "2026-11-28T01:15:25Z"
+      "updated": "2026-11-28T01:21:35Z"
     }
   ]
 }
