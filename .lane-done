@@ -1,0 +1,27 @@
+Lane m10-props-variety — Abschluss (2026-11-28, 4 Karten, Commits 6edcc59/b899587/71fc2f4/6566472/475e237/8c4e8b2/6d39c07)
+
+WAS: 6 neue Prop-Sprite-Varianten (prop_boulder_b/c 26x20, prop_bones_b/c 23x14,
+prop_reeds_b 18x24, prop_post_b 20x32) in scripts/art/gen_props.py, generiert nach
+src/gfx/gen-props.ts (+ pure Helfer propVariantKeyFor). Guard-Test tests/props-variety.test.ts
+(6 Tests: Variantenzahl/Klassen- und Groessenvertrag/0 Off-Palette-Pixel/keine Kopien/
+deterministische Gleichverteilung). GroundRenderer.ts UNANGEFAST (Supervisor-Steer befolgt).
+
+MESSWERTE:
+- Vorher (HEAD-Platzierung): haeufigstes Prop prop_boulder 22,6% (frueh) / 23,7% (Chaos).
+- Wirkprobe MIT 3-Zeilen-Verdrahtung (after-wired, NICHT HEAD): prop_stump 14,8%/15,2%
+  haeufigstes Prop, boulder-Split 47/52/47, alle 6 Varianten im Spiel sichtbar.
+- After auf HEAD ohne Verdrahtung: identisch zur Vorher-Messung (23,3%/22,9%) — Varianten
+  sind ohne Verdrahtung im Spiel unsichtbar (Platzierung setzt feste Textur-Keys).
+
+ABNAHME:
+- art-director: PASS, Note 4/5 Bodenvielfalt (Runde 1 + Zweitpruefung nach 3 Korrekturen,
+  Pixel-Audit: 0 Einzelpixel-Fragmente, Palette/Kontur/Schatten-Vertrag eingehalten).
+- npm test 1375/1375 gruen (1 flaky fx-mixel-Einzellauf, Isolation+Wiederholung gruen),
+  npm run build gruen, prop-density-lod + ground-props-batch unverändert gruen.
+- FPS/Draw-Pfad: unberuehrt (keine Draw-Pfad-Aenderung auf HEAD; Wirkprobe: gleiche
+  Prop-Anzahl, nur Texturauswahl).
+
+OFFEN FUER LEAD/MERGE (offener Punkt in docs/lanes/m10-props-variety.md):
+3-Zeilen-Patch in GroundRenderer.addProp (deterministische Variantenwahl ueber
+propVariantKeyFor + tileHash, Fallback Basistextur) als Folgekarte aufnehmen — erst dann
+wirkt die Vielfalt im Spiel. propLayers.ts/textures.ts bleiben unangetastet.

@@ -139,10 +139,16 @@ Formvielfalt bestätigt. Nachbesserungen priorisiert: (1) `prop_bones_b` Wirbels
 durchgehende 2x2/2x3-Kette + 2-px-Knochen, (2) `prop_boulder_c` echte Bruch-Spitzen statt
 Ellipsenbogen, (3) `prop_post_b` Glaskern 2x2 mit Bruchkante + Scherben als 2x2-Cluster.
 
-**Korrektur-Runde (1 Iteration, alle 3 Punkte umgesetzt, Commit siehe git log):**
+**Korrektur-Runde (1 Iteration, alle 3 Punkte umgesetzt, Commit 6d39c07):**
 Belege erneuert (`after-variants.png`, `m4b-sheet-props.png`, `after-wired-*`). Wirkprobe
-auf Patch-Stand erneut: häufigstes Prop `prop_stump` 14,8 %/15,2 %. Fokussierte
-Zweitprüfung: *(folgt)*
+auf Patch-Stand erneut: häufigstes Prop `prop_stump` 14,8 %/15,2 %. 
+
+**art-director-Zweitprüfung: PASS — Note 4/5 für Bodenvielfalt (final).**
+Pixel-Audit belegt: bones_b = 1 zusammenhängende Komponente, 0 Einzelpixel-Fragmente;
+boulder_c mit Stufen-Spitzen + Riss ab Hauptspitze; post_b Glaskern 2x2 (Index 3) mit
+Bruchkante, Scherben 2x2-Cluster. Anmerkung (dokumentiert, nicht umgesetzt): Glint im
+post_b-Glas ist Index 11 (boneLight) statt Index 9 aus der Korrektur-Spezifikation —
+funktional gleichwertig hell, Familienstil konsistent über alle Props.
 
 **Tests:** npm test 1375/1375 grün (ein flaky Einzelfehllauf in
 tests/fx-mixel.test.ts im ersten vollen Lauf, in Isolation und im Wiederholungslauf
