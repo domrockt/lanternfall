@@ -1996,7 +1996,7 @@ export function thornProjectileFrame(): string[] {
     // marshLight (31) als heller Glanz neben der dunklen Kappe — staerkt die
     // Spitzen-Signatur im Moor-Chaos (schwaechste Signatur). Seite wechselnd
     // je Speiche (organisch, kein Spiegel-Muster), Kappe bleibt Anker.
-    const glintSide = spokeIdx % 2 === 0 ? 0.9 : -0.9;
+    const glintSide = spokeIdx % 2 === 0 ? 1.3 : -1.3;
     put(c + dx * (len + 0.5) - dy * glintSide, c + dy * (len + 0.5) + dx * glintSide, 31);
     spokeIdx++;
   }
