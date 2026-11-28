@@ -1,0 +1,19 @@
+# Lane m10-postwave-smoke-r2 – NUR-MESS Integrations-Smoke (Welle 12:00–15:30Z, ~20 Merges)
+
+Ergebnis: **Welle sauber** – die Abnahme-Basis auf main hält.
+
+- K1 (#12885): npm test 2455/2455 grün (226 Files, +43 vs Baseline 2412); npm run build (tsc+vite) rc=0, 449 ms.
+- K2 (#12886): verify-final 7/7 PASS; verify-input 29/29 PASS (keine JS-Fehler, alle Shots >10 KB);
+  acceptance-count 30/6/6/6/6/2 = exakt Soll, ok:true.
+- K3 (#12887): Perf-Kurzlauf unter flock /home/ai/games/.lf-perf.lock, je 2 Läufe (Min zählt):
+  Burst 640x360 min **60.0 FPS** (Tor ≥55 ✅), Burst 780x360@3 min **60.0 FPS** (Tor ≥55 ✅),
+  worstFrameMs 16.8, 0 JS-Fehler. Renderer-String: `ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S),
+  OpenGL ES 3.2) | swiftshader=false` → gültiges Urteil. Keine fremde Sperre (ps + /proc/locks geprüft).
+- K4 (#12888): Doku docs/lanes/m10-postwave-smoke-r2.md mit **0 roten Befunden**, 2 low-Empfehlungen:
+  B1 perf.mjs schreibt kein renderer-Feld ins Tor-JSON (Probe: scripts/m10-postwave-r2.mjs);
+  B2 perf.mjs `passed`-Gate hängt an minEnemies (bekanntes God-Mode-Quirk) → minEnemies aus dem Gate
+  nehmen, sonst meldet jede Lane „passed:false" trotz erfülltem FPS-Tor.
+
+Belege: ~/games/.evidence/m10-postwave-smoke-r2/ (4 Perf-JSONs, renderer.json, verify-Logs).
+Fix-Jobs schneidet Dora aus B1/B2. janky-Gerätemessung bewusst nicht doppelt (m10-janky-remeasure).
+Commits: f5a40318 #12885, ad741a20 #12886, cbd9ad03 #12887 (+K4-Doku-Inhalt), 63122593 #12888.
