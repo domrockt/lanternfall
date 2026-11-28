@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 13045,
+  "next": 13188,
   "cards": [
     {
       "id": 1,
@@ -18434,6 +18434,54 @@
       "notes": [],
       "created": "2026-11-28T14:42:10Z",
       "updated": "2026-11-28T14:42:10Z"
+    },
+    {
+      "id": 13185,
+      "title": "m10-apk-splash-sight K1: APK-Beleg (nur lesend)",
+      "description": "latest-build-Release-APK-Version/Zeitstempel notieren; Theme-Ressource (colors/theme) gegen #0a0d14 + Laterne pruefen (aapt2 dump oder apktool, nur lesen). Abnahme: Beleg-JSON in ~/games/.evidence/m10-apk-splash-sight/, Version+Theme-Farben dokumentiert.",
+      "column": "done",
+      "assignee": "sight",
+      "notes": [
+        {
+          "at": "2026-11-28T16:16:20Z",
+          "by": "build",
+          "text": "lane #12945, Merge 99e38f37"
+        }
+      ],
+      "created": "2026-11-28T16:16:17Z",
+      "updated": "2026-11-28T16:16:20Z"
+    },
+    {
+      "id": 13186,
+      "title": "m10-apk-splash-sight K2: Kaltstart-Beleg am Geraet",
+      "description": "3 Kaltstarts via device-bridge (App killen, neu starten), zeitgestaffelte screencaps des Starting-Window/erste Frames. Spieler-Sperre: bei 409 DOM_SPIELT einmal erneut versuchen, sonst Befund. Abnahme: 3/3 Kaltstart-Belege nach ~/games/.evidence/m10-apk-splash-sight/ + Abnahme-Bilder shots/abnahme/m10-apk-splash-*.png.",
+      "column": "done",
+      "assignee": "sight",
+      "notes": [
+        {
+          "at": "2026-11-28T16:16:20Z",
+          "by": "build",
+          "text": "lane #12946, Merge 99e38f37"
+        }
+      ],
+      "created": "2026-11-28T16:16:17Z",
+      "updated": "2026-11-28T16:16:20Z"
+    },
+    {
+      "id": 13187,
+      "title": "m10-apk-splash-sight K3: Urteil + Doku",
+      "description": "Farben/Inhalt des Starting-Windows je Start belegt, art-Direkt-Urteil (wirkt Start wie haengt oder wie Ladescreen?), Abweichungen mit Severity. Doku in docs/lanes/m10-apk-splash-sight.md. Abnahme: art-Urteil >= 4/5 oder konkrete Befundliste mit Datei/Hebel-Pointer.",
+      "column": "done",
+      "assignee": "sight",
+      "notes": [
+        {
+          "at": "2026-11-28T16:16:20Z",
+          "by": "build",
+          "text": "lane #12947, Merge 99e38f37"
+        }
+      ],
+      "created": "2026-11-28T16:16:17Z",
+      "updated": "2026-11-28T16:16:20Z"
     }
   ]
 }
