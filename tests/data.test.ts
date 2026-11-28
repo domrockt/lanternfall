@@ -94,12 +94,16 @@ describe("Datentabellen", () => {
     expect(CHARACTER_LIST[0].startWeapon).toBe("ember");
     expect(CHARACTER_LIST[1].startWeapon).toBe("flail");
     // Kael ist der Tank: Basis-HP plus Charakter-Mods ergeben mehr effektive HP
-    // als Mira (M6-Balance: Mira 250, Kael 253).
+    // als Mira (Spec GAME.md Z.34/35: Mira 90 ohne HP-Mods, Kael 130·1,2+90 = 246;
+    // F4-Entscheid maxHpPct 20, docs/lanes/m10-charstats-spec-followup.md).
+    // Tempo-Vergleich bleibt auf Basiswerten (Mira 62 > Kael 59 ≈ 62·0,95; F3).
     const effectiveHp = (c: (typeof CHARACTER_LIST)[number]) =>
       Math.round(c.hp * (1 + (c.mods.maxHpPct ?? 0) / 100)) + (c.mods.maxHpFlat ?? 0);
     expect(effectiveHp(CHARACTER_LIST[1])).toBeGreaterThan(effectiveHp(CHARACTER_LIST[0]));
     expect(CHARACTER_LIST[0].speed).toBeGreaterThan(CHARACTER_LIST[1].speed);
-    expect(CHARACTER_LIST[1].armor).toBeGreaterThan(CHARACTER_LIST[0].armor);
+    // F5-Entscheid (docs/lanes/m10-charstats-spec-followup.md): Spec GAME.md Z.35 "1 Rüstung"
+    // ⇒ Kael 1, Mira 1 (Spec schweigt zu Mira) — Tank-Intent bleibt über >= + HP-/Regen-Bonus.
+    expect(CHARACTER_LIST[1].armor).toBeGreaterThanOrEqual(CHARACTER_LIST[0].armor);
   });
 
   it("Bitmap-Font hat echte Umlaute und ß (keine AE/OE/UE-Ersetzung)", () => {

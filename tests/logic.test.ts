@@ -174,10 +174,10 @@ describe("Stats", () => {
     expect(PASSIVES.whetstone.levels[2].mods.damagePct).toBe(30);
     expect(PASSIVES.heart.levels[4].mods.maxHpFlat).toBe(100);
   });
-  it("Kael: +25 % Max-HP auf Basis-HP (M6-Tankprofil)", () => {
+  it("Kael: +20 % Max-HP auf Basis-HP (Spec GAME.md Z.35; F4-Entscheid, siehe docs/lanes/m10-charstats-spec-followup.md)", () => {
     const agg = aggregateMods([CHARACTERS.kael.mods]);
-    expect(agg.maxHpPct).toBe(25);
-    expect(Math.round(CHARACTERS.kael.hp * (1 + agg.maxHpPct / 100))).toBe(163);
+    expect(agg.maxHpPct).toBe(20);
+    expect(Math.round(CHARACTERS.kael.hp * (1 + agg.maxHpPct / 100))).toBe(156);
   });
   it("weaponLevel clamped", () => {
     expect(weaponLevel(WEAPONS.ember, 0).level).toBe(1);

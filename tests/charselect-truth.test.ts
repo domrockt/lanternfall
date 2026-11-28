@@ -81,13 +81,13 @@ describe("charselect-truth: Anzeige == src/data (SSOT)", () => {
     });
   }
 
-  it("Kael-Bonus folgt den Daten (Regression für den +20%-Befund, Daten sagen maxHpPct 25)", () => {
+  it("Kael-Bonus folgt den Daten (Spec GAME.md Z.35 '+20 % Max-HP'; F4-Entscheid, siehe docs/lanes/m10-charstats-spec-followup.md)", () => {
     const kael = CHARACTER_LIST.find((c) => c.id === "kael")!;
-    expect(kael.mods.maxHpPct).toBe(25);
+    expect(kael.mods.maxHpPct).toBe(20); // Spec GAME.md Z.35 "+20 % Max-HP" (F4-Entscheid)
     const kaelLines = truth.displayLines
       .filter((l) => panelOf(l, CHARACTER_LIST.findIndex((c) => c.id === "kael")))
       .map((l) => norm(l.text));
-    expect(kaelLines).toContain("+25% MAX-HP / -5% TEMPO");
-    expect(kaelLines.some((t) => t.includes("+20%"))).toBe(false);
+    expect(kaelLines).toContain("+20% MAX-HP"); // F3: moveSpeedPct entfernt ⇒ kein "-5% TEMPO" mehr
+    expect(kaelLines.some((t) => t.includes("+25%"))).toBe(false);
   });
 });
