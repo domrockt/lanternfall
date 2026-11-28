@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 12483,
+  "next": 12507,
   "cards": [
     {
       "id": 1,
@@ -17362,6 +17362,70 @@
       "notes": [],
       "created": "2026-11-28T12:46:33Z",
       "updated": "2026-11-28T12:46:33Z"
+    },
+    {
+      "id": 12503,
+      "title": "m10-audio-alloc-fix K1: Mess-Skript + Vorher-Messung SFX-Allokationen",
+      "description": "AC: scripts/m10-audio-alloc.mjs misst Allokationen im SFX-Pfad (CDP Sampling-Heap, Attribution AudioSystem/mixing/Phaser-Sound, plays/s via debugState), Vorher-JSON unter ~/games/.evidence/m10-audio-alloc-fix/ als Baseline committet, Akzeptanzgrenze vor Nachmessung festgehalten.",
+      "column": "done",
+      "assignee": "engine-dev",
+      "notes": [
+        {
+          "at": "2026-11-28T13:46:50Z",
+          "by": "build",
+          "text": "lane #12129, Merge 90e8cc96 (m10-audio-alloc-fix in main gemergt; Lane-Karten uebernommen)"
+        }
+      ],
+      "created": "2026-11-28T13:46:40Z",
+      "updated": "2026-11-28T13:46:50Z"
+    },
+    {
+      "id": 12504,
+      "title": "m10-audio-alloc-fix K2: Hot-Path-Allokationen in AudioSystem.ts tilgen",
+      "description": "AC: wiederverwendete Play-Parameter (req/noteOpts), Listener-Batching (permanente complete/stop-Listener je Stimme statt 2x once pro Play), Factory-Closure gecacht; nur src/audio/AudioSystem.ts; Audioausgabe-Verhalten unveraendert (mixing.ts unangetastet); tsc + zielgerichtete Tests gruen.",
+      "column": "done",
+      "assignee": "engine-dev",
+      "notes": [
+        {
+          "at": "2026-11-28T13:46:50Z",
+          "by": "build",
+          "text": "lane #12130, Merge 90e8cc96 (m10-audio-alloc-fix in main gemergt; Lane-Karten uebernommen)"
+        }
+      ],
+      "created": "2026-11-28T13:46:40Z",
+      "updated": "2026-11-28T13:46:50Z"
+    },
+    {
+      "id": 12505,
+      "title": "m10-audio-alloc-fix K3: Nachher-Messung <=50 % der Vorher-Allokationen (SFX-Pfad, AudioSystem-Anteil)",
+      "description": "AC: gleiche Messung wie K1, After-JSON belegt <=50 % der Vorher-Allokationen im AudioSystem-SFX-Pfadanteil; Fremdanteile (mixing.ts planPlay, Phaser createBufferSource/onended) sauber als Residual ausgewiesen; Differenz in docs/lanes/m10-audio-alloc-fix.md.",
+      "column": "done",
+      "assignee": "engine-dev",
+      "notes": [
+        {
+          "at": "2026-11-28T13:46:50Z",
+          "by": "build",
+          "text": "lane #12131, Merge 90e8cc96 (m10-audio-alloc-fix in main gemergt; Lane-Karten uebernommen)"
+        }
+      ],
+      "created": "2026-11-28T13:46:40Z",
+      "updated": "2026-11-28T13:46:50Z"
+    },
+    {
+      "id": 12506,
+      "title": "m10-audio-alloc-fix K4: Regressionstest tests/audio-alloc.test.ts + Lane-Abschluss",
+      "description": "AC: Guard-Test friert Hebel ein (keine neuen Play-Objekte/Stimmen-Allokationen pro Aufruf, Listener-Anzahl je Stimme konstant, Voice-Pool bleibt auf maxVoices begrenzt); npm test gruen; Lane-Doku committet.",
+      "column": "done",
+      "assignee": "engine-dev",
+      "notes": [
+        {
+          "at": "2026-11-28T13:46:50Z",
+          "by": "build",
+          "text": "lane #12132, Merge 90e8cc96 (m10-audio-alloc-fix in main gemergt; Lane-Karten uebernommen)"
+        }
+      ],
+      "created": "2026-11-28T13:46:40Z",
+      "updated": "2026-11-28T13:46:50Z"
     }
   ]
 }
