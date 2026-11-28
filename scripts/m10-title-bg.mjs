@@ -31,13 +31,16 @@ for (const vp of [
 
   const state = await page.evaluate(() => {
     const scene = window.__game.scene.getScene("title");
-    const bg = scene.children.list.find(
+    const bgs = scene.children.list.filter(
       (c) => c.texture && c.texture.key === "title_background",
     );
+    // Kernbild = zuletzt erzeugt (ohne Crop, volles Texture-Rect).
+    const bg = bgs[bgs.length - 1];
     if (!bg) return { found: false };
     const canvas = document.querySelector("canvas");
     return {
       found: true,
+      parts: bgs.length,
       texW: bg.texture.source[0].width,
       texH: bg.texture.source[0].height,
       scaleX: bg.scaleX,
@@ -73,16 +76,48 @@ for (const vp of results) {
   ], { stdio: "ignore" });
 }
 
+// Naht-Pruefung: Kanten-Fuellung muss an den Panel-Grenzen C0-stetig sein.
+// AE (fuzz 3%) zwischen der Spalte/Zeile direkt innerhalb und ausserhalb der
+// Panel-Kante: 0 = keine sichtbare Naht.
+const sh = (args) => {
+  try {
+    return execFileSync(args[0], args.slice(1), { stdio: ["ignore", "pipe", "pipe"] }).toString().trim();
+  } catch (e) {
+    return (e.stderr ?? "").toString().trim();
+  }
+};
+const ae = (s) => (s === "" ? 0 : Number(s) || 0);
+const seamAE = (img, devX1, devY1, devX2, devY2, len, vertical) => {
+  const T = "/home/ai/tmp/m10-title-bg-crisp";
+  const g = (x, y, w, h, out) => execFileSync("convert", [img, "-crop", `${w}x${h}+${x}+y`.replace("+y", `+${y}`), out]);
+  if (vertical) {
+    g(devX1, 0, 1, len, `${T}/s1.png`);
+    g(devX2, 0, 1, len, `${T}/s2.png`);
+  } else {
+    g(0, devY1, len, 1, `${T}/s1.png`);
+    g(0, devY2, len, 1, `${T}/s2.png`);
+  }
+  return ae(sh(["compare", "-metric", "AE", "-fuzz", "3%", `${T}/s1.png`, `${T}/s2.png`, "null:"]));
+};
+
 // Auswertung: fraktionaler Scale => Texel landen auf Sub-Pixel-Positionen.
 for (const r of results) {
   const s = r.state;
   if (!s.found) { r.verdict = "FAIL: bg nicht gefunden"; continue; }
+  const dpr = r.viewport.dpr;
+  const img = `shots/m10-title-bg-${phase}-${r.viewport.name}.png`;
+  const bxDev = Math.min(s.bufW - 2, Math.round((s.x + s.displayW) * dpr));
+  // Horizontale Naht an der OBERKANTE messen (sauber); an der Unterkante
+  // endet zufaellig die Text-Lasur (y 177..315) -> Messartefakt, kein Bg-Naht.
+  const tyDev = Math.max(1, Math.round(s.y * dpr));
+  s.seamVerticalAE = seamAE(img, bxDev - 1, 0, bxDev + 1, 0, s.bufH, true);
+  s.seamHorizontalAE = seamAE(img, 0, tyDev - 1, 0, tyDev + 1, s.bufW, false);
   s.texelScaleX = s.displayW / s.texW;
   s.texelScaleY = s.displayH / s.texH;
   s.fractal = !Number.isInteger(s.texelScaleX) || !Number.isInteger(s.texelScaleY);
-  r.verdict = s.fractal
-    ? `FAIL: fraktional (${s.texelScaleX.toFixed(4)}x${s.texelScaleY.toFixed(4)})`
-    : "PASS: ganzzahlig";
+  r.verdict = !s.fractal && s.seamVerticalAE === 0 && s.seamHorizontalAE === 0
+    ? "PASS: ganzzahlig + nahtlos"
+    : `FAIL: ${s.fractal ? "fraktional " : ""}(seamV=${s.seamVerticalAE} seamH=${s.seamHorizontalAE})`;
 }
 
 const out = { phase, results };

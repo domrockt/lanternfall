@@ -10,6 +10,39 @@ import { readSceneGamepad } from "../input/Gamepad";
 
 interface TitleData { seed?: number; debug?: boolean }
 
+export interface TitleBgLayout {
+  /** Ganzzahliger Texel-Scale des Kernbilds (nie fraktional -> keine Sub-Pixel-Kanten). */
+  scale: number;
+  /** Position des Kernbilds (Origin 0,0), ganzzahlig. */
+  x: number;
+  y: number;
+  /** Randbreiten in px, die die Kanten-Fuellung schliesst (links/oben/rechts/unten). */
+  left: number;
+  top: number;
+  right: number;
+  bottom: number;
+}
+
+/**
+ * Titel-Hintergrund pixelgenau: ganzzahliger Scale-Faktor, Restflaeche per
+ * Kanten-Fuellung geschlossen. Alle Werte ganzzahlig und >= 0;
+ * left + texW*scale + right = gameW, top + texH*scale + bottom = gameH
+ * (Fuellung deckt die View komplett ab, kein sichtbarer Rand).
+ */
+export function titleBgLayout(gameW: number, gameH: number,
+  texW = 480, texH = 270): TitleBgLayout {
+  const scale = Math.max(1, Math.floor(Math.min(gameW / texW, gameH / texH)));
+  const x = Math.round((gameW - texW * scale) / 2);
+  const y = Math.round((gameH - texH * scale) / 2);
+  return {
+    scale, x, y,
+    left: x,
+    top: y,
+    right: gameW - (x + texW * scale),
+    bottom: gameH - (y + texH * scale),
+  };
+}
+
 export class Title extends Phaser.Scene {
   private seed = 1;
   private debug = false;
@@ -45,9 +78,46 @@ export class Title extends Phaser.Scene {
       () => this.scale.off(Phaser.Scale.Events.RESIZE, this.onScaleResize, this));
 
     this.cameras.main.setBackgroundColor(PAL[C.nightDeep]);
-    // Titelbild fuellt die aktuelle Breite (Pixel-Art wird ganzzahlig gestreckt).
-    this.add.image(0, 0, "title_background").setOrigin(0, 0).setDepth(0)
-      .setDisplaySize(W, H);
+    // Titel-Hintergrund pixelgenau (m10-title-bg-crisp): ganzzahliger Scale,
+    // Restflaeche schliessen echte Rand-Texel (Kanten-Fuellung) ab.
+    // Jeder Teil hat ganzzahlige Texel-Skalierung (keine Sub-Pixel-Kanten) und
+    // die Teile kacheln die View lueckenlos (top+270*scale+bottom = H usw.).
+    // Kanten-Texturen (je 1 Texel-Reihe/Spalte des Quellbilds) einmalig erzeugen;
+    // setCrop ist hier unzuverlaessig (Samplet das falsche Texel).
+    const bgL = titleBgLayout(W, H);
+    if (!this.textures.exists("title_bg_col_l")) {
+      const src = this.textures.get("title_background").getSourceImage() as HTMLCanvasElement;
+      const mk = (key: string, x: number, y: number, w: number, h: number): void => {
+        const c = document.createElement("canvas");
+        c.width = w; c.height = h;
+        c.getContext("2d")!.drawImage(src, x, y, w, h, 0, 0, w, h);
+        this.textures.addCanvas(key, c);
+      };
+      mk("title_bg_col_l", 0, 0, 1, 270);
+      mk("title_bg_col_r", 479, 0, 1, 270);
+      mk("title_bg_row_t", 0, 0, 480, 1);
+      mk("title_bg_row_b", 0, 269, 480, 1);
+      mk("title_bg_px_tl", 0, 0, 1, 1);
+      mk("title_bg_px_tr", 479, 0, 1, 1);
+      mk("title_bg_px_bl", 0, 269, 1, 1);
+      mk("title_bg_px_br", 479, 269, 1, 1);
+    }
+    const bgBand = (tex: string, sx: number, sy: number, px: number, py: number): void => {
+      this.add.image(px, py, tex).setOrigin(0, 0).setDepth(0).setScale(sx, sy);
+    };
+    const s = bgL.scale;
+    const bx = bgL.x + 480 * s;
+    const by = bgL.y + 270 * s;
+    if (bgL.top > 0) bgBand("title_bg_row_t", s, bgL.top, bgL.x, 0);
+    if (bgL.bottom > 0) bgBand("title_bg_row_b", s, bgL.bottom, bgL.x, by);
+    if (bgL.left > 0) bgBand("title_bg_col_l", bgL.left, s, 0, bgL.y);
+    if (bgL.right > 0) bgBand("title_bg_col_r", bgL.right, s, bx, bgL.y);
+    if (bgL.top > 0 && bgL.left > 0) bgBand("title_bg_px_tl", bgL.left, bgL.top, 0, 0);
+    if (bgL.top > 0 && bgL.right > 0) bgBand("title_bg_px_tr", bgL.right, bgL.top, bx, 0);
+    if (bgL.bottom > 0 && bgL.left > 0) bgBand("title_bg_px_bl", bgL.left, bgL.bottom, 0, by);
+    if (bgL.bottom > 0 && bgL.right > 0) bgBand("title_bg_px_br", bgL.right, bgL.bottom, bx, by);
+    this.add.image(bgL.x, bgL.y, "title_background").setOrigin(0, 0).setDepth(0)
+      .setScale(s);
     // Atmender Mond-Glow (additiv, nur Licht – keine Off-Palette-Flächen).
     const glow = this.add.image(W - 76, 56, "light_radius")
       .setBlendMode(Phaser.BlendModes.ADD).setScale(0.9).setAlpha(0.45).setDepth(1);
