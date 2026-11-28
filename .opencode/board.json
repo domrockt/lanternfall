@@ -7854,11 +7854,17 @@
     {
       "id": 6667,
       "title": "m10-shot-clarity #2: Optik-Fix shotTextureFor/HD-Grids (Kontur, Palette-Farben, Groessenstaffel)",
-      "column": "todo",
+      "column": "review",
       "description": "HD_GRIDS in src/systems/EnemyProjectiles.ts: je Familie eigene Palette-Farben (keine Kollision mit Spieler-Ember), dunkle Kontur, monotone Groessenstaffel spit<bone<shadow<fire, kein Near-White. Treffer-/Update-Pfad bitgleich. Abnahme: npx tsc --noEmit gruen, enemy-shots-fair.test.ts unangetastet gruen.",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T00:03:46.977Z",
+          "by": "lead",
+          "text": "HD_GRIDS neu: Farbblocks je Familie (spit {0,30,31}, bone {0,10,11}, shadow {0,8,9}, fire {0,24,25,26}), 13/22 (Near-White) entfernt, Groessenstaffel 34<44<46<78 px, Spieler-Ember nur 0 geteilt. Nur src/systems/EnemyProjectiles.ts angefasst (gen-fx/FxSystem/CombatSystem unberuehrt), Treffer-/Update-Pfad bitgleich. tsc rc=0, enemy-shots-fair 14/14 gruen. Nachher-Messung (Karte 4 laeuft separat): worst scene 0,36 % Near-White (Grenze 4,16 %)."
+        }
+      ],
       "created": "2026-11-27T23:52:56.879Z",
-      "updated": "2026-11-27T23:52:56.879Z"
+      "updated": "2026-11-28T00:03:46.977Z"
     },
     {
       "id": 6668,
