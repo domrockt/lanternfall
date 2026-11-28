@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 10565,
+  "next": 10688,
   "cards": [
     {
       "id": 1,
@@ -13893,6 +13893,36 @@
       ],
       "created": "2026-11-28T08:59:58Z",
       "updated": "2026-11-28T09:12:24Z"
+    },
+    {
+      "id": 10685,
+      "title": "m10-gamepad-charselect-start #10414 Fix: Pad-Startfokus Reihe 0 + A startet Run",
+      "description": "Fix B1 – Pad-Startfokus Reihe 0, row-0-confirm startet Run (aus Lane m10-gamepad-charselect-start, urspr. #10414).",
+      "column": "done",
+      "assignee": "ui-dev",
+      "notes": [],
+      "created": "2026-11-28T09:42:27Z",
+      "updated": "2026-11-28T09:42:27Z"
+    },
+    {
+      "id": 10686,
+      "title": "m10-gamepad-charselect-start #10415 Regressionstest Gamepad-CharSelect-Start",
+      "description": "Regressionstest: d-right waehlt Kael, A startet; back erreichbar (aus Lane m10-gamepad-charselect-start, urspr. #10415).",
+      "column": "done",
+      "assignee": "ui-dev",
+      "notes": [],
+      "created": "2026-11-28T09:42:27Z",
+      "updated": "2026-11-28T09:42:27Z"
+    },
+    {
+      "id": 10687,
+      "title": "m10-gamepad-charselect-start #10416 Gates: verify:input 2x + Belege",
+      "description": "Gates: verify:input 2x PASS 29/29, Renderer-Beleg im Harness, Lane-Doku (aus Lane m10-gamepad-charselect-start, urspr. #10416).",
+      "column": "done",
+      "assignee": "ui-dev",
+      "notes": [],
+      "created": "2026-11-28T09:42:27Z",
+      "updated": "2026-11-28T09:42:27Z"
     }
   ]
 }
