@@ -1,8 +1,0 @@
-Lane m10-inrun-tor-sweep — In-run-Heap-Tor in Abnahme-Dokus mechanisch abgesichert (Befund B2, Nachabnahme G).
-
-- K1 #13451: scripts/m10-acceptance-doc-lint.mjs (+ .d.mts) — scannt docs/qa/*.md auf Zeilen, die das In-run-Heap-Feld (Minute 1→29) als Tor/Urteil zitieren (Regeln: in-run-as-gate, heap-tor-pct-judgment; Whitelist: Beobachtung/Info/altes-Tor). Bericht shots/m10-doc-lint-<datum>.json + Kopie ~/games/.evidence/m10-inrun-tor-sweep/.
-- K2 #13452: tests/acceptance-doc-lint.test.ts — 14/14 Heuristik-Tests grün.
-- K3 #13453: Lint über Ist-Bestand (11 Dateien): 7 Funde, alle in Historien-Dokumenten vor der Tor-Entzerrung (acceptance-refresh-f:78/79/82, reacceptance:176, reacceptance-c:151/153/175); G-Dokument sauber. Historische QA-Dokumente NICHT geändert (git diff docs/qa leer).
-- K4 #13454: Verfahrensanmerkung in docs/lanes/m10-inrun-tor-sweep.md — künftige Abnahme-Doks: Tor ausschließlich retained Heap über Szenen-Teardown (< +15 %, 2 Läufe); In-run-Feld nur als Beobachtung; Lint im Nachlauf laufen lassen (--fail-on-findings für harte Nutzung).
-
-Checks: tsc rc=0, npm test 2529/2529 (233 Dateien), build rc=0, reviewer PASS (Soundness-Sweep gegen echte docs/qa-Zeilen: 0 FP/FN).
