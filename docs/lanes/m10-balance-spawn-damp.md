@@ -52,3 +52,28 @@ keine Wiederholung — deterministisch bei festen Substeps):**
 - 0 JS-Fehler; Renderer ok (oben). Beleg: `shots/m10-balance-band-damp-after.json`
   (`allInWindow: true`, `spreadOk: true`, `accepted: true`).
 
+## K3 — Boss-Dauern (erster Auftritt je Boss, Korridor 20–60 s): **PASS (Ziel ≥ 30/33 erfüllt)**
+
+Aus denselben 6 Läufen: 36 Bosse erschienen und **alle 36 besiegt** (exakte Todeszeiten
+via `bossDefeated`-Event), **33/36 im Korridor** — Ziel „≥ 30/33“ erfüllt, und besser als
+die Baseline (29/33, 4 Verstöße → 3 Verstöße; der Baseline-Verstoß mira/42 Hexenzirkel
+19,2 s ist behoben).
+
+Verbleibende Korridor-Verstöße (alle zu **kurz**, d. h. Boss fällt unter Spieler-DPS):
+
+| Char | Seed | Boss | Dauer | Spawn (s) |
+|---|---|---|---|---|
+| Mira | 7 | Moorkönigin | **10,4 s** | 300 |
+| Mira | 42 | Moorkönigin | **10,2 s** | 300 |
+| Kael | 42 | Der Hohle König | **17,2 s** | 1800 (Endboss) |
+
+**B2-Befund (dokumentiert, kein zweiter Hebel in dieser Lane):** Die Verstöße sind
+dieselbe Struktur wie in der Baseline (B2 der Verifikations-Lane): die Moorkönigin
+(erster Boss, Minute 5) wird in DPS-starken Läufen in ~10 s geschmolzen, und der
+Endboss (Spawn 1800 s) fällt in Läufen mit früher Dawn-Phase (~30,3 min ≈ 20 s nach
+Spawn) unter den Korridor. Datei/Hebel: `src/data/bosses.ts` (Boss-HP/Grundtempo) —
+separate Karte/Lane; hier nur dokumentiert, da das K3-Ziel ≥ 30/33 bereits erreicht ist
+und ein zweiter Hebel laut Briefing verboten ist. K2/K3-Konflikt lag nicht vor (K2 hat
+bei Konflikt Vorrang gehabt).
+
+
