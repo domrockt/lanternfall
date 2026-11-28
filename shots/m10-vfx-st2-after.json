@@ -1,0 +1,114 @@
+{
+  "script": "m10-vfx-st2",
+  "seconds": 10,
+  "target": 300,
+  "skipTo": 1400,
+  "profiles": [
+    {
+      "profile": {
+        "label": "640x360@1",
+        "width": 640,
+        "height": 360,
+        "dpr": 1
+      },
+      "renderer": {
+        "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+        "vendor": "Google Inc. (Intel)"
+      },
+      "frozen": {
+        "stats": {
+          "time": 1405.9,
+          "enemies": 398,
+          "kills": 68,
+          "fxAlpha": 0.65,
+          "lodLevel": "minimal",
+          "bossAlive": true
+        },
+        "png": "shots/m10-vfx-st2-after-640x360.png",
+        "pixels": {
+          "pngWidth": 640,
+          "pngHeight": 360,
+          "nearWhiteA7Pct": 0.7,
+          "nearWhiteMinRgb200Pct": 0.92,
+          "nearWhiteA7CropPct": 4.15,
+          "nearWhiteMinRgb200CropPct": 2.66,
+          "cropDef": "A7-anteilig: x 37,5..62,5 %, y 29,63..70,37 % des Frames (240x220@+360+160 im 960x540-Original)"
+        }
+      },
+      "fps": {
+        "fps": 60,
+        "frames": 600,
+        "elapsedMs": 10000,
+        "avgEnemies": 290
+      },
+      "drawCalls": {
+        "frames": 2097,
+        "drawsMedian": 0,
+        "drawsMean": 4.7,
+        "drawsP95": 14,
+        "blendsMedian": 0,
+        "totalDraws": 6244,
+        "drawsPerSecond": 624.4
+      },
+      "dprAlphaProbe": {
+        "dprAlpha": 1,
+        "alphaScale": 0.65,
+        "dpr": 1
+      },
+      "jsErrors": []
+    },
+    {
+      "profile": {
+        "label": "780x360@3",
+        "width": 780,
+        "height": 360,
+        "dpr": 3
+      },
+      "renderer": {
+        "renderer": "ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)",
+        "vendor": "Google Inc. (Intel)"
+      },
+      "frozen": {
+        "stats": {
+          "time": 1406,
+          "enemies": 389,
+          "kills": 80,
+          "fxAlpha": 0.65,
+          "lodLevel": "minimal",
+          "bossAlive": true
+        },
+        "png": "shots/m10-vfx-st2-after-780x360@3.png",
+        "pixels": {
+          "pngWidth": 2340,
+          "pngHeight": 1080,
+          "nearWhiteA7Pct": 0.45,
+          "nearWhiteMinRgb200Pct": 0.73,
+          "nearWhiteA7CropPct": 3.03,
+          "nearWhiteMinRgb200CropPct": 2.43,
+          "cropDef": "A7-anteilig: x 37,5..62,5 %, y 29,63..70,37 % des Frames (240x220@+360+160 im 960x540-Original)"
+        }
+      },
+      "fps": {
+        "fps": 59.9,
+        "frames": 599,
+        "elapsedMs": 10000,
+        "avgEnemies": 284
+      },
+      "drawCalls": {
+        "frames": 2099,
+        "drawsMedian": 0,
+        "drawsMean": 4.9,
+        "drawsP95": 14,
+        "blendsMedian": 0,
+        "totalDraws": 6336,
+        "drawsPerSecond": 633.6
+      },
+      "dprAlphaProbe": {
+        "dprAlpha": 0.7,
+        "alphaScale": 0.65,
+        "dpr": 3
+      },
+      "jsErrors": []
+    }
+  ]
+}

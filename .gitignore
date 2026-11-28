@@ -60,3 +60,6 @@ scripts/art/__pycache__/
 !shots/qa-reaccc-chest-arrow.json
 # vfx-restore-Tests pruefen existsSync auf die Beleg-PNGs der Baseline-/Stage1-Reports (Vera 2026-11-28)
 !shots/m10-vfx-restore-*.png
+# m10-vfx-restore-st2-r2: Fixtures fuer tests/vfx-restore-st2.test.ts (Reports + Freeze-PNGs)
+!shots/m10-vfx-st2-*.json
+!shots/m10-vfx-st2-*.png

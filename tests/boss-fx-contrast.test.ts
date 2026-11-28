@@ -288,9 +288,10 @@ describe("Boss-FX Mindest-Alpha-Boden + LOD-Ausnahme (Karte #5220)", () => {
     const fx = new FxSystem(fakeScene(sprite));
     fx.setAlphaScale(0.5);
     const runtime = fx.spawn({ texture: "fx_halo", x: 0, y: 0, life: 1, scaleFrom: 6, scaleTo: 6 });
-    // Daempfung quadratisch + dpr-Alpha (0,9*0,5*0,5*0,6) — bestehendes M6/M10-Verhalten, unveraendert.
+    // Daempfung quadratisch + dpr-Alpha (0,9*0,5*0,5*0,7 — dpr-Faktor seit
+    // Stufe 2, m10-vfx-restore-st2-r2: 0,7 statt 0,6).
     expect(runtime?.alphaScaleExempt).toBe(false);
-    expect(runtime?.alphaFrom).toBeCloseTo(0.9 * 0.5 * 0.5 * 0.6, 10);
+    expect(runtime?.alphaFrom).toBeCloseTo(0.9 * 0.5 * 0.5 * 0.7, 10);
     // M10-perf-cap-rollback + K2 (m10-android-scale-floor-r2): der
     // Flaechen-Deckel ueber RENDER_SCALE greift nie mehr — der Teiler ist
     // hart 1, der Glow bleibt volllaufend; Laststeuerung ueber die
