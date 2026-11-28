@@ -23,6 +23,13 @@ export const FPS_AUTO = -1;
 export const FPS_60 = 60;
 export const FPS_MAX = 0;
 
+/**
+ * Geräte-Erkennung: Renderer-String des Zielgeräts (Redmi Pad Pro, Adreno 710).
+ * Benannte Konstante statt Inline-Literal — eine Quelle für fps-cap.ts, Tests
+ * und Lane-Doku; beim Merge mit m10-device-janky-node delegierbar.
+ */
+export const DEVICE_RENDERER = "Adreno (TM) 710";
+
 /** Validiert einen gespeicherten Optionswert; alles Fremde fällt auf AUTO. */
 export function clampFpsSetting(v: unknown): number {
   if (v === FPS_60 || v === FPS_MAX || v === FPS_AUTO) return v as number;
@@ -60,7 +67,7 @@ export function stepFpsSetting(setting: number, delta: number): number {
  * MISSTRAUEN: ohne String nie Geraet (kein SwiftShader-/LLVMpipe-Fehlgriff).
  */
 export function isDeviceNodeRenderer(renderer: string | null | undefined, dpr: number): boolean {
-  return typeof renderer === "string" && renderer.includes("Adreno (TM) 710") && dpr >= 2;
+  return typeof renderer === "string" && renderer.includes(DEVICE_RENDERER) && dpr >= 2;
 }
 
 let probed = false;
@@ -99,19 +106,31 @@ export function resetDeviceNodeProbeForTests(): void {
 }
 
 /**
- * Setzt den Frame-Cap zur Laufzeit (Optionsmenü „gilt sofort“). Phaser 3.90
- * dispatched in TimeStep.tick() dynamisch über hasFpsLimit, daher genügt das
- * Setzen der Felder — kein Spiel-Neustart. „MAX“ (null) hebt das Limit auf;
- * der angehäufte delta-Rest wird verworfen, damit kein Aufstau aus der
- * Limit-Phase als großer Sim-Schritt durchläuft.
+ * Setzt den Frame-Cap zur Laufzeit (Optionsmenü „gilt sofort“).
+ *
+ * Reviewer-Befund (K2, Runde 1): die RAF-Schleife des TimeStep bindet die
+ * Step-Funktion EINMALIG in start()/wake() (`stepLimitFPS` vs. `step`, Phaser
+ * 3.90 TimeStep.js:546/807) — nur die Felder zu setzen reicht nicht:
+ * beim Wechsel uncapped→capped ruft RAF weiter das unlimitierte step() und das
+ * Cap greift nicht (capped→uncapped „funktioniert“ nur zufällig über
+ * _limitRate=0). Fix: Felder setzen, dann sleep()/wake() — wake() bindet aus
+ * dem JETZTIGEN hasFpsLimit neu. Guard auf `running`: ein schlafender Loop
+ * (Tab versteckt) soll nicht aufgeweckt werden.
  */
 export function applyFpsLimit(
   loop: { fpsLimit: number; hasFpsLimit: boolean },
   limit: number | null,
 ): void {
-  const l = loop as { fpsLimit: number; hasFpsLimit: boolean; _limitRate?: number; delta?: number };
+  const l = loop as {
+    fpsLimit: number; hasFpsLimit: boolean; _limitRate?: number; delta?: number; running?: boolean;
+    sleep?: () => void; wake?: () => void;
+  };
   l.fpsLimit = limit ?? 0;
   l.hasFpsLimit = l.fpsLimit > 0;
   l._limitRate = l.hasFpsLimit ? 1000 / l.fpsLimit : 0;
   if (!l.hasFpsLimit) l.delta = 0;
+  if (l.running !== false && typeof l.sleep === "function" && typeof l.wake === "function") {
+    l.sleep();
+    l.wake();
+  }
 }

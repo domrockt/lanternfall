@@ -1,14 +1,15 @@
 // M10-mobile-fps-cap: Guard-Tests für Bildraten-Regel (Frame-Cap) und
 // BILDRATE-Menü-Option. Pinnt bewusst die DESKTOP-Werte (Disponent-Briefing:
 // "Desktop/iGPU-Profile bleiben UNVERÄNDERT bitgleich") und den Mobile-Standard.
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import {
   DEFAULT_OPTIONS, OPTION_ROWS, loadOptions, optionValueLabel,
   saveOptions, setOption, stepOption, type StorageLike,
 } from "../src/audio/options";
 import {
   FPS_60, FPS_AUTO, FPS_MAX, applyFpsLimit, clampFpsSetting,
-  fpsSettingLabel, isDeviceNodeRenderer, probeDeviceNode, resolveFpsLimit, stepFpsSetting,
+  fpsSettingLabel, isDeviceNodeRenderer, probeDeviceNode, resolveFpsLimit,
+  resetDeviceNodeProbeForTests, stepFpsSetting,
 } from "../src/logic/fps-cap";
 
 const memStorage = (initial?: string): StorageLike & { data: string | null } => {
@@ -114,5 +115,59 @@ describe("M10-mobile-fps-cap: applyFpsLimit (Phaser-TimeStep-Laufzeitwechsel)", 
     expect(loop.hasFpsLimit).toBe(false);
     expect(loop._limitRate).toBe(0);
     expect(loop.delta).toBe(0);
+  });
+
+  it("Reviewer-Befund K2/1: wechselt man die Step-Bindung per sleep()/wake() neu (RAF bindet einmalig in start/wake)", () => {
+    const calls: string[] = [];
+    const loop = {
+      fpsLimit: 0, hasFpsLimit: false, running: true, delta: 3,
+      sleep: () => calls.push("sleep"),
+      wake: () => calls.push("wake"),
+    };
+    applyFpsLimit(loop as never, 60);
+    expect(calls).toEqual(["sleep", "wake"]);
+    // Laufzeitreihenfolge: Felder VOR dem Rebind setzen (wake liest hasFpsLimit).
+    expect(loop.hasFpsLimit).toBe(true);
+  });
+
+  it("laufender Loop wird nicht geweckt, wenn er schläft (running=false)", () => {
+    const calls: string[] = [];
+    const loop = {
+      fpsLimit: 0, hasFpsLimit: false, running: false,
+      sleep: () => calls.push("sleep"), wake: () => calls.push("wake"),
+    };
+    applyFpsLimit(loop as never, 60);
+    expect(calls).toEqual([]);
+    expect(loop.hasFpsLimit).toBe(true);
+  });
+
+  it("Objekte ohne sleep/wake (Test-Fakes) bekommen nur die Felder gesetzt", () => {
+    const loop: { fpsLimit: number; hasFpsLimit: boolean } = { fpsLimit: 0, hasFpsLimit: false };
+    expect(() => applyFpsLimit(loop, 60)).not.toThrow();
+    expect(loop.fpsLimit).toBe(60);
+  });
+});
+
+describe("M10-mobile-fps-cap: Probe-Latch (isoliert per Test-Hook)", () => {
+  it("latcht den ERSTEN Probe-Ausgang — auch wenn das Umfeld danach anderes meldet", () => {
+    resetDeviceNodeProbeForTests();
+    const fakeGl = (renderer: string) => ({
+      getExtension: (name: string) => (name === "WEBGL_debug_renderer_info" ? {} : null),
+      getParameter: () => renderer,
+    });
+    vi.stubGlobal("window", { devicePixelRatio: 2 });
+    vi.stubGlobal("document", {
+      createElement: () => ({ getContext: () => fakeGl("Adreno (TM) 710") }),
+    });
+    expect(probeDeviceNode()).toBe(true);
+    // Umgebung meldet jetzt SwiftShader (z. B. Kontext-Verlust): Latch hält.
+    vi.stubGlobal("document", {
+      createElement: () => ({ getContext: () => fakeGl("SwiftShader") }),
+    });
+    expect(probeDeviceNode()).toBe(true);
+    vi.unstubAllGlobals(); // kein window/document mehr -> Node-Passivität
+    expect(probeDeviceNode()).toBe(true); // weiter gelatcht
+    resetDeviceNodeProbeForTests();
+    expect(probeDeviceNode()).toBe(false); // Reset -> Node-Pfad
   });
 });

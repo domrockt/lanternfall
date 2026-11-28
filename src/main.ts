@@ -159,9 +159,9 @@ function installLifecycle(ready: Game, Phaser: PhaserNS): void {
   });
   onSettingsChanged((opts) => {
     scheduleView();
-    // M10-mobile-fps-cap: BILDRATE gilt sofort (Phaser dispatched in
-    // TimeStep.tick() dynamisch über hasFpsLimit — kein Neustart nötig).
-    if (game) applyFpsLimit(game.loop, resolveFpsLimit(opts.fps, probeDeviceNode()));
+    // M10-mobile-fps-cap: BILDRATE gilt sofort (applyFpsLimit setzt die
+    // TimeStep-Felder und bindet per sleep()/wake() die Step-Funktion neu).
+    applyFpsLimit(ready.loop, resolveFpsLimit(opts.fps, probeDeviceNode()));
   });
   applyView(initialView);
 }
