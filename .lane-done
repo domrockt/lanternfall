@@ -1,0 +1,29 @@
+# Lane m10-hazard-warn-fix — 2026-11-28
+
+Ziel: Warnphasen aller Hazard-Klassen unter Schwarm (500 Gegner, 640x360) vollständig sichtbar;
+Fix nur in src/systems/Hazards.ts (hazardDisc.ts tabu), eigenes Vorher/Nachher.
+
+Commits:
+- 17dbcab K1: scripts/m10-hazard-warn.mjs + shots/m10-hazard-warn-before.json
+  (Akzeptanz vor Messung fest: A1 effectiveWarn>=0.45s, A2 visibleFraction==1.0 @ Kontrast>=0.06,
+  A3 minKontrast>=0.06; Vorher: A1 OK, A2/A3 FAIL 8/19 Klassen, worst 0.028)
+- c21354d K2: MIN_RIM_ALPHA 0.30→0.35, warnDiscAlpha=0.8+sin·0.15 (Disc-Alpha 0.65–0.95 statt
+  0.20–0.90); tests/hazard-warn.test.ts 7 Tests; tsc+build+1264 Tests grün
+- (dieser Commit) K3: shots/m10-hazard-warn-after.json + Chaos-Frames exploder/stomp (Puls-Tiefpunkt,
+  3x-Zooms) + docs/lanes/m10-hazard-warn-fix.md
+
+Messwerte (seed 1, 500er-Schwarm, 19 Klassen, je 7 Samples über die Warnphase):
+- A1 Warnzeit: VORHER=NACHHER OK — min effectiveWarn 0.450 s (Exploder 0.16→0.45 s durch den
+  bestehenden Clamp; Boss-Angriffe 0.60–1.20 s unberührt).
+- A2/A3 Kontrast: 11/19 → 13/19 PASS, 12/19 Klassen mit Kontrastgewinn (stomp 0.049→0.062,
+  summon_ring 0.057→0.071, exploder 0.035→0.058).
+- Rest (jump_slam, summon_wolves, scythe_sweep, thorn_burst, thorn_burst_p3, exploder):
+  texturgebunden — 2-px-Ring (lanternWhite-Textur × hotRed-Tint = Luminanz ×0.456) im
+  Annulus-Mittel strukturell ~0.02–0.04; Tint/Sprite-Anzahl von tests/hazard-disc.test.ts
+  gepinnt, Texturen Tabu. Chaos-Frames zeigen die Warnflächen auch im Tiefpunkt klar lesbar
+  (Ring + 50-%-Dither-Füllung); Metrik verwässert bei großen Radien (±0.02 Flicker-Rauschen).
+- Empfehlung: letzter Hebel = Textur (hellere/dickere Rim-Kontur für große Radien) →
+  Backlog #4262 + Lane m10-hazard-disc-polish; danach Messung wiederholen.
+
+Status: K1/K2 vollständig, K3 mit dokumentiertem Restmangel (A2/A3 13/19 metrikbasiert,
+Sichtbarkeit visuell belegt). Kein JS-Fehler in allen Läufen.
