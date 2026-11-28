@@ -1852,10 +1852,15 @@
           "at": "2026-11-28T05:08:57Z",
           "by": "build",
           "text": "backlog → doing: Lane m10-icons-consistency übernimmt #320 (K1-K4); Restpunkte nach m10-icon-contrast/#7149: Kontur/Lichtkante vereinfachen, Evolution prächtiger, 16px-Lesbarkeit"
+        },
+        {
+          "at": "2026-11-28T05:48:38Z",
+          "by": "build",
+          "text": "Lane m10-icons-consistency erledigt: art-director PASS 4,6/5 (Grenze 4,5), 0 Off-Palette, Tests 81/81 + Suite 1534 grün, Doku docs/lanes/m10-icons-consistency.md. KANN-Punkte (weapon_storm/thorn Band-Knoten, evo_phoenix Silhouette, weapon_ember 3.13:1) dokumentiert."
         }
       ],
       "created": "2026-11-26T12:22:29Z",
-      "updated": "2026-11-28T05:08:57Z"
+      "updated": "2026-11-28T05:48:38Z"
     },
     {
       "id": 321,

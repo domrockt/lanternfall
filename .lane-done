@@ -1,0 +1,23 @@
+# Lane m10-icons-consistency — fertig (2026-11-28)
+
+Board #320 (m9-art-fx-ui-03): 18 UI-Icons konsistent — Kontur/Lichtkante
+vereinfacht (kein "vereistes" normalize-Re-Banding mehr), Evolution-Icons
+prächtiger als Basis-Waffen-Icons, 16 px lesbar.
+
+Ergebnis:
+- art-director-Abnahme: PASS 4,6/5 (Grenze 4,5); alle 6 geänderten Icons je 4,5.
+- Nachher-Metrik (shots/m10-icons-consistency-after.json): 0 Kontrast-Fails
+  (alle 18 >= 3:1 gegen HUD+Panel), 0 Eis-Kandidaten (rimShare <= 0.9),
+  0 fragmentierte Silhouetten (>= 60% größte Komponente), 0 Off-Palette-Pixel,
+  0 weiches Alpha, 0 lose Konturpixel.
+- tests/icons-consistency.test.ts: 81/81 grün (Kantenregeln je Familie,
+  Off-Palette, 16px-Lesbarkeit, evo-Pracht); Gesamtsuite 1534 grün; build grün.
+- Geänderte Icons: evo_thorn_storm (Redraw), evo_eternal_winter (Redraw),
+  passive_hourglass (Redraw), weapon_flail, passive_whetstone,
+  evo_wrath_pendulum. Mechanik: FINAL_DRAWN-Set in scripts/art/gen_icons.py.
+- Belege: shots/m10-icons-consistency-{before,after}-4x.png, -vor-nach-4x.png,
+  -before.json, -after.json. Doku: docs/lanes/m10-icons-consistency.md
+  (Board #320 referenziert, KANN-Punkte dokumentiert).
+- Board: #8638-#8641 done, #320 mit Ergebnis-Notiz.
+
+Commits: b781707 (K1), bcc81cf (K2), d3c8a31 (K3), 5f23fcb (K4), dieser (.lane-done).
