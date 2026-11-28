@@ -10010,41 +10010,49 @@
       "id": 7826,
       "title": "m10-meta-persist-guard K1: Probe-Skript scripts/m10-meta-persist.mjs + Vorher-Beleg shots/m10-meta-persist-before.json",
       "description": "Abnahme: Skript laeuft ohne Phaser (node --experimental-strip-types, StorageLike-Stub); before-JSON zeigt recordRun ueber 5 Laeufe + loadOptions/saveOptions Reload-Zyklen.",
-      "column": "todo",
+      "column": "done",
       "assignee": "m10-meta-persist-guard",
       "createdAt": "2026-11-28T03:31",
       "updatedAt": "2026-11-28T03:31",
-      "notes": []
+      "notes": [
+        "done: Commits 287062b(#7826), a3fb4ff(#7827), fe5f4a5(#7828), bd0034d(#7829); 18/18 Checks, 1311 Tests gruen"
+      ]
     },
     {
       "id": 7827,
       "title": "m10-meta-persist-guard K2: Meta-Guards in src/logic/meta.ts",
       "description": "Abnahme: recordRun monoton (Bestwerte nur bei echter Verbesserung), kein NaN/undefined in BestStats, unbekannter Charakter erzeugt keinen Streu-Eintrag, korrupte Storage-Payload -> emptyMeta ohne Wurf. tsc rc=0.",
-      "column": "todo",
+      "column": "done",
       "assignee": "m10-meta-persist-guard",
       "createdAt": "2026-11-28T03:31",
       "updatedAt": "2026-11-28T03:31",
-      "notes": []
+      "notes": [
+        "done: Commits 287062b(#7826), a3fb4ff(#7827), fe5f4a5(#7828), bd0034d(#7829); 18/18 Checks, 1311 Tests gruen"
+      ]
     },
     {
       "id": 7828,
       "title": "m10-meta-persist-guard K3: Options-Guards in src/audio/options.ts",
       "description": "Abnahme: alle 7 OPTION_ROWS clampen (inkl. SCALE_MAX), korrupte/teilweise Payload -> DEFAULT_OPTIONS je Feld, saveOptions->loadOptions Roundtrip identisch. tsc rc=0.",
-      "column": "todo",
+      "column": "done",
       "assignee": "m10-meta-persist-guard",
       "createdAt": "2026-11-28T03:31",
       "updatedAt": "2026-11-28T03:31",
-      "notes": []
+      "notes": [
+        "done: Commits 287062b(#7826), a3fb4ff(#7827), fe5f4a5(#7828), bd0034d(#7829); 18/18 Checks, 1311 Tests gruen"
+      ]
     },
     {
       "id": 7829,
       "title": "m10-meta-persist-guard K4: tests/meta-persist.test.ts (>=8 Tests) + Nachher-Beleg + Lane-Doku",
       "description": "Abnahme: npm test gruen inkl. meta-persist-Tests; shots/m10-meta-persist-after.json (0 NaN, Monotonie ueber 5 Laeufe, 7 Zeilen ueber 3 Reload-Zyklen, korrupt -> Defaults); docs/lanes/m10-meta-persist-guard.md; .lane-done.",
-      "column": "todo",
+      "column": "done",
       "assignee": "m10-meta-persist-guard",
       "createdAt": "2026-11-28T03:31",
       "updatedAt": "2026-11-28T03:31",
-      "notes": []
+      "notes": [
+        "done: Commits 287062b(#7826), a3fb4ff(#7827), fe5f4a5(#7828), bd0034d(#7829); 18/18 Checks, 1311 Tests gruen"
+      ]
     }
   ]
 }
