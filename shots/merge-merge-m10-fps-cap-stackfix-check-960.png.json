@@ -1,0 +1,8 @@
+{
+  "url": "http://127.0.0.1:5424/?debug=1",
+  "scene": "run",
+  "commands": [],
+  "out": "shots/merge-merge-m10-fps-cap-stackfix-check-960.png",
+  "gif": null,
+  "jsErrors": []
+}

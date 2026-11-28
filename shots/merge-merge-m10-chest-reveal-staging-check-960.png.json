@@ -1,0 +1,8 @@
+{
+  "url": "http://127.0.0.1:5703/?debug=1",
+  "scene": "run",
+  "commands": [],
+  "out": "shots/merge-merge-m10-chest-reveal-staging-check-960.png",
+  "gif": null,
+  "jsErrors": []
+}
