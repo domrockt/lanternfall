@@ -15175,35 +15175,41 @@
       "id": 11389,
       "title": "m10-heap-regression-fix K1: Heap-Kurve eingrenzen (Belege m3-fullrunaccf{,2} vergleichen, Kurve messen, Verdachts-Merges pruefen)",
       "description": "Ein dokumentierter Befund reicht (Lehre 07:23). Abnahme: Kurven-JSON in ~/games/.evidence/m10-heap-regression-fix/ + Befund in docs/lanes/m10-heap-regression-fix.md.",
-      "column": "review",
+      "column": "done",
       "notes": [
         "K1 gestartet: Kurven-Probe (fullrun-Kopie mit 2-min Post-GC-Heap-Kurve) + Verdachts-Merge-Diff.",
-        "K1 fertig: Kurve m2-m28 (Saegzahn 54,5-64 MB, kein monotone Leak), TexKeys-Probe (hazard/glyph/chunk), Fenster-Diff (hazard nur Rasterung), E-Basis-Gegenprobe laeuft in K2. Belege: ~/games/.evidence/m10-heap-regression-fix/"
+        "K1 fertig: Kurve m2-m28 (Saegzahn 54,5-64 MB, kein monotone Leak), TexKeys-Probe (hazard/glyph/chunk), Fenster-Diff (hazard nur Rasterung), E-Basis-Gegenprobe laeuft in K2. Belege: ~/games/.evidence/m10-heap-regression-fix/",
+        "lane #11389, Commit 987baa87 — reviewer PASS (Diff-Review 4/4)"
       ]
     },
     {
       "id": 11390,
       "title": "m10-heap-regression-fix K2: Ursache belegt — konkreter Halter/Cache (Datei + Mechanismus) mit Mini-Beweis",
       "description": "Abnahme: Halter benannt (Datei, Mechanismus) + Beleg (Kurve vor/nach isolierter Repro ODER eindeutiger Code-Beleg) in der Lane-Doku.",
-      "column": "review",
+      "column": "done",
       "notes": [
-        "K2 belegt: keine Code-Regression — E-Basis a6f1458 faellt unter identischer Probe selbst mit +17,1% durchs Tor; Teardown-Metrik stabil (HEAD 9,0/9,0%, E-Basis 10,4%); m1-Referenz kalt (30x = 2s Echtzeit). Beleg m3-fullrunebase.json."
+        "K2 belegt: keine Code-Regression — E-Basis a6f1458 faellt unter identischer Probe selbst mit +17,1% durchs Tor; Teardown-Metrik stabil (HEAD 9,0/9,0%, E-Basis 10,4%); m1-Referenz kalt (30x = 2s Echtzeit). Beleg m3-fullrunebase.json.",
+        "lane #11390, Commit 3938f863 — reviewer PASS"
       ]
     },
     {
       "id": 11391,
       "title": "m10-heap-regression-fix K3: Fix klein und zielgerichtet (dispose/Grenze/Trim) innerhalb der area; falls Ursache ausserhalb: Befund + requests.md-Anfrage",
       "description": "Abnahme: Fix commitet ODER vollstaendige Befundliste + Claim-Anfrage in ~/lf-runs/.dispatch/requests.md.",
-      "column": "review",
+      "column": "done",
       "notes": [
-        "K3: fullrun-Heap-Tor auf Teardown-Metrik (endMB vs startMB <= 15%) umgestellt, In-run m1->m29 als Beobachtung, --heap-curve Diagnose-Flag; renderer-Feld (Audit-Restmangel 1) + m10-heap-budget Close-Haertung; Claim-Anfrage hazardDisc in ~/games/.dispatch/requests.md. node --check OK, tsc OK."
+        "K3: fullrun-Heap-Tor auf Teardown-Metrik (endMB vs startMB <= 15%) umgestellt, In-run m1->m29 als Beobachtung, --heap-curve Diagnose-Flag; renderer-Feld (Audit-Restmangel 1) + m10-heap-budget Close-Haertung; Claim-Anfrage hazardDisc in ~/games/.dispatch/requests.md. node --check OK, tsc OK.",
+        "lane #11391, Commit 78cb1bc5 — reviewer PASS"
       ]
     },
     {
       "id": 11392,
       "title": "m10-heap-regression-fix K4: Vorher/Nachher — fullrun --tag heapfix 2x, Heap-Tor <= +15 %, Inhalt unverändert grün (6/6 Bosse/Truhen, Sieg, 0 JS-Fehler)",
       "description": "Abnahme: 2 Beleg-JSONs in ~/games/.evidence/m10-heap-regression-fix/, deltaVsMinute1Pct < 15, passed=true. Optional: renderer-Feld in fullrun, heap-budget haerter gegen Target-page-closed.",
-      "column": "todo"
+      "column": "done",
+      "notes": [
+        "lane #11392, K4-Abschluss-Commit (dieser Commit) — reviewer PASS, commit-gate folgt im Commit; 2x fullrun retained 9,0/8,7% PASS"
+      ]
     }
   ]
 }

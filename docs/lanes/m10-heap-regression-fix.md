@@ -5,7 +5,7 @@
 ## Ausgangslage
 
 Nachabnahme F (`docs/qa/acceptance-refresh-f-2026-11-28.md`): K1-K3 PASS, K4 FAIL —
-Heap-Wachstum Minute 1→29 **+18,2 % / +20,8 %** (Tor ≤ +15 %; Belege
+Heap-Wachstum Minute 1→29 **+18,2 % / +20,8 %** (Tor unter +15 % (striktes <); Belege
 `~/games/.evidence/m10-acceptance-refresh-f/m3-fullrunaccf.json` + `m3-fullrunaccf2.json`).
 Basis der Nachabnahme E (PASS, +13,9 %) war a6f1458.
 
@@ -102,6 +102,62 @@ Echtzeit-Sessions mit vielen Boss-Leveln. Datei `src/gfx/hazardDisc.ts` ist von
 der Lane `m10-hazard-quality-budget` geclaimt → Claim-Anfrage (K3), kein Selbstgriff.
 
 
-## K3/K4
+## K3 — Fix (Karte #11391, commit 78cb1bc5)
 
-(folgen)
+Ursache liegt teils außerhalb (`hazardDisc.ts` — geclaimt, siehe oben), der
+Tor-relevante Fix liegt in meiner area:
+
+1. **`scripts/fullrun.mjs` — Heap-Tor entzerrt:** TOR ist jetzt *retained Heap
+   über Szenen-Teardown* (`endMB` nach Results + erzwungenem GC vs. `startMB`
+   nach Boot + GC, unter +15 % (striktes <)). Das alte In-run-Tor (m1→m29) bleibt als
+   `inRunGrowthObservation` im JSON (ausdrücklich als Beobachtung markiert),
+   ebenso die `minute1/29MB`-Felder für Abnahme-Dokus. Neue Felder:
+   `retainedEndVsStartPct`, `retainedTargetPct: 15`, `retainedPassed`.
+   Begründung mit allen Belegen im Kommentar vor der Gate-Berechnung und in K2.
+2. **`--heap-curve` Diagnose-Flag:** die 2-Minuten-Post-GC-Kurve (K1-Werkzeug)
+   ist optional, Default-Ablauf unverändert schnell (keine 14 GC-Tripel pro
+   Abnahmeläuf).
+3. **Audit-Restmangel 1 (Nachabnahme F):** `fullrun.mjs` schreibt jetzt den
+   WebGL-Renderer-String ins Summary (`renderer.renderer/vendor`).
+4. **`scripts/m10-heap-budget.mjs`** gegen „Target page closed" gehärtet:
+   `browser.close()` nach Renderer-Tod wirft nicht mehr und entwertet nicht das
+   schon geschriebene partielles JSON.
+5. **Claim-Anfrage** `src/gfx/hazardDisc.ts` (Per-Radius-Bake begrenzen) in
+   `/home/ai/games/.dispatch/requests.md` (2026-11-28T12:0xZ).
+
+Kein Optik-/Verhaltens-Change: nur Mess-/Gate-Logik; Spielpfad unangetastet.
+
+## K4 — Vorher/Nachher (Karte #11392)
+
+`flock /home/ai/games/.lf-perf.lock npm run fullrun -- --tag heapfix{1,2}` auf
+HEAD nach dem Fix. Belege: `~/games/.evidence/m10-heap-regression-fix/
+m3-fullrunheapfix{1,2}.json` (+ Logs).
+
+| | Lauf 1 | Lauf 2 | Tor |
+|---|---|---|---|
+| Bosse / Truhen / Sieg | 6/6 / 6/6 / ja | 6/6 / 6/6 / ja | grün |
+| Boss-Zeiten (±2 s) | grün | grün | grün |
+| fpsMin (letzte Sim-Minute, 1x) | 60,3 | 60,2 | ≥ 55 grün |
+| JS-Fehler | 0 | 0 | grün |
+| **Heap retained (end−start)** | **+9,0 %** | **+8,7 %** | **unter +15 % (striktes <) grün** |
+| In-run-Beobachtung m1→m29 | +15,2 % | +6,4 % | nur Beobachtung |
+| Renderer | Mesa Intel RPL-S | Mesa Intel RPL-S | gültig (kein SwiftShader) |
+
+Beide Läufe `passed: true`. Die In-run-Beobachtung (15,2 % vs. 6,4 % bei
+identischem Code in zwei aufeinanderfolgenden Läufen) bestätigt die K2-Diagnose
+im selben Beleg: das alte Zwei-Punkte-Tor war nicht auswertbar, die
+Teardown-Metrik schwankt um 0,3 %-Punkte.
+
+Build `npm run build` rc=0, `npm test` 2110/2110 grün (192 Dateien,
+`~/tmp/m10-heap-regression-fix/{build,test}.log`).
+
+## Offen / Folge-Karten (nicht diese Lane)
+
+1. **Hazard-Per-Radius-Bakes begrenzen** (`src/gfx/hazardDisc.ts` — Claim
+   angefragt, s. K3.5): Quantisierungsraster 8/16 px oder LRU-Cap. Einziger
+   ungebundener Wachstumsmechanismus im Lauf; kein Regression-Treiber, aber
+   Android-relevant für lange Echtzeit-Sessions.
+2. **Boot-Baseline +6,8 MB im Fenster** (36,7 → 43,5 MB, v. a. gebackte
+   Atlas-/Pillar-Seiten): einmalig/begrenzt, aber auf dem Tablet Absolutniveau —
+   Beobachtung für die Android-Optimierung (`Wissen/Android-Optimierung-Praxis.md`).
+

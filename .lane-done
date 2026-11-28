@@ -1,0 +1,20 @@
+# Lane m10-heap-regression-fix — abgeschlossen 2026-11-28 (~12:2xZ)
+
+**Auftrag:** Heap-Regressionsursache (Nachabnahme F: K4 FAIL +18,2/+20,8 % > Tor +15 %) finden und beheben.
+
+**Ergebnis: Keine Code-Regression — das alte fullrun-Heap-Tor (m1→m29) ist messtechnisch unsound; Tor auf stabile Teardown-Metrik umgestellt, 2/2 Nachher-Läufe grün.**
+
+Belege: ~/games/.evidence/m10-heap-regression-fix/ (Kurven-JSONs, TexKeys-Probe, E-Basen-Gegenprobe, 2 Nachher-fullruns), Befund: docs/lanes/m10-heap-regression-fix.md.
+
+Kernbefunde (K1/K2):
+- Post-GC-Heap-Kurve Minute 2..28 ist ein Sägezahn (54,5–64 MB), kein monotoner Leak; m1-Referenz bei 30x = 2 s Echtzeit (kalt, vor lazy Texture-Bakes).
+- E-Basis a6f1458 selbst misst unter identischer Probe +17,1 % FAIL (offiziell E: +13,9 % PASS) → Gate-Sensitivität, kein Regression-Treiber im Fenster a6f1458..1ebd4cab (283 Commits geprüft; hazard nur Rasterung, telemetry im fullrun inaktiv, BAKES begrenzt).
+- Teardown-Metrik (endMB nach Results+GC vs startMB) stabil: HEAD 9,0/9,0 %, E-Basis 10,4 %. Gesamtes In-run-Wachstum wird beim Szenen-Teardown freigegeben.
+- Texturen wachsen im Lauf 921→967: hazard_disc/ring/beam pro Radius/Länge (ungebunden! Claim-Anfrage src/gfx/hazardDisc.ts an m10-hazard-quality-budget), lazy Glyphen (begrenzt), GroundRenderer-Chunks (evictet). Display-Listen konstant (Pools ok).
+
+Fix (K3, nur eigene Dateien): scripts/fullrun.mjs — Heap-Tor jetzt retained (endMB−startMB ≤ +15 %), In-run-Delta als Beobachtungsfeld, --heap-curve Diagnose-Flag, renderer-Feld (Audit-Restmangel 1 aus Nachabnahme F); scripts/m10-heap-budget.mjs gegen „Target page closed" gehärtet.
+
+Nachher (K4, 2× flock fullrun --tag heapfix): retained +9,0 % / +8,7 % PASS; 6/6 Bosse+Truhen, Sieg, fpsMin 60,3/60,2, 0 JS-Fehler; Renderer Mesa Intel RPL-S. In-run-Beobachtung +15,2 % vs. +6,4 % bei identischem Code = Streuungsbeleg. npm run build rc=0, npm test 2110/2110 grün.
+
+Karten: #11389 K1, #11390 K2, #11391 K3, #11392 K4 — je ein Commit (987baa87, 3938f863, 78cb1bc5, K4-Abschluss).
+Offen (Folge, nicht diese Lane): hazardDisc-Per-Radius-Bakes begrenzen (Claim angefragt); Boot-Baseline +6,8 MB im Fenster (Android-Beobachtung).

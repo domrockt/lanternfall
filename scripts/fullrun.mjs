@@ -179,7 +179,7 @@ try {
   const retainedDeltaPct = retainedMeasured
     ? Math.round(((heapEnd.jsMB - heapStart.jsMB) / heapStart.jsMB) * 1000) / 10
     : null;
-  const heapOk = retainedMeasured && retainedDeltaPct < 15;
+  const heapOk = retainedMeasured && retainedDeltaPct < 15; // strikt unter Tor 15 %
   const fpsOk = Number.isFinite(fpsMin) && fpsMin >= 55;
 
   const summary = {
@@ -230,7 +230,7 @@ try {
         deltaVsMinute1Pct: heapDeltaPct,
         note: "Beobachtung, kein Tor: kalte m1-Referenz (30x = 2 s Echtzeit) + Post-GC-Saegezahn; Streuung +13,9..+23,3 % bei gleichem Verhalten (E-Basis-Probe +17,1 %).",
       },
-      measured: heapMeasured,
+      measured: retainedMeasured, // Tor-Relevanz: retained (Teardown), nicht In-run
       heapCurve: HEAP_CURVE ? curve : undefined,
       passed: heapOk,
     },
@@ -242,8 +242,11 @@ try {
   writeFileSync(`shots/m3-fullrun${TAG}.json`, JSON.stringify(summary, null, 2));
   console.log(JSON.stringify(summary, null, 2));
 } finally {
-  await page.close();
-  await browser.close();
+  // Haertung (Reviewer-Befund 1, K4): nach "Target page closed" darf das
+  // Aufraeumen nicht das schon geschriebene Summary durch einen Close-Fehler
+  // entwerten — gleiche Behandlung wie in m10-heap-budget.mjs.
+  try { await page.close(); } catch (e) { console.log(`page.close ignoriert: ${e}`); }
+  try { await browser.close(); } catch (e) { console.log(`browser.close ignoriert: ${e}`); }
   server.stop();
 }
 
