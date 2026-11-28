@@ -79,21 +79,14 @@ describe("props-wiring (m10-props-wiring)", () => {
     }
   });
 
-  it("Regression Review K4: applyPropTier klassifiziert ueber ownerKey (Klasse), nicht Varianten-Textur", () => {
-    // prop_post_b ist nicht in PROP_TIERS (propLayers.ts ist tabu und bleibt
-    // klassenbasiert). Klassifizierte der Renderer ueber p.texture?.key, fiel
-    // prop_post_b auf Tier 2, waehrend ihr Schatten (ownerKey = prop_post,
-    // Tier 0) sichtbar blieb -> schwebende Schatten im Dichte-LOD. Guard:
-    // addProp setzt ownerKey auf dem Bild, applyPropTier liest ownerKey fuer
-    // ALLE Instanzen (Quell-Vertrag, da GroundRenderer Phaser-bunden ist).
+  it("m10-props-always-visible: kein Prop-Dichte-LOD mehr im Renderer (Props immer sichtbar)", () => {
+    // Ehemals: applyPropTier klassifizierte ueber ownerKey (Klasse) statt
+    // Varianten-Textur (Review K4). Das Dichte-LOD flackerte im Sekundentakt
+    // (Gegnerzahl pendelt um 150/200) und wurde 2026-11-28 entfernt —
+    // Welt-Objekte werden nie per LOD versteckt. Guard: weder Mechanik noch
+    // Import duerfen zurueckkommen; ownerKey bleibt gesetzt (Schattenfolge).
     const src = groundSrc;
     expect(src).toMatch(/img\.setData\("ownerKey", key\)/);
-    const tierFn = groundSrc.slice(
-      groundSrc.indexOf("private applyPropTier"),
-      groundSrc.indexOf("Schickt faellige"),
-    );
-    expect(tierFn).toMatch(/ownerKey/);
-    // Kein isShadow-Sonderweg mehr: Bild und Schatten teilen denselben Pfad.
-    expect(tierFn).not.toMatch(/isShadow/);
+    expect(src).not.toMatch(/applyPropTier|propLodMaxTier|propDensityMaxTier/);
   });
 });

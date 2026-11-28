@@ -54,30 +54,86 @@ export function ambientBatchCount(budget: AmbientBudget): number {
 }
 
 /**
- * M10-Prop-Dichte-LOD: gestufte Ausblendung von Prop-Quads bei Gegnerdichte
- * (Lane m10-prop-density-lod). Der Ground-Renderpfad ist submit-limitiert
- * (~900 sichtbare Prop-Quads bei M25), nicht draw-call-limitiert — weniger
- * Quads ist der einzige Hebel, der die Submit-Kosten wirklich senkt.
- * Schwellwerte an der realen Endgame-Dichte: Messbedingung "300 Gegner"
- * (Top-up auf 300, seed 7, M25) hält nur ~175-236 lebende Gegner durch
- * (Waffen töten schneller als der Top-up nachlegt) — das alte DENSE_HIDE_PROPS
- * ab 250 griff darum kaum. N1 = kleine Deko aus, N2 = nur Landmarken bleiben.
- *
- * Bekannter Rest (Befund, siehe docs/lanes/m10-prop-density-lod.md): Die
- * Gegnerzahl oszilliert im Endgame stark (16..300); momentbasierte Schwellen
- * flackern dadurch im Sekundentakt. Eine Hysterese mit sofortiger Entspannung
- * hebt das LOD praktisch ganz auf (Hebel 3, gemessen); der korrekte Fix wäre
- * eine geglättete Dichte (EMA) als Entscheidungsgrundlage — nächster Hebel
- * für den Lead, hier nicht mehr getan (Abbruchkriterium: 3 Hebel).
+ * m10-props-always-visible K3: Hysterese für die Ambient-Budgets. Die
+ * Ambient-Partikel (Glühwürmchen/Nebel) bleiben die EINZIGEN lastabhängigen
+ * Objekte — aber nie hart An/Aus: Abstieg erst ab `off` Gegnern, Rückkehr
+ * erst wenn die Gegnerzahl das Hysterese-Band unterschreitet (`on`-Schwelle).
+ * Dadurch kann Pendeln um die Schwelle die Stufe nicht mehr flappen lassen;
+ * der sichtbare Übergang ist zusätzlich im GroundRenderer eingeblendet
+ * (Alpha-Rampe), nicht umgeschaltet.
  */
-export const PROP_DENSITY_N1 = 150;
-export const PROP_DENSITY_N2 = 200;
+export const AMBIENT_HYSTERESIS_BAND = 40;
 
-/** Hoechster sichtbarer Prop-Tier bei dieser Gegnerzahl (2 = alles sichtbar). */
-export function propDensityMaxTier(enemies: number): 0 | 1 | 2 {
+/** Abstiegs-/Rückkehr-Schwellen, absteigend geprüft (updateHz = Kennung der Stufe). */
+const AMBIENT_STEPS: ReadonlyArray<{ off: number; on: number; budget: AmbientBudget }> = [
+  { off: 360, on: 360 - AMBIENT_HYSTERESIS_BAND, budget: { glow: 0, fog: 1, updateHz: 15 } },
+  { off: 250, on: 250 - AMBIENT_HYSTERESIS_BAND, budget: { glow: 0, fog: 1, updateHz: 30 } },
+];
+
+const AMBIENT_FULL: AmbientBudget = { glow: AMBIENT_GLOW_MAX, fog: AMBIENT_FOG_MAX, updateHz: 60 };
+
+/**
+ * Ein Ambient-Budget-Schritt mit Hysterese: `current` ist das zuletzt
+ * angewendete Budget (Kennung über updateHz). Abstieg sofort bei enemies >= off;
+ * Rückkehr nur, wenn enemies < on (Band). Kaputte Eingaben liefern das
+ * volle Budget wie ambientBudgetFor.
+ */
+export function ambientBudgetWithHysteresis(current: AmbientBudget, enemies: number): AmbientBudget {
   const n = Math.max(0, Math.floor(enemies));
-  if (n >= PROP_DENSITY_N2) return 0;
-  if (n >= PROP_DENSITY_N1) return 1;
+  if (!Number.isFinite(enemies)) return AMBIENT_FULL;
+  // Rückkehr prüfen, bevor der Abstieg greift: Wer schon tiefer gestuft ist,
+  // kommt nur über die on-Schwelle wieder hoch (Flapping-Schutz).
+  for (const step of AMBIENT_STEPS) {
+    if (current.updateHz === step.budget.updateHz) {
+      // Wir sind auf dieser Stufe: über die on-Schwelle zurück auf voll,
+      // ab der tieferen off-Schwelle weiter runter, sonst bleiben.
+      const deeper = AMBIENT_STEPS.find((s) => s.off > step.off);
+      if (n < step.on) return AMBIENT_FULL;
+      if (deeper && n >= deeper.off) return deeper.budget;
+      return step.budget;
+    }
+  }
+  // Volle Stufe aktiv: normal absteigen.
+  for (const step of AMBIENT_STEPS) {
+    if (n >= step.off) return step.budget;
+  }
+  return AMBIENT_FULL;
+}
+
+/**
+ * Weiche Überblendung (K3): ein sichtbarer Ambient-Zähler ("Shown") läuft
+ * mit begrenzter Rate auf das Budget-Ziel — der Übergang ist eine Alpha-Rampe
+ * über ~2 s, kein hartes An/Aus. Rein, unit-getestet.
+ */
+export function ambientShownStep(
+  current: number,
+  target: number,
+  ratePerSec: number,
+  dtSec: number,
+): number {
+  const rate = Math.max(0, ratePerSec) * Math.max(0, Number.isFinite(dtSec) ? dtSec : 0);
+  const d = target - current;
+  if (!Number.isFinite(current)) return target;
+  if (Math.abs(d) <= rate) return target;
+  return current + Math.sign(d) * rate;
+}
+
+/** Fade-Raten: 24 Glühwürmchen faden in ~2,4 s, 3 Nebelbänder in ~2 s. */
+export const AMBIENT_GLOW_FADE_PER_SEC = 10;
+export const AMBIENT_FOG_FADE_PER_SEC = 1.5;
+
+/**
+ * M10-props-always-visible (Dom 2026-11-28): Der Dichte-LOD für Props wurde
+ * ENTFERNT. Vorher: >=150 Gegner -> Deko aus, >=200 -> nur Laternen; die
+ * Gegnerzahl pendelt im Endgame um die Schwellen -> Props flackerten im
+ * Sekundentakt (Beleg ~/games/.evidence/m10-props-always-visible/before.json,
+ * 8 Tier-Wechsel in 12 s). Lehre: Welt-Objekte nie per LOD verstecken —
+ * Flackern ist schlimmer als ein paar FPS. Die Funktion bleibt als
+ * Single-Source "alles sichtbar" (Tier 2) erhalten, damit kein Aufrufer
+ * versehentlich wieder einen Tier-Layer einführt.
+ */
+/** Hoechster sichtbarer Prop-Tier: IMMER 2 = alle Props/Schatten/Glows sichtbar. */
+export function propDensityMaxTier(_enemies: number): 0 | 1 | 2 {
   return 2;
 }
 

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 12156,
+  "next": 12160,
   "cards": [
     {
       "id": 1,
@@ -16632,6 +16632,96 @@
       ],
       "created": "2026-11-28T12:04:50Z",
       "updated": "2026-11-28T12:37:58Z"
+    },
+    {
+      "id": 12156,
+      "title": "m10-props-always-visible K1: Repro — Gegnerzahl um 150/200 pendeln, Prop-Sichtbarkeit 10 s loggen",
+      "description": "scripts/m10-props-always-visible.mjs: spawn/kill-Schleife um die Schwellen 150/200, Sichtbarkeit der Props über 10 s protokollieren. Abnahme: before-JSON in ~/games/.evidence/m10-props-always-visible/ zeigt Wechsel der Prop-Sichtbarkeit (Flackern) belegt.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T11:59:35Z",
+          "by": "build",
+          "text": "todo → doing: Lane übernommen: K1 Repro starten"
+        },
+        {
+          "at": "2026-11-28T12:02:56Z",
+          "by": "build",
+          "text": "doing → review: Commit 7b6aad7a nennt #11772: Repro-Skript + before-JSON (~/games/.evidence/m10-props-always-visible/before.json): 120 Samples, Gegner 23..246, 8 Tier-Wechsel, visProps 13..458. Flackern belegt."
+        },
+        {
+          "at": "2026-11-28T12:59:02+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #11772, Merge branch m10-props-always-visible"
+        }
+      ],
+      "created": "2026-11-28T11:59:34Z",
+      "updated": "2026-11-28T12:02:56Z"
+    },
+    {
+      "id": 12157,
+      "title": "m10-props-always-visible K2: Dichte-LOD für Props entfernen (Tier immer 2)",
+      "description": "src/logic/lod.ts: propDensityMaxTier immer 2 (Prop-Dichte-LOD deaktiviert), Aufrufer (GroundRenderer) unverändert im Renderingpfad. tests/props-always-visible.test.ts als Guard. Abnahme: tsc+Tests grün, 0 Sichtbarkeitswechsel im Repro.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T12:02:56Z",
+          "by": "build",
+          "text": "todo → doing: K2: propDensityMaxTier immer 2, GroundRenderer-Behandlung vereinfachen, Guard-Test"
+        },
+        {
+          "at": "2026-11-28T12:59:02+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #12157, Merge branch m10-props-always-visible (doing-Karte der gemergten Lane)"
+        }
+      ],
+      "created": "2026-11-28T11:59:34Z",
+      "updated": "2026-11-28T12:02:56Z"
+    },
+    {
+      "id": 12158,
+      "title": "m10-props-always-visible K3: Sonstige Welt-Objekt-LODs prüfen (ambientBudgetFor, quality, Culling)",
+      "description": "Prüfen ob weitere Stellen Welt-Objekte bei Last hart an/aus schalten: ambientBudgetFor (nur Ambient-Partikel betreffen lassen), quality reduced/minimal, Chunk-Culling. Abnahme: Befund in docs/lanes/m10-props-always-visible.md; ggf. weiche Überblendung+Hysterese für Ambient-Partikel, nicht für Welt-Objekte.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T12:06:26Z",
+          "by": "build",
+          "text": "todo → doing: K3: weitere Welt-Objekt-LODs prüfen (ambientBudgetFor, quality, Culling)"
+        },
+        {
+          "at": "2026-11-28T12:10:19Z",
+          "by": "build",
+          "text": "doing → review: Commit 3754ea17 nennt #11774: lod.ts +ambientBudgetWithHysteresis (Band 40) +ambientShownStep (Alpha-Rampe 10/s Glow, 1,5/s Fog); GroundRenderer nutzt beides — kein hartes An/Aus bei Ambient-Partikeln. Befund: quality-Tiers betreffen nur FX/Partikel/Schadenszahlen (keine Welt-Objekte); FxSystem.setEnemyLoad ohne produktiven Aufrufer (tot); Chunk-Culling nur viewport-basiert. tests/ambient-batching.test.ts +6 Tests; tsc+2225 Tests+build grün. NB: shots/m10-passive-math-*.json von externem Job überschrieben (nur generatedAt) — auf Commit-Stand zurückgesetzt."
+        },
+        {
+          "at": "2026-11-28T12:59:02+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #11774, Merge branch m10-props-always-visible"
+        }
+      ],
+      "created": "2026-11-28T11:59:34Z",
+      "updated": "2026-11-28T12:10:19Z"
+    },
+    {
+      "id": 12159,
+      "title": "m10-props-always-visible K4: Belege + Doku + .lane-done",
+      "description": "Repro nachher (0 Sichtbarkeitswechsel), Android-Proxy-Lauf, Lehre in Team/Lehren.md, docs/lanes/m10-props-always-visible.md, .lane-done. Abnahme: npm run build + npm test grün, 0 JS-Fehler, Gerät-Messung als Folgepunkt notiert.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T12:20:19Z",
+          "by": "build",
+          "text": "todo → doing: K4: Belege stehen (after.json, after-proxy.json), Doku + Lehre + .lane-done"
+        },
+        {
+          "at": "2026-11-28T12:59:02+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #12159, Merge branch m10-props-always-visible (doing-Karte der gemergten Lane)"
+        }
+      ],
+      "created": "2026-11-28T11:59:34Z",
+      "updated": "2026-11-28T12:20:19Z"
     }
   ]
 }
