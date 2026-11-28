@@ -132,6 +132,11 @@ export class Run extends Phaser.Scene {
    * (Dedup pro physischem Press, siehe escToggleAllowed in InputState).
    */
   private lastEscToggleTs: number | null = null;
+  /**
+   * M10-pause-freeze: letzter angewendeter Freeze-Zustand des Update-Gates
+   * (nur bei Wechsel anwenden, nicht pro Frame).
+   */
+  private freezeGate = false;
   /** Pause-Zustand vor dem Öffnen einer Truhe (Debug kann pausiert öffnen). */
   chestPausedBefore = false;
   levelUpOpen = false;
@@ -244,6 +249,9 @@ export class Run extends Phaser.Scene {
     this.godMode = false;
     this.autoPlay = false;
     this.paused = false;
+    this.freezeGate = false;
+    this.time.paused = false;
+    this.tweens.resumeAll();
     this.levelUpOpen = false;
     this.chestOpen = false;
     this.chestPausedBefore = false;
@@ -426,6 +434,21 @@ export class Run extends Phaser.Scene {
     if (this.levelUpOpen || this.chestOpen) {
       this.paused = true;
       return;
+    }
+    // M10-pause-freeze (#7506): Szenen-Clock und Tweens sind wall-clock-getrieben
+    // und laufen weiter, obwohl update() bei paused früh zurückkehrt. Ohne dieses
+    // Gate fressen/gebarben sie Pausenzeit (Beleg shots/m10-pause-freeze-before.json):
+    //   - Timer-Ketten über denselben delayedCall-Mechanismus wie Run.ts
+    //     (Boss-Tod -> hp=0+Truhe, Truhe-Autoöffnung, Morgendämmerung, Banner-Retry)
+    //     feuerten mitten in der Pause und mutierten den Sim-Zustand,
+    //   - FX-Tweens (Splash/Blink, Run.ts 711/995/1097) animierten im Pausenbild.
+    // Gate: nur bei Wechsel anwenden (freezeGate), nicht pro Frame.
+    const frozen = this.paused;
+    if (this.freezeGate !== frozen) {
+      this.freezeGate = frozen;
+      this.time.paused = frozen;
+      if (frozen) this.tweens.pauseAll();
+      else this.tweens.resumeAll();
     }
     if (this.paused) return;
 

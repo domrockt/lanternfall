@@ -45,7 +45,13 @@ ensureBuild();
 mkdirSync("shots", { recursive: true });
 const pw = await loadPlaywright();
 const { chromium } = pw;
-const server = await startServer();
+// Serverstart mit Retry: parallele Lanes belegen Ports im Harness-Bereich.
+let server = null;
+for (let i = 0; i < 8 && !server; i++) {
+  server = await startServer().catch(() => null);
+  if (!server) await new Promise((r) => setTimeout(r, 700));
+}
+if (!server) throw new Error("Statischer Server nach 8 Versuchen nicht gestartet");
 const browser = await chromium.launch();
 
 const jsErrors = [];
@@ -116,6 +122,8 @@ const SNAP = `
     bossFlags: (run.bossFlags ?? []).slice(),
     enemies, proj, shots, states,
     timePaused: run.time?.paused ?? null,
+    pausedFlag: run.paused,
+    freezeGate: run.freezeGate ?? null,
     probeT: r3(pf.probe?.t ?? 0),
     activeTweens: run.tweens?._active?.length ?? run.tweens?.tweens?.length ?? -1,
     pf: { phase: pf.phase, fx: pf.fx, particles: pf.particles, dmg: pf.dmg,
@@ -203,7 +211,7 @@ async function controlRun(label) {
   return { m1, m2 };
 }
 
-const strip = (s) => { const c = { ...s }; delete c.pf; delete c.probeT; delete c.timePaused; return c; };
+const strip = (s) => { const c = { ...s }; delete c.pf; delete c.probeT; delete c.timePaused; delete c.freezeGate; delete c.pausedFlag; delete c.activeTweens; return c; };
 const controlA = await controlRun("controlA");
 const controlB = await controlRun("controlB");
 result.controlA = controlA;
