@@ -1,0 +1,27 @@
+# Lane m10-frame-tail-followup — fertig (2026-11-28, Dora)
+
+Follow-up zu m10-frame-tail-batching (Reviewer-PASS, 3 sollte-Befunde in
+src/systems/Spawner.ts). K1-Recheck: kein Befund war über die Merges
+(m10-frame-tail-batching, m10-spawn-burst-alloc) gelandet — alle 3 hier umgesetzt.
+
+- K2 (#12288, bb990bfd): Dawn-Drain — Run.startDawn() ruft drainDebugQueue
+  (erste 30 sofort), Run.simulate() dräniiert während Morgendämmerung je
+  Sim-Substep (Rest verteilt, Batching-Cap 30/Substep erhalten, kein Burst).
+  Beleg: .evidence/m10-frame-tail-followup/dawn-drain-probe-{before,after}.json —
+  before 0/80 materialisiert (Queue-Leak), after 80/80 (spawnCounts-Delta
+  bog_rat 88 = 80 gedrännt + 8 frisch).
+- K3 (#12289, 3e2045fd): Cap-Doku korrigiert (gilt je update()/Sim-Substep,
+  bei 1× = je rAF-Frame); reine exportierte debugRingPosition(rng, px, py)
+  ersetzt die Duplikation in spawnEnemy/queueEnemyWave. Beleg: Seed-Probe
+  (sim-exakte simulate-Hook-Marks, Seed 101, 90 Sim-s) — Checksumme vor/nach
+  Fix identisch (seed-baseline-before.json / seed-after.json), 0 JS-Fehler.
+- K4 (#12290): tests/frame-tail-followup.test.ts (7 Guards: Formel-Identität
+  zur Inline-Referenz, Stream-Vertrag 2 Draws/Position, Pfad-Identität
+  queueEnemyWave vs. spawnEnemy bitgleich, Dawn-Drain-Modell-Guard).
+
+Qualität: npm run build grün, 2324/2324 Tests grün (210 Dateien),
+Probe-Skript scripts/m10-frame-tail-followup.mjs (modes: seed|dawn, ohne flock).
+
+Offen (nicht Teil dieses Briefings, in docs/lanes/m10-frame-tail-followup.md K1
+dokumentiert): Sofort-Zweig aus requests.md 12:52Z (≤30 sofort materialisieren
+für m10-boss-fair.mjs / m10-crowd-probe.mjs) ist weiter nicht umgesetzt.

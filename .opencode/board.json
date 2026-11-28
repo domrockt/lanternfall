@@ -16468,10 +16468,16 @@
       "id": 12013,
       "title": "Merge-Fix m10-loading-screen: Guard-Test boot-light-textures an neuen Boot-Import repointet",
       "description": "tests/boot-light-textures.test.ts pinnte die alte Import-Zeile mit createAllTextures; Lane m10-loading-screen entfernt createAllTextures aus Boot.ts (Loading-Szene/Warmup uebernimmt). Test-Expectation auf neuen Import repointet, Kommentar dokumentiert den Vertrag. AK: npx vitest run tests/boot-light-textures.test.ts gruen, npm test gruen, Commit.",
-      "column": "doing",
-      "notes": [],
+      "column": "blocked",
+      "notes": [
+        {
+          "at": "2026-11-28T13:30:50Z",
+          "by": "build",
+          "text": "doing → blocked: Nicht meine Karte (nie geclaimt, war bei Lane-Start bereits in doing) — gehört zur m10-loading-screen-Lane. blocked auf Supervisor-Anweisung: wartet auf Merge-Jobs in m10-loading-screen-Lane."
+        }
+      ],
       "created": "2026-11-28T12:25:04Z",
-      "updated": "2026-11-28T12:25:04Z"
+      "updated": "2026-11-28T13:30:50Z"
     },
     {
       "id": 12029,
@@ -16949,25 +16955,36 @@
       "id": 12289,
       "title": "m10-frame-tail-followup K3: Doku-Fix SPAWN_DEBUG_BATCH_PER_FRAME + reine Positions-Funktion",
       "description": "Kommentar korrigieren: Cap gilt je update()/Sim-Substep (bei timeScale 1 = je rAF-Frame), nicht je rAF-Frame. Duplikation queueEnemyWave vs. spawnEnemy (Winkel→Radius→Clamp) in eine reine exportierte Funktion ziehen. Abnahmekriterium: tsc + Tests grün, Spawn-Verhalten bitgleich.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-28T13:28:57Z",
           "by": "build",
           "text": "todo → doing: K3: Doku-Fix je Sim-Substep + reine Positions-Funktion debugRingPosition."
+        },
+        {
+          "at": "2026-11-28T13:30:38Z",
+          "by": "build",
+          "text": "doing → review: K3: debugRingPosition (Winkel→Radius→Clamp, Duplikation entfernt) + Cap-Doku je Sim-Substep. Beleg: Seed-Checksumme identisch zur Pre-Fix-Baseline (90 sim-exakte Marks, .evidence seed-baseline-before/seed-after), Tests 2317/2317, Commit 3e2045fd."
         }
       ],
       "created": "2026-11-28T13:19:09Z",
-      "updated": "2026-11-28T13:28:57Z"
+      "updated": "2026-11-28T13:30:38Z"
     },
     {
       "id": 12290,
       "title": "m10-frame-tail-followup K4: Guards tests/frame-tail-followup.test.ts + Lane-Doku + .lane-done",
       "description": "tests/frame-tail-followup.test.ts: Dawn-Drain-Guard + RNG-Identitätstest (queueEnemyWave erzeugt bitgleich dieselben Spawns wie direkte spawnEnemy-Aufrufe, geseedetes RNG). npm test einmal grün, Lane-Doku docs/lanes/m10-frame-tail-followup.md fertig, .lane-done committet.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T13:30:38Z",
+          "by": "build",
+          "text": "todo → doing: K4: Guards tests/frame-tail-followup.test.ts (Dawn-Drain + RNG-Identität) + Lane-Doku + .lane-done."
+        }
+      ],
       "created": "2026-11-28T13:19:09Z",
-      "updated": "2026-11-28T13:19:09Z"
+      "updated": "2026-11-28T13:30:38Z"
     }
   ]
 }

@@ -25,9 +25,16 @@ umgesetzt (K2/K3/K4). Belege je Befund (Code-Lese im Worktree-Stand 1c161482):
    `src/systems/Spawner.ts:310` (`spawnEnemy`) und `:335` (`queueEnemyWave`)
    duplizieren Winkel→Radius→Clamp; ein Identitätstest mit geseedetem RNG fehlt. → K3/K4.
 
-### Zusätzlich geprüft (aus `requests.md` 12:52Z, gleiche Datei)
+### Supervisor-Recheck (2026-11-28, nach K2/K3)
 
-Der dort gemeldete „Sofort-Zweig“ (Aufrufe ≤ SPAWN_DEBUG_BATCH_PER_FRAME materialisieren
+Supervisor-Anfrage, ob die 3 Befunde inzwischen über Merges gelandet sind: `origin/main`
+hat seit Lane-Basis 1c161482 **keine** neuen Commits, die `src/systems/Spawner.ts` oder
+`src/scenes/Run.ts` berühren (`git log origin/main 1c161482..origin/main -- <beide Dateien>`
+= leer; neue Merges betreffen hazard-tex-cap / props-always-visible / balance-corridor-guard).
+Die Befunde sind also nicht von anderer Seite gelandet — K2/K3 dieses Worktree sind die
+Umsetzung (Commits bb990bfd, 3e2045fd).
+
+### Zusätzlich geprüft (aus `requests.md` 12:52Z, gleiche Datei)Der dort gemeldete „Sofort-Zweig“ (Aufrufe ≤ SPAWN_DEBUG_BATCH_PER_FRAME materialisieren
 sofort statt gequeut zu werden, für fremde Verify-Skripte mit synchroner Spawn-Lese:
 `scripts/m10-boss-fair.mjs`, `scripts/m10-crowd-probe.mjs`) ist **ebenfalls nicht
 gelandet**: `queueEnemyWave` (Spawner.ts:335) queut weiterhin immer. Er ist **nicht Teil
@@ -86,12 +93,48 @@ K4 (`seed-baseline-before.json` vs. After-Run, identische Checksumme).
 - RNG-Identitätstest (zweiter Teil von Befund 3): siehe K4
   (`tests/frame-tail-followup.test.ts`).
 
-## K4 — Guards
+## K4 — Guards (#12290)
 
-(Offen.)
+`tests/frame-tail-followup.test.ts` (7 Tests, alle grün):
+- **Formel-Identität:** `debugRingPosition` ist bitgleich zur historischen
+  Inline-Formel aus `spawnEnemy`/`queueEnemyWave` (git-Stand 1c161482, im Test
+  referenziert) über 3 Seeds × 200 Züge — die Extraktion verschiebt keinen Wert.
+- **Stream-Vertrag:** exakt 2 Züge je Position (Winkel zuerst), kein versteckter
+  Draw dazwischen — Verify-Skripte können Positionen aus einem bekannten
+  RNG-Stream reproduzieren.
+- **RNG-Identität der Pfade:** gleicher Seed, stream-aligned (n=1):
+  `spawnEnemy` und `queueEnemyWave`+`drainDebugQueue` erzeugen bitgleich
+  dieselben Spawns (x, y, phase, elite, hpScale). Für n>1 gilt die Identität
+  auf Positionsebene über die reine Funktion (Positions-Draws 2n am Stück,
+  Phase-Draws beim Drain) — die Pfade arbeiten mit denselben Formeln/Werten,
+  der Stream-Anteil je Spawn ist prozedural identisch.
+- **Dawn-Drain-Guard (Modell):** ein Drain beim Dawn-Start materialisiert
+  Cap-30, wiederholte Substep-Drains leeren die Queue vollständig (80/80,
+  kein Leak), Reihenfolge und Werte exakt erhalten; `drainSpawnQueue`-Vertrag
+  „verliert nie einen Eintrag“ über Caps.
+- Die Run-Seiten-Verdrahtung (`startDawn`-Aufruf + Substep-Drain) ist durch die
+  Probe-Skript-Belege von K2 abgesichert (vorher 0/80, nachher 80/80).
+
+Hinweis: `npm test` regeneriert `shots/m10-passive-math-{caps,matrix}.json`
+(nur `generatedAt`, durch `tests/passive-stack.test.ts`) und macht den Worktree
+damit dirty — nach Testläufen mit `git checkout -- shots/` zurücksetzen; kein
+Fachinhalt, keine Lane-Arbeit.
 
 ## Abnahme
 
-- Debug-Spawns materialisieren auch während Morgendämmerung (Probe-Skript-Beleg, K2).
-- Spawn-Verteilung im Normalpfad bitgleich (Seed-Vergleich).
-- `npm test` grün; `.lane-done` am Ende.
+- ✅ Debug-Spawns materialisieren auch während Morgendämmerung — Probe-Skript-Beleg:
+  `.evidence/m10-frame-tail-followup/dawn-drain-probe-before.json` (0/80, Leak)
+  vs. `dawn-drain-probe-after.json` (80/80, spawnCounts-Delta bog_rat 88 = 80 + 8 frisch).
+- ✅ Spawn-Verteilung im Normalpfad bitgleich (Seed-Vergleich): sim-exakte Probe
+  Seed 101, 90 Sim-s, 90 Marks, Checksumme vor/nach Fix identisch
+  (`seed-baseline-before.json` / `seed-after.json`, 0 JS-Fehler).
+- ✅ `npm test` grün (2317/2317, 209 Dateien) + `npm run build` grün je Karte.
+- ✅ `.lane-done` gesetzt (dieser Commit).
+
+## Lane-Abschluss
+
+Alle 3 Reviewer-Befunde sind umgesetzt (K2 = Befund 1, K3 = Befund 2 + 3a,
+K4 = Befund 3b). Offener Punkt (nicht Teil dieses Briefings, dokumentiert in K1):
+Sofort-Zweig aus `requests.md` 12:52Z (Aufrufe ≤ 30 materialisieren sofort statt
+gequeut zu werden, für `m10-boss-fair.mjs`/`m10-crowd-probe.mjs` mit synchroner
+Spawn-Lese) ist weiterhin nicht umgesetzt — queueEnemyWave queut weiterhin immer.
