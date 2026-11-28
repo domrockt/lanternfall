@@ -17218,37 +17218,61 @@
       "id": 12475,
       "title": "m10-thermal-tier-types K1",
       "description": "Signaturen erweitern in src/logic/quality.ts: glowAreaCapForQuality, glowEnabledFor, damageLabelCapForQuality, particlesPerHitFor von QualityTier -> ThermalTier (4 Einzeiler-Delegationen, qualityBudgetFor deckt thermal ab). Abnahme: npx tsc --noEmit rc=0, gezielte Tests grün, 1 Commit 'M10-m10-thermal-tier-types: #<id>'. [lane #12307]",
-      "column": "review",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T13:42:13Z",
+          "by": "build",
+          "text": "review → done: lane #12307, Merge 593ce020 — Kontrolle: Screenshots 960/1280 voll gerendert, kein Schwarz, 0 JS-Fehler; Guard-Fix #12478 (Pin-Regex baseTier), 2358 Tests gruen"
+        }
+      ],
       "created": "2026-11-28T13:40:26Z",
-      "updated": "2026-11-28T13:40:26Z"
+      "updated": "2026-11-28T13:42:13Z"
     },
     {
       "id": 12476,
       "title": "m10-thermal-tier-types K2",
       "description": "src/audio/mixing.ts: audioBudgetFor QualityTier -> ThermalTier; AUDIO_BUDGETS[tier] mit Fallback high beachten (thermal -> high = Status quo, Audio ist kein thermal-Hebel). Abnahme: tsc rc=0, Tests grün, 1 Commit. [lane #12308]",
-      "column": "review",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T13:42:13Z",
+          "by": "build",
+          "text": "review → done: lane #12308, Merge 593ce020 — Kontrolle: Screenshots 960/1280 voll gerendert, kein Schwarz, 0 JS-Fehler; Guard-Fix #12478 (Pin-Regex baseTier), 2358 Tests gruen"
+        }
+      ],
       "created": "2026-11-28T13:40:26Z",
-      "updated": "2026-11-28T13:40:26Z"
+      "updated": "2026-11-28T13:42:13Z"
     },
     {
       "id": 12477,
       "title": "m10-thermal-tier-types K3",
       "description": "src/config.ts: dokumentierten Cast ('thermal' as QualityTier) in effectiveQuality entfallen lassen (Rückgabetyp ThermalTier, QUALITY ehrlich ThermalTier); Hazard-Helfer (drawQualityTier etc.) bewusst QualityTier lassen — als Kommentar dokumentieren, minimale tsc-sichere Verengung an der Hazards-Grenze begründen. Abnahme: Cast entfallen, tsc rc=0, Tests grün, 1 Commit. [lane #12309]",
-      "column": "review",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T13:42:13Z",
+          "by": "build",
+          "text": "review → done: lane #12309, Merge 593ce020 — Kontrolle: Screenshots 960/1280 voll gerendert, kein Schwarz, 0 JS-Fehler; Guard-Fix #12478 (Pin-Regex baseTier), 2358 Tests gruen"
+        }
+      ],
       "created": "2026-11-28T13:40:26Z",
-      "updated": "2026-11-28T13:40:26Z"
+      "updated": "2026-11-28T13:42:13Z"
     },
     {
       "id": 12478,
       "title": "m10-thermal-tier-types K4",
       "description": "tests/thermal-tier-types.test.ts: Typ-/Delegations-Guard (thermal ruft dieselben Werte wie die aktuellen Laufzeitwerte, audioBudgetFor('thermal') === AUDIO_BUDGETS.high); Suite grün; Doku docs/lanes/m10-thermal-tier-types.md. Abnahme: npm test 0 fail, npm run build. [lane #12310]",
-      "column": "review",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T13:42:13Z",
+          "by": "build",
+          "text": "review → done: lane #12310, Merge 593ce020 — Kontrolle: Screenshots 960/1280 voll gerendert, kein Schwarz, 0 JS-Fehler; Guard-Fix #12478 (Pin-Regex baseTier), 2358 Tests gruen"
+        }
+      ],
       "created": "2026-11-28T13:40:26Z",
-      "updated": "2026-11-28T13:40:26Z"
+      "updated": "2026-11-28T13:42:13Z"
     }
   ]
 }
