@@ -31,6 +31,8 @@ function usedIndices(rows: string[]): number[] {
 
 /** Seelen-Treppe: erlaubt sind nur die Rampen-Indizes (kühles Weiß + Grün). */
 const ALLOWED = [...SOUL_RAMP];
+/** Signatur: noch strenger — kein bone(10) und kein warmes candleWhite(12). */
+const SIG_ALLOWED = [13, 11, 31, 30, 29];
 /** Verboten: Ink, Nacht-/Grau-Töne (1–9) und alle warmen/blutigen Fremdfarben. */
 const FORBIDDEN = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28];
 
@@ -100,17 +102,25 @@ describe("m10-evo-fx-soulpyre: Seelen-Farb-Treppe ohne Ink/Grau", () => {
     }
   });
 
-  it("jede Textur nutzt die Seelen-Treppe: heller Kern (13/12) UND grüner Rand (31/30/29)", () => {
-    for (const [name, rows] of grids) {
+  it("Signatur-Grids: nur der strenge Satz {13,11,31,30,29} — kein warmes 12, kein bone(10) (art-director Runde 1)", () => {
+    for (const [name, rows] of grids.filter(([n]) => n.startsWith("sig"))) {
       const used = usedIndices(rows);
-      expect(used.some((i) => i === 13 || i === 12), `${name} ohne hellen Kern`).toBe(true);
-      expect(used.some((i) => i === 31 || i === 30 || i === 29), `${name} ohne grün-blauen Rand`).toBe(true);
-      // Kern dominiert: die helle Stufe ist im Grid mindestens so oft wie jede
-      // einzelne dunkle Stufe (kein invertierter Block).
+      const bad = used.filter((i) => !SIG_ALLOWED.includes(i));
+      expect(bad, `${name} verwendet Indizes außerhalb ${SIG_ALLOWED.join(",")}: ${bad.join(",")}`).toEqual([]);
     }
   });
 
-  it("Seele-Kern flächig hell: pro Frame > 60 % der sichtbaren Pixel aus den hellen Stufen 13/12/11", () => {
+  it("jede Textur nutzt die Seelen-Treppe: heller Kern (13) UND grüner Rand (31/30/29)", () => {
+    for (const [name, rows] of grids) {
+      const used = usedIndices(rows);
+      expect(used.some((i) => i === 13), `${name} ohne hellen Kern`).toBe(true);
+      expect(used.some((i) => i === 31 || i === 30 || i === 29), `${name} ohne grün-blauen Rand`).toBe(true);
+    }
+  });
+
+  it("Seele-Kern flächig hell: helle Stufen (13/11) dominieren mit > 55 %, 13 ist größte Einzel-Stufe", () => {
+    // art-director: Kern flächig hell, Rand grün — beides gewollt, daher ist die
+    // Grenze Kern-Dominanz (13 größte Einzel-Stufe) + helle Mehrheit, nicht 100 % Weiß.
     for (const [name, rows] of grids.filter(([n]) => n.startsWith("soul"))) {
       const counts = new Map<number, number>();
       for (const row of rows) for (const ch of row) {
@@ -118,8 +128,30 @@ describe("m10-evo-fx-soulpyre: Seelen-Farb-Treppe ohne Ink/Grau", () => {
         if (i >= 0) counts.set(i, (counts.get(i) ?? 0) + 1);
       }
       const total = [...counts.values()].reduce((a, b) => a + b, 0);
-      const bright = (counts.get(13) ?? 0) + (counts.get(12) ?? 0) + (counts.get(11) ?? 0);
-      expect(bright / total, `${name}: heller Kern nur ${((bright / total) * 100).toFixed(1)} %`).toBeGreaterThan(0.6);
+      const bright = (counts.get(13) ?? 0) + (counts.get(11) ?? 0);
+      expect(bright / total, `${name}: heller Kern nur ${((bright / total) * 100).toFixed(1)} %`).toBeGreaterThan(0.55);
+      for (const other of [10, 31, 30, 29]) {
+        expect(counts.get(13) ?? 0, `${name}: Kern 13 > ${other}`).toBeGreaterThan(counts.get(other) ?? 0);
+      }
+    }
+  });
+
+  it("Signatur-Kern flächig: kein Sinus-Rauschen im Weiß — 13 ist die größte Einzel-Stufe", () => {
+    // art-director Kriterium 2: Kerne flächig hell ohne Raster. Der Generator
+    // wobbelt nur Außenbänder; statisch geprüft: 13 dominiert JEDE einzelne
+    // Übergangs-/Kontur-Stufe (flächiger Kern, schmale Kantenbänder).
+    for (const kind of ["hit", "death"] as const) {
+      for (const stage of [0, 2]) {
+        const counts = new Map<number, number>();
+        for (const row of soulSignatureFrame(kind, stage)) for (const ch of row) {
+          const i = charIndex(ch);
+          if (i >= 0) counts.set(i, (counts.get(i) ?? 0) + 1);
+        }
+        const core = counts.get(13) ?? 0;
+        for (const other of [11, 31, 30, 29]) {
+          expect(core, `${kind} stage${stage}: Kern 13 (${core}) > ${other} (${counts.get(other) ?? 0})`).toBeGreaterThan(counts.get(other) ?? 0);
+        }
+      }
     }
   });
 

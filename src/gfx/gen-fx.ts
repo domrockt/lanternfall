@@ -660,12 +660,13 @@ function coldHaloFrame(stage: number, size = 24, density = 1): string[] {
 
 /**
  * Seelenflamme (Seele, neu M10 m10-evo-fx-soulpyre): Zielgrösse 22x32, wird mit
- * Draw-Scale 1 gezeichnet (nie > 1x hochskaliert). Farb-Treppe Seelenfeuer:
- * Kern lanternWhite(13) → candleWhite(12) → boneLight(11)/bone(10) → marshLight(31)
- * → marsh(30), Kontur mossDark(29) statt Ink — kein Ink(0), keine Nacht-/Grau-Töne
- * (1–9). 3 Flacker-Frames (Sway + Zungenbreite) @ ~5 Hz.
+ * Draw-Scale 1 gezeichnet (nie > 1x hochskaliert). Farb-Treppe Seelenfeuer
+ * (art-director Runde 1: ohne warmes candleWhite — kühle Lesbarkeit):
+ * Kern lanternWhite(13) → boneLight(11)/bone(10) → marshLight(31) → marsh(30),
+ * Kontur mossDark(29) statt Ink — kein Ink(0), keine Nacht-/Grau-Töne (1–9).
+ * 3 Flacker-Frames (Sway + Zungenbreite) @ ~5 Hz.
  */
-export const SOUL_RAMP = [13, 12, 11, 10, 31, 30, 29] as const;
+export const SOUL_RAMP = [13, 11, 10, 31, 30, 29] as const;
 
 export function orbSoulFrame(stage: number): string[] {
   const w = 22;
@@ -689,10 +690,10 @@ export function orbSoulFrame(stage: number): string[] {
       const d = Math.abs(x - center) / half;
       if (d > 1.05) { row += "."; continue; }
       if (d > 0.92) { row += charOf(29); continue; }
-      const n = d + Math.sin(x * 1.7 + y * 0.9 + stage * 1.3) * 0.06;
-      const idx = n < 0.34 ? 13
-        : n < 0.52 ? 12
-        : n < 0.70 ? (y < 20 ? 11 : 10)
+      const n = d + Math.sin(x * 1.7 + y * 0.9 + stage * 1.3) * 0.05;
+      const idx = n < 0.46 ? 13
+        : n < 0.64 ? 11
+        : n < 0.75 ? (y < 20 ? 10 : 31)
         : n < 0.88 ? 31
         : 30;
       row += charOf(idx);
@@ -993,10 +994,13 @@ export function signatureFrame(
 /**
  * Seelenleuchtfeuer-Signatur in Zielgroesse (m10-evo-fx-soulpyre): 96x96, wird mit
  * Draw-Scale 1 gezeichnet (vorher 32x32 @ 4,0–4,6 = graue Platte). Organische
- * Flammenzungen (spitze Taper, Sway) statt Rauten/Platten: Kern weiss (13) →
- * candleWhite(12)/boneLight(11) → marshLight(31) → marsh(30), dunkle Rand-Kontur
- * mossDark(29) statt Ink. Hit: 1 grosse + 1 kleine Zunge; Death: 3 Zungen +
- * aufsteigende Seelen-Funken.
+ * Flammenzungen (spitze Taper, Sway) statt Rauten/Platten. art-director Runde 1
+ * (FAIL→Fix): Kern **flaechig** lanternWhite(13) ohne Sinus-Wanderung (Kriterium
+ * „Kerne flaeche hell"); 11/31/30 nur als schmale 1–2 px Uebergangsbaender an der
+ * Kante, kein bone(10)/candleWhite(12) in der Signatur (warm-beiger Schmutz);
+ * Sway wirkt nur auf die Aussenband-Grenzen. Dunkle Rand-Kontur mossDark(29)
+ * statt Ink. Hit: 1 grosse + 1 kleine Zunge; Death: 3 Zungen + kleine Seelen-
+ * Funken (1–2 px Flamme mit 29er-Kontur, keine freien Quadrate).
  */
 export const SOUL_SIGNATURE_SIZE = 96;
 
@@ -1020,9 +1024,15 @@ export function soulSignatureFrame(kind: "hit" | "death", stage: number): string
       const half = Math.max(0.8, (1.2 + (1 - v) * 10.5 * wispScale) * (stage === 3 ? 0.82 : 1));
       const sway = Math.sin(yy * 0.14 + stage * 1.5 + wi * 2.3) * (2.6 * (1 - v * 0.5));
       const center = c + offX + sway + (death ? 0 : Math.sin(stage * 1.1) * 1.5);
+      // Sway nur auf die Aussenband-Grenzen — der Kern (d < 0.52) bleibt flaeche 13.
+      const wob = Math.sin(yy * 0.45 + stage * 2.1 + wi) * 0.035;
       for (let xx = -half; xx <= half; xx += 0.5) {
-        const n = Math.abs(xx) / half + Math.sin(yy * 0.45 + stage * 2.1 + wi) * 0.05;
-        const idx = n < 0.3 ? 13 : n < 0.5 ? 12 : n < 0.72 ? 11 : n < 0.9 ? 31 : 30;
+        const d = Math.abs(xx) / half;
+        const idx = d < 0.52 ? 13
+          : d < 0.63 + wob ? 11
+          : d < 0.77 + wob ? 31
+          : d < 0.90 + wob ? 30
+          : 29;
         putPixel(rows, center + xx, y, idx);
       }
       // Dunkle Rand-Kontur (mossDark) statt Ink — Kontur nur als dunkle FarbStufe.
@@ -1031,13 +1041,18 @@ export function soulSignatureFrame(kind: "hit" | "death", stage: number): string
     }
   }
   if (death) {
-    // Aufsteigende Seelen-Funken (klein, 2-px-Marker) um die Zungen.
-    const sparks = 5 + stage;
+    // Aufsteigende Seelen-Funken: kleine 1–2 px Flamme (13/31) mit 29er-Kontur —
+    // keine freien Quadrate (art-director Runde 1).
+    const sparks = 4 + stage;
     for (let i = 0; i < sparks; i++) {
-      const a = i * 2.4 + stage * 0.7 + (death ? 0.9 : 0);
-      const rr = 12 + ((i * 7 + stage * 5) % 22);
-      const sy = c - 4 - ((i * 11 + stage * 9) % 26);
-      putPixel(rows, c + Math.cos(a) * rr, sy, i % 2 === 0 ? 31 : 13);
+      const a = i * 2.4 + stage * 0.7;
+      const rr = 14 + ((i * 7 + stage * 5) % 20);
+      const sx = Math.round(c + Math.cos(a) * rr);
+      const sy = Math.round(c - 6 - ((i * 11 + stage * 9) % 24));
+      putPixel(rows, sx, sy, 13);          // Flammenspitze
+      putPixel(rows, sx, sy + 1, 31);      // Fuss
+      putPixel(rows, sx - 1, sy, 29);      // Kontur links
+      putPixel(rows, sx + 1, sy, 29);      // Kontur rechts
     }
   }
   return rows.map((r) => r.join(""));
