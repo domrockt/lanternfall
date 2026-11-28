@@ -101,7 +101,13 @@ Rückfall sofort als Spec-Verstoß sichtbar ist.
 
 | Karte | Commit | Nachweis |
 |---|---|---|
-| #10748 K1 | (dieser Commit) | Tabelle oben |
-| #10749 K2 | s. git log | vitest data+truth grün |
-| #10750 K3 | s. git log | vitest charstats-ssot grün |
-| #10751 K4 | s. git log | Screenshot + JSON-Pfad |
+| #10748 K1 | 2365500c | Tabelle oben, F1–F5 in Fragen an Dom.md |
+| #10749 K2 | bbf8cf36 | mira.hp 90; truth-after.json regeneriert (0 Abweichungen); data+truth 15/15 grün |
+| #10750 K3 | 4debf536 | tests/charstats-ssot.test.ts 5/5 grün |
+| #10751 K4 | (dieser Commit) | scripts/m10-charstats-ssot.mjs: 20 Zeilen, **0 Abweichungen, 0 JS-Fehler**; JSON `~/games/.evidence/m10-charstats-ssot/charselect-display.json`; Sichtbeleg `shots/abnahme/m10-charstats-charselect-640.png` (2x-View: `.evidence/.../charselect-640-2x.png`) — zeigt Mira „HP 90“ |
+
+**Lane-Ergebnis:** `npm test` 1932/1932 grün (178 Dateien), `npx tsc --noEmit` rc=0, `npm run build` rc=0.
+Geändert: `src/data/characters.ts` (1 Wert), `tests/charstats-ssot.test.ts` (neu), `scripts/m10-charstats-ssot.mjs` (neu),
+`shots/m10-charselect-truth-after.json` (regeneriert, nicht geclaimt — Folgefix des Datenwerts, Anzeige==Daten unverletzt),
+`docs/lanes/m10-charstats-ssot.md`, `shots/abnahme/m10-charstats-charselect-640.png`.
+Offen für Dom: F1–F5 (Kael maxHpPct 25 vs +20 %, Kael-Tempo-Doppel-Abzug, Kael-Rüstung 2 vs 1, schweigende Felder).
