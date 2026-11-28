@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 10688,
+  "next": 10691,
   "cards": [
     {
       "id": 1,
@@ -13923,6 +13923,39 @@
       "notes": [],
       "created": "2026-11-28T09:42:27Z",
       "updated": "2026-11-28T09:42:27Z"
+    },
+    {
+      "id": 10688,
+      "title": "m10-tablet-fx-rootcause #K1 GL-Aufruf-Matrix Evo-Stack (lokal + Gerät)",
+      "description": "Abnahme: Beleg-JSONs (lokal + Gerät, falls erreichbar) mit je-Fenster-Metriken fps/draws/useProgram/blendFunc/bindFramebuffer pro Evo-Einzelstufe + Stapel-Reihenfolgen, gespeichert unter ~/games/.evidence/m10-tablet-fx-rootcause/. Skript scripts/m10-tablet-fx-rc.mjs. Keine src/tests-Änderungen.",
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T09:53:23Z",
+          "by": "build",
+          "text": "todo → doing: Angenommen 2026-11-28; Geraet-Bridge antwortet, aber adb-Device offline (10.10.40.27:35099 not found) — lokal zuerst, Geraet retry."
+        }
+      ],
+      "created": "2026-11-28T09:53:19Z",
+      "updated": "2026-11-28T09:53:23Z"
+    },
+    {
+      "id": 10689,
+      "title": "m10-tablet-fx-rootcause #K2 Quelle FB-Wechsel + Blend-Explosion benennen",
+      "description": "Abnahme: Ursache mit Datei+Zeile (Welche Draw-Aufrufe/Code-Pfad erzeugen die Blend-Wechsel 4→26/Frame und +1 bindFramebuffer), Beleg-JSON je Schritt (Stacks + Sprite-Census). Eingang in docs/lanes/m10-tablet-fx-rootcause.md.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T09:53:19Z",
+      "updated": "2026-11-28T09:53:19Z"
+    },
+    {
+      "id": 10690,
+      "title": "m10-tablet-fx-rootcause #K3 Fix-Empfehlung mit Hebel + erwartetem Gewinn",
+      "description": "Abnahme: Fix-Empfehlung (Datei/Zeile, Hebel) mit Zielzahlen Blend-Wechsel/Frame < 8 und 0 FB-Wechsel, erwartet in FPS am Gerät; Übergabe an m10-tablet-fx-hotspot in der Lane-Doku. .lane-done am Ende.",
+      "column": "todo",
+      "notes": [],
+      "created": "2026-11-28T09:53:19Z",
+      "updated": "2026-11-28T09:53:19Z"
     }
   ]
 }
