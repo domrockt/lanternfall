@@ -1,0 +1,27 @@
+# Lane m10-chest-icon-crisp — fertig (2026-11-28)
+
+menu-art-crisp Befund F2: chest_closed-Icon im offenen Truhen-Panel wurde
+fraktional (Layout-Wert 2.6) skaliert → Mixel im Draw-Pfad (Gerätepixel je Texel
+5.2 @640x360@2 / 7.8 @780x360@3).
+
+**Fix:** `CHEST_ICON_DRAW_SCALE = 3` (nächste ganzzahlige Stufe) an beiden
+Draw-Stellen in src/scenes/UI.ts; Layout-/Anker-Boxen bleiben beim Wert 2.6
+(Panel-Layout unverändert). textures.ts nicht angefasst (gesperrt bis Ende
+Evo-FX-Kette).
+
+**Zahlen before/after:** Scale 2.6 (5.2/7.8 devPx/Texel, Mixel) → Scale 3
+(6/9 devPx/Texel, gerastert); Zentrierung 320/390 @ y137 unverändert korrekt,
+kein Clipping. after-JSON verdict passed=true, 0 JS-Fehler, iGPU
+(ANGLE Intel RPL-S, swiftShader=false).
+
+**Abnahme:** art-director streng PASS 5/5 + 5/5 auf 4x-nearest-Crops (Run-Length
+alle Texel-Vielfache, 9 Palette-Farben, Schlagschatten jetzt symmetrisch,
+AE-Pixeldiff nur in der Icon-Bbox). Tests: tests/chest-icon-crisp.test.ts neu
+(14), Gesamt 1105/1105 grün; tsc + build sauber.
+
+**Belege:** shots/m10-chest-icon-{before,after}.json + Panel-Shots + 4x-Crops;
+Doku docs/lanes/m10-chest-icon-crisp.md.
+
+**Offen:** kein Rest-Mixel sichtbar → kein textures.ts-Restjob nötig. Board.json
+absichtlich nicht committet (Briefing-Grenze "board.json (Main)"); Lane-Karten
+#7458–#7461 im Live-Board auf done. Build-Cache-Churn (dist/) nicht committed.
