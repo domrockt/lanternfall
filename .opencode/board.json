@@ -15175,34 +15175,56 @@
       "id": 11409,
       "title": "m10-v10-readiness K1: Checkliste docs/qa/v10-readiness-2026-11-28.md",
       "description": "Abhakbare Endabnahme-Checkliste: alle Geraete-Tore (6 Evos >= 60 FPS Ziel 90, M25-Dichte >= 60, janky < 10 %, 10-min ohne Thermik, Text lesbar) + Endabnahme-Suite (tsc/build/npm test/verify:final/verify-input/acceptance-count/fullrun-Guard) je mit Belegspalte. Pruefbar: Datei existiert, jede Zeile hat Tor + Schwellwert + Belegspalte, Quellen ACCEPTANCE.md + docs/qa.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-28T11:05:29Z",
           "by": "build",
           "text": "todo → doing: Lane m10-v10-readiness: K1 angenommen (Checkliste v10-readiness)."
+        },
+        {
+          "at": "2026-11-28T11:07:33Z",
+          "by": "build",
+          "text": "doing → review: K1 Checkliste fertig, Commit afcaef4b. Quellen: ACCEPTANCE.md (Nachabnahme F), DEVICE-TELEMETRY.md, Android-Praxis, Dom-Tore. B1-B7 = Briefing-Suite, A1-A5 = Geraete-Tore, C = Restpunkte. Belegspalten je Zeile."
         }
       ],
       "created": "2026-11-28T11:05:27Z",
-      "updated": "2026-11-28T11:05:29Z"
+      "updated": "2026-11-28T11:07:33Z"
     },
     {
       "id": 11410,
       "title": "m10-v10-readiness K2: README.md (oeffentlich)",
       "description": "Neue README.md: kurzes Spielprofil (Pixel-Autoscroller im Moor, 30-min-Run, 30 Gegner, 6 Waffen/6 Powerups/6 Evolutionen, 2 Helden, Bosse alle 5 min + Truhe), Build-/Test-Befehle, License/Assets-Hinweis. Keine kopierten Marken, keine internen Pfade/Secrets. Pruefbar: README.md existiert, enthaelt Profil+Build/Test-Befehle+License-Hinweis, Secret-Scan/Ignores respektiert.",
-      "column": "todo",
-      "notes": [],
+      "column": "review",
+      "notes": [
+        {
+          "at": "2026-11-28T11:07:33Z",
+          "by": "build",
+          "text": "todo → doing: Lane m10-v10-readiness: K2 angenommen (README.md)."
+        },
+        {
+          "at": "2026-11-28T11:08:06Z",
+          "by": "build",
+          "text": "doing → review: K2 README.md fertig, Commit 0954bc4e. Profil (Moor, 30-min-Run, 30 Gegner, 6/6/6, 2 Helden, Bosse+Truhe), npm-Befehle, Assets/Lizenz-Hinweis. Secret-/Pfad-Scan leer."
+        }
+      ],
       "created": "2026-11-28T11:05:27Z",
-      "updated": "2026-11-28T11:05:27Z"
+      "updated": "2026-11-28T11:08:06Z"
     },
     {
       "id": 11411,
       "title": "m10-v10-readiness K3: GAME.md v1.0-Status-Abschnitt",
       "description": "GAME.md: Abschnitt 'v1.0-Status' ergaenzen (Datum, Blocker Android-Geraete-Tore). Bestehenden Inhalt NICHT umschreiben. Pruefbar: neuer Abschnitt vorhanden, Rest des GAME.md unveraendert (git diff zeigt nur Anhang).",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T11:08:06Z",
+          "by": "build",
+          "text": "todo → doing: Lane m10-v10-readiness: K3 angenommen (GAME.md v1.0-Status). Disponent hat GAME.md explizit fuer diese Lane zugewiesen; nur Anhaengen, nichts umschreiben."
+        }
+      ],
       "created": "2026-11-28T11:05:27Z",
-      "updated": "2026-11-28T11:05:27Z"
+      "updated": "2026-11-28T11:08:06Z"
     }
   ]
 }

@@ -1,0 +1,18 @@
+Lane m10-v10-readiness — fertig (2026-11-28)
+
+v1.0-Markierung vorbereitet, nur Doku (kein src/tests-Code, kein Tag, kein Push, kein APK):
+- #11409 K1: docs/qa/v10-readiness-2026-11-28.md — abhakbare Endabnahme-Checkliste:
+  Geraete-Tore A1-A5 (6 Evos >= 60 FPS Ziel 90, M25 >= 60, janky < 10 %, 10-min ohne
+  Thermik, Text lesbar, via Telemetrie + gfxinfo), Suite B1-B7 (tsc/build/test/
+  verify:final 7/7, verify-input 28/28, count 30/6/6/6/6/2, fullrun + Guard; Heap-Tor
+  +18,2 %/+20,8 % dokumentiert als aktueller Blocker), Restpunkte C1-C3.
+- #11410 K2: README.md (oeffentlich) — Profil, Build-/Test-Befehle, Assets/Lizenz-Hinweis;
+  Secret-/Pfad-/Marken-Scan leer.
+- #11411 K3: GAME.md Abschnitt "v1.0-Status (2026-11-28)" angehaengt (+18 Zeilen, sonst
+  unveraendert): Blocker Android-Geraete-Tore, Verweise.
+
+Commits: afcaef4b (K1), 0954bc4e (K2), 8b394c12 (K3), Abschluss-Commit mit Lane-Doku +
+Board. Reviewer: PASS (ses_dde277047ffeD38zsJ15DAqFnt); 2 sollte-Befunde behoben
+(B7-Tor-Attribution Guard vs. fullrun.mjs, Board-Stand committet). npm test lokal
+2110/2110 gruen. Geraete-Tore selbst NICHT belegt — Blocker fuer die Endabnahme
+dokumentiert; Messung im Endabnahme-Job.
