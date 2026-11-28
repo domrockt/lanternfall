@@ -227,18 +227,18 @@ export const SPRITE_GRIDS: Record<string, { rows: string[]; w: number; h: number
   },
   gem_small: {
     w: 7, h: 7,
-    // m10-gem-value-reading r2 (art-director FAIL->Fix): Groesse 1 (XP 2) =
-    // fogBlue (PAL 6) mit paleMist-Glanz (9) und 1 px candleWhite-Sparkle
-    // (12). mist (8) kollidierte mit den Bog-Rat-Flanken (sharpenEnemyGrid
-    // hebt die Rat-Midtone auf PAL 8); fogBlue: 0,01 % Chaos-Kollision
-    // (Kandidaten-Sweep, gem-reading-before.json).
+    // m10-gem-value-reading r3 (Nachher-Messung): Groesse 1 (XP 2) = bone
+    // (PAL 10) mit candleWhite-Glanz (12) und 1 px lanternWhite-Sparkle (13)
+    // — Silber-Ende der Rampe. r1 mist = exakte Rat-Flankenfarbe (art-director
+    // FAIL), r2 fogBlue = 29,45 % Moor-Boden-Kollision. bone: 2,24 %
+    // (verbindliche je-Stufe-Messung, gem-reading-after.json).
     rows: [
       "..000..",
-      ".0c960.",
-      "0699660",
-      "0666660",
-      ".06660.",
-      "..060..",
+      ".0dca0.",
+      "0acaaa0",
+      "0aaaaa0",
+      ".0aaa0.",
+      "..0a0..",
       "...0...",
     ],
   },
