@@ -53,10 +53,17 @@ absicherbar**, statt erneut zu verschieben — Textinhalte/Farben wurden nicht a
 ## Abnahme
 
 - [x] 0 Overlap und >= 4 px Puffer in beiden Formaten (JSON-Beleg oben)
-- [ ] art-director-Sichtung der After-Shots (Ziel >= 4/5) — ausstehend
-- [x] npm test grün, npm run build rc=0
+- [x] art-director-Sichtung der After-Shots: **PASS, Note 4,5/5** (2026-11-28). Eigener Pixel-Scan des
+  art-directors bestätigt KAEL-Ende y=240, Rahmen-Top y=247/248, 0 helle Pixel in y 241–246
+  (7 interne px Puffer), beide Formate konsistent, „bewusste Gruppen-Trennung, nicht gepresst".
+  Abzug nur wegen entwerteter Before-Evidenz (s. u.), nicht das Kriterium.
+- [x] npm test grün (2038/2038), npm run build rc=0
 
 ## Offene Punkte
 
-- art-director-Re-Inspection der After-Shots steht aus; Gap ist unverändert 7 px (Bestand),
-  der Mangel selbst war über den Contrast-Merge bereits visuell behoben.
+- **Hinweis des art-directors (Doku-Qualität, kein Bilddefekt):** die Vorher-Evidenz
+  `m10-title-spacing-before-640x3601.png` zeigt den alten FAIL-Stand nicht mehr — der
+  Contrast-Merge (m10-menu-contrast-fixes K5) hatte den Block bereits gehoben, Vorher- und
+  After-Shot unterscheiden sich im Textbereich nicht. Der eigentliche Vorher-Beleg liegt in
+  `~/games/.evidence/m10-menu-contrast-fixes/` (Scan der Contrast-Lane: Gap 2 px vor K5).
+  Die Messung am After-Stand (7 px, 0 Overlap) trägt die Abnahme allein.

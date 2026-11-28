@@ -14652,33 +14652,43 @@
    "id": 11189,
    "title": "m10-title-bestwert-spacing: K2 Fix: Abstand >= 4 interne px via Layout-Konstanten (Title.ts)",
    "description": "Abstand Bestwerte-Zeile <-> Knopfreihe als Konstante in src/scenes/Title.ts geregelt; beide Formate (640x360, 780x360@3) >= 4 interne px Puffer, 0 Overlap. Titelbild/Glasloch/Flammen unberuehrt, Buttons bleiben an ihren Ankern. Abnahmekriterium: After-JSON der Messung zeigt Puffer >= 4 px und Overlap-Flaeche 0 in beiden Formaten.",
-   "column": "review",
+   "column": "done",
    "assignee": "lead",
    "notes": [
     {
      "at": "2026-11-28T10:56:26Z",
      "by": "lead",
      "text": "doing → review: titleStatsLayout() + TITLE_STATS_BUTTON_GAP_MIN=4; After Gap 7 px/Overlap 0 in 640x360@1 und 780x360@3; npm test 2038 gruen, build rc=0; Commit d7d5f1e0"
+    },
+    {
+     "at": "2026-11-28T10:58:33Z",
+     "by": "lead",
+     "text": "review → done: art-director PASS 4,5/5 (eigener Pixel-Scan: 7 px Puffer, 0 Overlap, beide Formate)"
     }
    ],
    "created": "2026-11-28T10:43:28Z",
-   "updated": "2026-11-28T10:56:26Z"
+   "updated": "2026-11-28T10:58:33Z"
   },
   {
    "id": 11190,
    "title": "m10-title-bestwert-spacing: K3 Guard + After + Doku",
    "description": "tests/title-bestwert-spacing.test.ts (reine Rect-Geometrie, Muster title-bg-crisp.test.ts) + After-Shots + docs/lanes/m10-title-bestwert-spacing.md. Abnahmekriterium: Test greift (rot bei Puffer<4), After-Shots in shots/abnahme/m10-title-spacing-*, npm test gruen, npm run build rc=0, art-director-Sichtung >= 4/5.",
-   "column": "doing",
+   "column": "done",
    "assignee": "lead",
    "notes": [
     {
      "at": "2026-11-28T10:56:26Z",
      "by": "lead",
      "text": "todo → doing: Guard-Test + After-Shots + Lane-Doku"
+    },
+    {
+     "at": "2026-11-28T10:58:33Z",
+     "by": "lead",
+     "text": "review → done: Guard-Test + After-Shots + Doku; art-director PASS 4,5/5; Lane abgeschlossen (.lane-done)"
     }
    ],
    "created": "2026-11-28T10:43:28Z",
-   "updated": "2026-11-28T10:56:26Z"
+   "updated": "2026-11-28T10:58:33Z"
   }
  ]
 }

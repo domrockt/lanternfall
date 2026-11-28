@@ -1,0 +1,28 @@
+# Lane m10-title-bestwert-spacing — FERTIG (2026-11-28)
+
+Bedarf m10-menu-quality-55 (art-director-Abnahme 2026-11-28, FAIL 3,8/5, Posten 6):
+Abstand Bestwerte-Zeile (KAEL) <-> Knopfreihe (START/OPTIONEN/CREDITS) auf dem Titel-Screen.
+
+## Ergebnis
+- src/scenes/Title.ts: Abstand konstant geregelt — titleStatsLayout() (rein, Muster
+  titleBgLayout) + TITLE_STATS_BUTTON_GAP_MIN=4, TITLE_BUTTON_H=22. Anker 167/179/189/214
+  (+oy) unveraendert, Buttons an Ankern, Titelbild/Glasloch/Flammen unberuehrt.
+- Messwerte (beide Formate 640x360@1 und 780x360@3): KAEL-Zeile endet y=241, Rahmen-Top
+  y=248, Gap 7 interne px, Overlap 0 — pass4px=true (scripts/m10-title-spacing.mjs,
+  exitCode 1 bei Gap < 4). Belege: ~/games/.evidence/m10-title-bestwert-spacing/.
+- Guard: tests/title-bestwert-spacing.test.ts (6 Tests: Gap >= 4 px + 0 Overlap in beiden
+  Formaten, Puffer aus Konstanten hergeleitet, Anker-Regressionsschutz, Guard-Schaerfe).
+- After-Shots: shots/abnahme/m10-title-spacing-after-{640x360,780x360}.png.
+- art-director-Sichtung: PASS, Note 4,5/5 (eigener Pixel-Scan bestaetigt 7 px / 0 Overlap).
+- npm test 2038/2038 gruen, npm run build rc=0. Lane-Doku: docs/lanes/m10-title-bestwert-spacing.md.
+
+## Befund
+Der gemeldete FAIL galt dem Stand vor dem Merge von m10-menu-contrast-fixes (dessen K5 hob
+den Bestwerte-Block 5 px, Gap 2 -> 7 px). Diese Lane machte den Abstand konstant geregelt
+und absicherbar statt erneut zu verschieben; Fremd-Datei tests/menu-contrast-fixes.test.ts
+minimal angepasst (Regex-Anker -> titleStatsLayout(), Begruendung in der Lane-Doku).
+
+## Commits
+- d7d5f1e0 #11189 Fix (Layout-Konstanten) + Fremd-Test-Anpassung
+- b53e45ef #11190 Guard + After-Shots + Lane-Doku
+- Skript-Commit #11188 (Mess-Skript nachgereicht)
