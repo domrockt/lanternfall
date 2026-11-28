@@ -7850,40 +7850,56 @@
       "id": 6799,
       "title": "m10-chest-hint-wrap K2: Fix Wortumbruch UI.ts + gfx/text.ts",
       "description": "Slot-Labels umbrechen an Wortgrenzen bzw. mit Trennstrich (Variante um fitBanner in src/gfx/text.ts), beide Evo-Hint-Zeilen vollständig sichtbar, kein Satz-Abbruch, keine Überlappung mit Icon/Slots; Untertitel-Anker aus m10-chest-panel-ui beibehalten, idempotent zu applyPanelFix. Abnahmekriterium: npx tsc --noEmit rc=0, gezielte Tests grün, Commit.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T00:04:26Z",
           "by": "build",
           "text": "todo → doing: Fix: slotLabelLines (Wortgrenze/Trennstrich) + wrapHintLines (2 balancierte Zeilen) in src/gfx/text.ts, UI.ts chest-Pfade umgestellt."
+        },
+        {
+          "at": "2026-11-28T00:10:22Z",
+          "by": "build",
+          "text": "doing → done: 22c9faa + Reviewer PASS: Off-by-one geprueft, keine Panel-Position veraendert (applyPanelFix idempotent), npm test 893/893. Nits optional notiert (Test-Metriken hardcoded, wrapHintLines splittet Kurztexte auf 2 Zeilen)."
         }
       ],
       "created": "2026-11-27T23:56:56Z",
-      "updated": "2026-11-28T00:04:26Z"
+      "updated": "2026-11-28T00:10:22Z"
     },
     {
       "id": 6800,
       "title": "m10-chest-hint-wrap K3: Regressionstest chest-hint-wrap",
       "description": "tests/chest-hint-wrap.test.ts über 3 Viewport-Profile: kein mid-word Cut in Slot-Labels, 0 Überlappungen, Panel-/Viewport-Grenzen, Evo-Satz verlustfrei auf beide Hint-Zeilen. Abnahmekriterium: tsc rc=0, npm test grün, Commit.",
-      "column": "doing",
+      "column": "done",
       "notes": [
         {
           "at": "2026-11-28T00:05:05Z",
           "by": "build",
           "text": "todo → doing: Regressionstest tests/chest-hint-wrap.test.ts: 3 Viewport-Profile, kein mid-word Cut, 0 Ueberlappungen, Panel-/Viewport-Grenzen, Evo-Satz verlustfrei."
+        },
+        {
+          "at": "2026-11-28T00:10:14Z",
+          "by": "build",
+          "text": "doing → done: d363ad8: 12/12 Tests in 3 Profilen, npm test 893/893, tsc rc=0. Reviewer PASS (Box-Mathematik exakt gegen PixelText.layout verifiziert)."
         }
       ],
       "created": "2026-11-27T23:56:56Z",
-      "updated": "2026-11-28T00:05:05Z"
+      "updated": "2026-11-28T00:10:14Z"
     },
     {
       "id": 6801,
       "title": "m10-chest-hint-wrap K4: Nachher-Messung + Abnahme",
       "description": "shots/m10-chest-hint-wrap-after.json/PNGs, art-director-Prüfung >= 4/5, npm run build rc=0, Lane-Doku docs/lanes/m10-chest-hint-wrap.md, .lane-done. Abnahmekriterium: after-JSON zeigt 0 mid-word Cuts / 0 Überlappungen in beiden Profilen, Belege committed.",
-      "column": "todo",
-      "notes": [],
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T00:10:14Z",
+          "by": "build",
+          "text": "todo → done: 793f6fd: after-Messung passed (0 mid-word Cuts, 2/2 Hint-Zeilen, 0 Ueberlappungen, 0 JS-Fehler), build rc=0, art-director PASS ~4/5, Reviewer PASS. Lane-Doku + .lane-done committed. Lane fertig."
+        }
+      ],
       "created": "2026-11-27T23:56:56Z",
-      "updated": "2026-11-27T23:56:56Z"
+      "updated": "2026-11-28T00:10:14Z"
     }
   ]
 }
