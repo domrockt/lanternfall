@@ -21,7 +21,7 @@ export type QualityTier = "high" | "medium" | "low";
 export const QUALITY_ORDER: readonly QualityTier[] = ["low", "medium", "high"] as const;
 
 export interface QualityBudget {
-  tier: QualityTier;
+  tier: ThermalTier;
   /** Max gleichzeitig aktive grosse Effekt-Sprites. BUDGET-DATEN, noch NICHT
    *  verdrahtet (FxSystem.maxActive bleibt LOD-getrieben) — Folgekarte. */
   maxFxSprites: number;
@@ -75,7 +75,8 @@ export const QUALITY_BUDGETS: Readonly<Record<QualityTier, QualityBudget>> = {
 };
 
 /** Budget einer Stufe (mit Rueckfall high bei unbekanntem Tier). */
-export function qualityBudgetFor(tier: QualityTier): QualityBudget {
+export function qualityBudgetFor(tier: ThermalTier): QualityBudget {
+  if (tier === "thermal") return THERMAL_BUDGET;
   return QUALITY_BUDGETS[tier] ?? QUALITY_BUDGETS.high;
 }
 
@@ -194,4 +195,115 @@ export function stepQuality(
   }
   // Totzone: beide Timer einfrieren (kein Zweig greift).
   return { tier, belowMs, aboveMs };
+}
+
+// --- Thermischer Guard (M10-quality-thermal-guard) --------------------------
+//
+// Haertefall unterhalb der Qualitaets-Regler-Stufe "low": Der stepQuality-
+// Regler endet bei "low" — bleibt das Geraet DAUERHAFT ueber der Schwelle
+// heiss und fallt trotz "low" unter die Absturz-Schwelle, dreht dieser Guard
+// eine zusaetzliche, strengere Stufe auf. AUSSCHLIESSLICH ueber Qualitaets-
+// Budgets (weniger FX/ADD-Flaeche/Partikel/Labels) — RENDER_SCALE und
+// Aufloesung bleiben unangetastet (Android-Praxisregel 1), keine Asset-/
+// Texturpfade im Spiel.
+
+/** Stufen-Erweiterung: "thermal" liegt UNTER "low" (nur dort erreichbar). */
+export type ThermalTier = QualityTier | "thermal";
+
+/** Absturz-Schwelle: FPS-Median dauerhaft darunter = thermischer Absturz. */
+export const THERMAL_FPS = 30;
+/**
+ * Laenge des Median-Fensters, das der Aufrufer als `fpsSerie` vorhalten soll
+ * (ms). Die Funktion wertet die Serie als Ganzes aus (Median) — die Fenster-
+ * fuehrung ist Aufrufer-Verantwortung; diese Konstante dokumentiert, was
+ * "ueber N Sekunden" heisst (8 s @ 1 Hz Samples).
+ */
+export const THERMAL_WINDOW_MS = 8000;
+/** Haltefenster: Abstieg erst, wenn der Absturz SO LANG anhaelt (Hysterese). */
+export const THERMAL_HOLD_MS = 10000;
+/** Erholungszeit AM STUECK ab dieser FPS-Grenze, bevor zurueck auf "low". */
+export const THERMAL_RECOVERY_FPS = QUALITY_LOW_FPS;
+export const THERMAL_RECOVERY_MS = 20000;
+
+/**
+ * Budget der thermischen Stufe — streng hartler als "low" (Last senken statt
+ * Aufloesung): FX-Sprites, ADD-Flaeche, Partikel, Schadenszahlen alles unter
+ * dem low-Budget, Glow bleibt aus. Referenz: low = 90/2025/8/8/5.
+ */
+export const THERMAL_BUDGET: Readonly<QualityBudget> = {
+  tier: "thermal",
+  maxFxSprites: 48,
+  maxAddArea: 640,
+  particlesPerHit: 4,
+  damageNumbersPerSec: 4,
+  maxDamageLabels: 3,
+  glow: false,
+};
+
+/** Zustand des thermischen Guards (rein, ohne Uhr/Phaser). */
+export interface ThermalState {
+  /** "thermal" waehrend aktiv, sonst die Basis-Stufe des stepQuality-Reglers. */
+  tier: ThermalTier;
+  /** true = thermischer Haertefall aktiv (nur erreichbar ab Basis-Stufe "low"). */
+  active: boolean;
+  /** Kumulierte Absturzzeit unter THERMAL_FPS (ms, Ruecksetzen bei Erholung). */
+  crashMs: number;
+  /** Kumulierte Erholungszeit am Stueck ab THERMAL_RECOVERY_FPS (ms). */
+  recoverMs: number;
+}
+
+export function initialThermalState(): ThermalState {
+  return { tier: "high", active: false, crashMs: 0, recoverMs: 0 };
+}
+
+/** Median einer FPS-Serie (leere/ungueltige Serie = NaN, kein Signal). */
+function medianOf(serie: readonly number[]): number {
+  const xs = serie.filter((x) => Number.isFinite(x) && x > 0).sort((a, b) => a - b);
+  if (xs.length === 0) return NaN;
+  const mid = Math.floor(xs.length / 2);
+  return xs.length % 2 === 1 ? xs[mid] : (xs[mid - 1] + xs[mid]) / 2;
+}
+
+/**
+ * Ein Guard-Schritt. Definition (K1): thermischer Absturz = FPS-Median der
+ * Serie dauerhaft unter THERMAL_FPS TROTZ Basis-Stufe "low". Engage erst nach
+ * THERMAL_HOLD_MS anhaltendem Absturz; ohne Signal (NaN/leer) bleiben die
+ * Timer eingefroren (wie stepQuality in der Totzone). Auf hoher/medium-Stufe
+ * greift der Guard NICHT — dort faehrt stepQuality ab (Definition "trotz
+ * low"). Kein Flapping (K2): Abstieg erst nach dem Haltefenster, Rueckweg
+ * erst nach ununterbrochener Erholungszeit — danach braucht ein neuer Abstieg
+ * wieder das volle Haltefenster. Aufloesung/RENDER_SCALE werden nie
+ * angefasst.
+ */
+export function evaluateThermalStep(
+  fpsSerie: readonly number[],
+  state: ThermalState,
+  dtMs: number,
+): ThermalState {
+  const dt = Number.isFinite(dtMs) && dtMs > 0 ? dtMs : 0;
+  const median = medianOf(fpsSerie);
+  if (state.active) {
+    if (Number.isFinite(median) && median >= THERMAL_RECOVERY_FPS) {
+      // Rueckweg nur nach THERMAL_RECOVERY_MS AM STUECK (Hysterese, Muster
+      // stepQuality aboveMs): eine Unterbrechung beginnt die Erholung neu.
+      const recoverMs = state.recoverMs + dt;
+      if (recoverMs >= THERMAL_RECOVERY_MS) {
+        return { tier: "low", active: false, crashMs: 0, recoverMs: 0 };
+      }
+      return { ...state, recoverMs };
+    }
+    // Erholungsfolge abgebrochen (wieder unter der Schwelle): neu beginnen.
+    return { ...state, recoverMs: 0 };
+  }
+  // Guard nur ab Basis-Stufe "low" (Definition: "trotz LOW-Stufe").
+  if (state.tier !== "low") return state;
+  if (!Number.isFinite(median)) return state; // kein Signal: Timer einfrieren
+  if (median < THERMAL_FPS) {
+    const crashMs = state.crashMs + dt;
+    if (crashMs >= THERMAL_HOLD_MS) {
+      return { tier: "thermal", active: true, crashMs: 0, recoverMs: 0 };
+    }
+    return { ...state, crashMs };
+  }
+  return { ...state, crashMs: 0 };
 }
