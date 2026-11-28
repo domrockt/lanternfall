@@ -9492,7 +9492,7 @@
       "id": 7523,
       "title": "m10-elite-tier-refine K1: T4/Terrain-Kontrast — T4-Klasse auf marshLight (31) statt marsh (30)",
       "description": "Rettung der verlorenen Nachbesserung #7382 (lane #7382, art-director PASS 4/5, Prioritaet). Ziel: T4-Elite auf hellem Moorgras ueber KOERPERFARBE (nicht nur Kontur+Rim) erkennbar. ELITE_TIER_DYES[4] 30 -> 31 in src/gfx/enemySprites.ts; Zielmetrik: T4-Zentroid-Kontrast vs. Terrain (helles Moorgras 30/31) + min Tier-Zentroid-Distanz >= 30 + T4-Bucket-Anteil >= 82 %; Before/After-Crops 4x (shots/m10-elite-tier-refine-*). Vertraege unangetastet: A10 (Randpixel 100 % Amber, Silhouette/Kontur/Augen bytegleich, 1 Frame, Key-Satz), Nicht-Elite bytegleich, Elite-Aura-Pfad Run.ts. Abnahme: tsc + build + elite-tier/elite-rim/crowd-variety/enemy-palette gruen, art-director am 4x-Crop.",
-      "column": "review",
+      "column": "done",
       "assignee": "pixel-artist",
       "notes": [
         {
@@ -9514,16 +9514,26 @@
           "at": "2026-11-28T03:07:47Z",
           "by": "build",
           "text": "Supervisor-Hinweis befolgt: Board geprueft — #7523 K1 steht auf review mit Commit a0e3b99 (doing wurde beim K1-Start gesetzt, Kontrolleure laufen). Kein Probe-Skript /tmp/ad-check.mjs in dieser Lane angelegt (Offline-Suchlauf war 2 Iterationen, dann Fix im Produktionscode). Reviewer-FAIL (#7525: mix-Parameter halb angewendet) ist gefixt im Produktionscode src/gfx/enemySprites.ts — erneuter refine-after-Lauf unter flock laeuft, Fix + Belege kommen als Follow-up-Commit zu #7525."
+        },
+        {
+          "at": "2026-11-28T03:18:07Z",
+          "by": "build",
+          "text": "review → done: lane #7382. K1 gelöst + abgenommen: dye[4] 30->31 (a0e3b99), Reviewer-PASS nach Fix, art-director PASS 4,5/5 (Re-Abnahme bestätigt), Belege refine-before/-k1 + Crops 4x + 8x-Views."
+        },
+        {
+          "at": "2026-11-28T03:18:09Z",
+          "by": "build",
+          "text": "done → done: lane #7382. K1 gelöst + abgenommen: dye[4] 30->31 (a0e3b99), Reviewer-PASS nach Fix, art-director PASS 4,5/5 (Re-Abnahme bestätigt), Belege refine-before/-k1 + Crops 4x + 8x-Views."
         }
       ],
       "created": "2026-11-28T02:39:28Z",
-      "updated": "2026-11-28T03:07:47Z"
+      "updated": "2026-11-28T03:18:09Z"
     },
     {
       "id": 7524,
       "title": "m10-elite-tier-refine K2: T0/T2 trennen — T2-Mix Richtung flameBright (19) messen",
       "description": "Rettung der verlorenen Nachbesserung #7383 (lane #7383). Paar 16/18 (T0 emberBrown / T2 flame) ist das engste Zentroid-Paar (min Distanz 56,8). ELITE_TIER_DYES[2] 18 -> 19 (flameBright) messen; Uebernahme NUR, wenn dominante Klasse je Tier (Zentroid >= 30) und Bucket-Anteil (>= 82 %) erhalten bleiben; Vorher/Nachher-Distanz in docs/lanes/m10-elite-tier-refine.md dokumentieren. art-director bestaetigt T0/T2 im 4x-Crop als trennbar. Verträge unangetastet (A10, Nicht-Elite bytegleich).",
-      "column": "review",
+      "column": "done",
       "assignee": "pixel-artist",
       "notes": [
         {
@@ -9535,16 +9545,26 @@
           "at": "2026-11-28T02:56:05Z",
           "by": "build",
           "text": "doing → review: K2 umgesetzt + gemessen (8d4043e): dye[2] 18->19, T2 glut-braun 83,2% >= 82%, T0/T2-Zentroid 97,6 -> 135,4, min Tier-Zentroid 56,8 -> 69,3. Laufzeit + Crop 4x committet. art-director-Endabnahme folgt am Final-Crop."
+        },
+        {
+          "at": "2026-11-28T03:18:07Z",
+          "by": "build",
+          "text": "review → done: lane #7383. K2 gelöst + abgenommen: dye[2] 18->19 (8d4043e), T0/T2-Zentroid 97,6 -> 135,4, Bucket 83,2 % >= 82 %, art-director PASS (gelöst), Belege refine-k2 + Crop 4x."
+        },
+        {
+          "at": "2026-11-28T03:18:11Z",
+          "by": "build",
+          "text": "done → done: lane #7383. K2 gelöst + abgenommen: dye[2] 18->19 (8d4043e), T0/T2-Zentroid 97,6 -> 135,4, Bucket 83,2 % >= 82 %, art-director PASS (gelöst), Belege refine-k2 + Crop 4x."
         }
       ],
       "created": "2026-11-28T02:39:28Z",
-      "updated": "2026-11-28T02:56:05Z"
+      "updated": "2026-11-28T03:18:11Z"
     },
     {
       "id": 7525,
       "title": "m10-elite-tier-refine K3: 70 %-Mix bei kleinen Sprites (Banshee etc.) auf 60-65 % testen",
       "description": "Rettung der verlorenen Nachbesserung #7384 (lane #7384). Kleine Sprites (banshee/wraith, 2 statt 3 Schattierungsstufen) verlieren beim 70 %-Mix interne Schattierung. Messung: ELITE_TIER_MIX 0,60-0,65 fuer kleine Sprites testen (Schattierungsstufen der gefaerbten Frames + min Tier-Zentroid >= 30). Aenderung NUR, wenn die Messung sie traegt (Metrik haelt >= 30 UND Schattierungsstufen erhalten); sonst Verbleib bei 70 % mit Beleg dokumentieren. Verträge unangetastet (A10, Nicht-Elite bytegleich, Elite-Aura Run.ts).",
-      "column": "review",
+      "column": "done",
       "assignee": "pixel-artist",
       "notes": [
         {
@@ -9556,10 +9576,15 @@
           "at": "2026-11-28T03:01:24Z",
           "by": "build",
           "text": "doing → review: K3 umgesetzt + gemessen (41d10cf): eliteTierMixFor(id), soft 0,65 (6 Typen, 2->3 Stufen) + imp 0,6 (2->4); Laufzeit refine-after stabil, Amber 1,0, 60/60 fps, Mesa RPL-S. Final-Crop: shots/m10-elite-tier-refine-after-crop4x.png. art-director-Endabnahme + Reviewer offen (gemeinsam fuer K1-K3)."
+        },
+        {
+          "at": "2026-11-28T03:18:07Z",
+          "by": "build",
+          "text": "review → done: lane #7384. K3 gelöst + abgenommen: eliteTierMixFor 0,65/0,6 (41d10cf), Reviewer-FAIL (mix halb angewendet) gefixt (23f8824, Re-Check PASS), Crop-Artefakt-Fix (0dc4bc0), art-director Re-Abnahme PASS (imp 4 Stufen verifiziert). Folgekarte #7526 backlog."
         }
       ],
       "created": "2026-11-28T02:39:28Z",
-      "updated": "2026-11-28T03:01:24Z"
+      "updated": "2026-11-28T03:18:07Z"
     },
     {
       "id": 7526,
