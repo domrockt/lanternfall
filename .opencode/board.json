@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 11752,
+  "next": 11875,
   "cards": [
     {
       "id": 1,
@@ -16123,6 +16123,69 @@
       ],
       "created": "2026-11-28T11:44:07Z",
       "updated": "2026-11-28T11:48:50Z"
+    },
+    {
+      "id": 11872,
+      "title": "m10-balance-corridor-guard K1: Guard-Skript scripts/m10-balance-corridor.mjs",
+      "description": "3 kurze Seeds-Matrix (kurzskalierte Laeufe bis Boss-3, mir a+kael) + 30-min-Referenzflag (--full, 6/6 Laeufe). Erzeugt JSON mit Endlevel, Boss-Dauern, Todeszeitpunkt nach shots/m10-balance-corridor-short.json bzw. -full.json. Nutzt scripts/harness.mjs, laeuft OHNE flock (Balance, feste Substeps). AK: Skript laeuft, JSONs mit renderer-String, seeds, Boss-Dauern, Todeszeitpunkt/Endlevel erzeugt.",
+      "column": "done",
+      "assignee": "balance-designer",
+      "notes": [
+        {
+          "at": "2026-11-28T12:20:32Z",
+          "by": "build",
+          "text": "doing → review: K1 committed 28ddac27: Guard-Skript + Kurz-Baseline (6/6 bis Boss 3, accepted=true, 1 knownViolation mira/101 Boss1 12,9s mit Grund). Geprueft: node --check, tsc rc=0, Baseline-JSON plausibilisiert (renderer iGPU, 0 JS-Fehler). Fund in .dispatch/requests.md gemeldet."
+        },
+        {
+          "at": "2026-11-28T12:36:23Z",
+          "by": "build",
+          "text": "Supervisor-Steuerung 28.11. übernommen: Tuning-Loop gestoppt, keine weiteren Langläufe. K1-Endstand (Skript-Abort-Fix full-Modus + Whitelist auf Charakter-Ebene geschärft, Baselines reklassifiziert ohne neue Läufe) wird als K1-Abschluss-Commit gesichert, danach K2-Test."
+        },
+        {
+          "at": "2026-11-28T12:37:58Z",
+          "by": "build",
+          "text": "review → done: lane K1 final: Commit-Kette 28ddac27 + K1-final-Commit. Skript erzeugt Endlevel-/Boss-Dauer-/Todeszeit-Marken (short + full), 6/6 Laeufe je Matrix, 0 JS-Fehler. Supervisor-Steuerung befolgt (kein weiterer Tuning-Loop)."
+        }
+      ],
+      "created": "2026-11-28T12:04:50Z",
+      "updated": "2026-11-28T12:37:58Z"
+    },
+    {
+      "id": 11873,
+      "title": "m10-balance-corridor-guard K2: tests/balance-corridor.test.ts",
+      "description": "Fixture-Pfad-Test auf die erzeugten JSON-Marken (Muster shots/m10-golden-frame-*: Baseline+Verdict committet). Schwellen = Dom-Kriterium (Endlevel 25-40, Boss-Dauer 20-60 s, kein Tod vor Minute 15). Zeitbudget der Tests explizit setzen (kein 5-s-Timeout-Flake). AK: npx vitest run tests/balance-corridor.test.ts gruen.",
+      "column": "review",
+      "assignee": "balance-designer",
+      "notes": [
+        {
+          "at": "2026-11-28T12:20:32Z",
+          "by": "build",
+          "text": "backlog → doing"
+        },
+        {
+          "at": "2026-11-28T12:37:58Z",
+          "by": "build",
+          "text": "doing → review: K2 committed: tests/balance-corridor.test.ts 4/4 gruen (npx vitest run tests/balance-corridor.test.ts), tsc rc=0. Guard prueft committed Marks unabhaengig gegen Dom-Korridor; Dry-Run-Beleg (synthetischer Verstoss kael/202 + angehobene Boss-Schwelle [30,60]) FAILet wie erwartet."
+        }
+      ],
+      "created": "2026-11-28T12:04:50Z",
+      "updated": "2026-11-28T12:37:58Z"
+    },
+    {
+      "id": 11874,
+      "title": "m10-balance-corridor-guard K3: Baseline + Doku + .lane-done",
+      "description": "Baseline erzeugen + committen (shots/m10-balance-corridor-short.json, -full.json), npm test gruen, Doku docs/lanes/m10-balance-corridor-guard.md (Kriterium, Seed-Matrix, Update-Prozedur, Grenzen: stochastisch, kein bitgenauer Determinismus-Anspruch). Dry-Run-Beleg: Guard erkennt absichtlichen Verstoss (angehobene Schwelle = FAIL), in Doku notiert. AK: npm test 0 fail, Baseline-JSONs committet, Doku hinterlegt, .lane-done.",
+      "column": "doing",
+      "assignee": "balance-designer",
+      "notes": [
+        {
+          "at": "2026-11-28T12:37:58Z",
+          "by": "build",
+          "text": "backlog → doing"
+        }
+      ],
+      "created": "2026-11-28T12:04:50Z",
+      "updated": "2026-11-28T12:37:58Z"
     }
   ]
 }

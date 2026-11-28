@@ -1,0 +1,19 @@
+Lane m10-balance-corridor-guard — 2026-11-28, alle 3 Karten committed.
+
+K1 #11872: scripts/m10-balance-corridor.mjs (3-Seeds-Matrix 101/202/404 x mira/kael,
+short bis Boss 3 ~5 min, --full 30-min-Referenz ~10 min, ohne flock) + Baselines
+shots/m10-balance-corridor-short.json / -full.json.
+K2 #11873: tests/balance-corridor.test.ts — Suite-Guard pinnt die Marken streng gegen
+das Dom-Kriterium (Endlevel 25-40, Boss 20-60 s, kein Tod vor Minute 15), 4/4 gruen,
+Dry-Run-Beleg (synthetischer Verstoss + angehobene Schwelle FAILen).
+K3 #11874: Doku docs/lanes/m10-balance-corridor-guard.md, npm test 2228/2228 gruen,
+build rc=0, .lane-done.
+
+Messwerte: Full-Referenz 6/6 Dawn, Endlevel 34-36 (Korridor 25-40), 0 Tode vor Minute 15,
+0 JS-Fehler, Renderer Mesa Intel RPL-S (kein SwiftShader).
+
+Fund (an Dom, .dispatch/requests.md): mira meltet Bosse unter 20 s (Boss 1 9,5-15,1 s;
+mira/404 auch Hexenzirkel 19,6 s / Hohler Koenig 17,5 s) — alle kael-Laeufe im Korridor.
+Als knownViolations mit Grund dokumentiert; Fix braucht src/** (Lane-Sperre).
+Grenze: Korridor stochastisch (gleiche Seeds, verschiedene Boss-Dauern je Lauf),
+kein bitgenauer Determinismus-Anspruch — dafuer Golden-Frame-Guard.
