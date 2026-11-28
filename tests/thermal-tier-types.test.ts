@@ -95,6 +95,9 @@ describe("m10-thermal-tier-types: effectiveQuality ohne Cast", () => {
   });
 
   it("Pin: QUALITY wird weiterhin ueber effectiveQuality gesetzt (keine Umgehung)", () => {
-    expect(configSrc()).toMatch(/QUALITY = effectiveQuality\(qState\.tier, thermalState\)/);
+    // Merge m10-device-janky-node: Parameter heisst jetzt `baseTier` (statt
+    // `qState.tier`). Pin lockert nur den Variablennamen — der Pflicht-Aufruf
+    // `effectiveQuality(<tier>, thermalState)` bleibt komplett erhalten.
+    expect(configSrc()).toMatch(/QUALITY = effectiveQuality\(\w+, thermalState\)/);
   });
 });
