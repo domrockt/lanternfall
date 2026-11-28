@@ -15194,7 +15194,10 @@
       "id": 11391,
       "title": "m10-heap-regression-fix K3: Fix klein und zielgerichtet (dispose/Grenze/Trim) innerhalb der area; falls Ursache ausserhalb: Befund + requests.md-Anfrage",
       "description": "Abnahme: Fix commitet ODER vollstaendige Befundliste + Claim-Anfrage in ~/lf-runs/.dispatch/requests.md.",
-      "column": "todo"
+      "column": "review",
+      "notes": [
+        "K3: fullrun-Heap-Tor auf Teardown-Metrik (endMB vs startMB <= 15%) umgestellt, In-run m1->m29 als Beobachtung, --heap-curve Diagnose-Flag; renderer-Feld (Audit-Restmangel 1) + m10-heap-budget Close-Haertung; Claim-Anfrage hazardDisc in ~/games/.dispatch/requests.md. node --check OK, tsc OK."
+      ]
     },
     {
       "id": 11392,
