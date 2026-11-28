@@ -1,0 +1,24 @@
+# Lane m10-v10-gate-guard — done (2026-11-28)
+
+v1.0-Host-Tore als wiederholbarer lokaler Gate-Lauf festgenagelt (keine src-Änderung).
+
+- **Werkzeug:** `scripts/m10-v10-gate.mjs` orchestriert acceptance-count + m10-fullrun-guard +
+  verify:final + eigenen Perf-Pass (p95/Draw-Calls/Texturen/Renderer-String); Tor-Logik rein,
+  unit-getestet in `tests/v10-gate.test.ts` (17 Tests, tsc + Suite 2424/2424 grün).
+  Aufruf: `flock /home/ai/games/.lf-perf.lock node scripts/m10-v10-gate.mjs --out shots/m10-v10-gate.json`
+- **Ergebnis (verbindlicher Lauf 3, 15:57Z): Exit 1 — nur `frame-p95` FAIL (16,8 ms), strukturell:**
+  `src/main.ts` zwingt 60 FPS (fps target/limit 60, M10-Android-Entscheid) → rAF-dt per Design
+  ~16,7 ms, Tor misst den Cap, nicht Frame-Kosten (p50=p90=p95, worst 16,9 ms ⇒ janky 0 %).
+  **Hebel für den Lead:** Tor umdefinieren auf janky % (dt > 16,9 ms) ≤ 1 % — dann PASS —
+  oder Frame-Kosten über Performance-API messen. Details in `docs/lanes/m10-v10-gate-guard.md`.
+- **5/6 Tore PASS, in 3 Läufen stabil:** Renderer-Pflicht iGPU
+  (`ANGLE (Intel, Mesa Intel(R) Graphics (RPL-S), OpenGL ES 3.2)`, kein SwiftShader), Inhalte
+  30/6/6/6/6/2, Fullrun 6/6 Bosse 300–1800 s ±2 s + 6 Truhen + Sieg `dawn`, retained Heap
+  +8,1 %/+7,9 %/+8,1 % (< +15 %), 0 JS-Fehler (Guard + verify), verify:final 0 Checks rot.
+- **Beobachtungen:** Draw-Calls/Frame p95 22–26 (Grenze 40 weit weg), Texturen 2776–2787
+  (Baseline, Warngrenze 3500 kalibriert); Minute-25-Top-up hält lokal nur avg ~52 Gegner
+  (Host-CPU räumt schneller ab als 50-ms-Top-up füllt) — der strenge Dichte-Beweis bleibt das Gerät.
+- **Belege:** `~/games/.evidence/m10-v10-gate-guard/` (gate-final-run3.json, fullrun-guard-JSON ×3,
+  verify ×3, Shots); Logs `~/tmp/m10-v10-gate-guard-k3-run{,2,3}.log`.
+- **Board:** #12724 (K1 Skript), #12725 (K2 Tests), #12726 (K3 Gate-Lauf), #12727 (K4 Doku).
+  Supervisor-Steer #12013 geprüft: fremde Karte (m10-loading-screen), nur Vermerk, nicht angefasst.
