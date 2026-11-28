@@ -63,6 +63,13 @@ async function armTrace(page, maxSec) {
     const orig = proto.simulate;
     proto.simulate = function (dt) {
       orig.call(this, dt);
+      // m10-run-determinism-fix: final wird SIM-EXAKT im Moment der letzten
+      // Marke erfasst (vorher: Wall-Clock-Snapshot beim Auswerten — zwei
+      // bitgleiche Laeufe unterschieden sich nur im final-Stempel).
+      if (nextSec > limit && trace.final === null) {
+        const hud = this.getHudState();
+        trace.final = { scene: "run", time: this.elapsed, kills: hud.kills, level: hud.level };
+      }
       while (nextSec <= limit && this.elapsed >= nextSec) {
         const hud = this.getHudState();
         trace.marks.push({
@@ -136,11 +143,12 @@ async function runRep(seed, rep) {
       const t = window.__detTrace;
       const results = window.__game?.scene?.getScene("results");
       if (results && results.scene.isActive()) {
-        const r = results.result ?? {};
-        t.final = { scene: "results", reason: r.reason ?? null, time: r.elapsed ?? 0, kills: r.kills ?? 0, level: r.level ?? 0 };
-      } else {
-        const run = window.__game?.scene?.getScene("run");
-        t.final = { scene: "run", time: run?.elapsed ?? 0, kills: run?.getHudState().kills ?? 0 };
+        // Run endete vor dem Limit: Results-Final (sim-bestimmt) hat Vorrang,
+        // außer der Hook hat bereits einen sim-exakten Final gesetzt.
+        if (t.final === null || t.final?.scene !== "run") {
+          const r = results.result ?? {};
+          t.final = { scene: "results", reason: r.reason ?? null, time: r.elapsed ?? 0, kills: r.kills ?? 0, level: r.level ?? 0 };
+        }
       }
       return t;
     });

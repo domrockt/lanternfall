@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-28T02:37:00.622Z",
+ "generatedAt": "2026-11-28T04:33:20.830Z",
  "seeds": [
   101,
   202,
@@ -14,148 +14,93 @@
   {
    "seed": 101,
    "identical": false,
-   "divergingMarks": 120,
+   "pageErrorCount": 0,
+   "divergingMarks": 0,
    "totalMarks": 120,
-   "divergingFields": {
-    "elapsed": 120,
-    "px": 120,
-    "py": 118,
-    "kills": 58,
-    "enemies": 32,
-    "xp": 61,
-    "level": 11
-   },
+   "divergingFields": {},
    "firstDiff": {
     "rep": 1,
-    "where": "mark[0] (s=1)",
-    "fields": [
-     "elapsed",
-     "px"
-    ],
+    "where": "final",
     "a": {
-     "s": 1,
-     "elapsed": 1.0312733333333346,
-     "kills": 0,
-     "level": 1,
-     "xp": 0,
-     "hp": 250,
-     "enemies": 0,
-     "chestsDropped": 0,
-     "bossesSpawned": 0,
-     "px": 20789380,
-     "py": 20480000
+     "scene": "run",
+     "time": 120.3999999999953,
+     "kills": 58
     },
     "b": {
-     "s": 1,
-     "elapsed": 1.0320999999999998,
-     "kills": 0,
-     "level": 1,
-     "xp": 0,
-     "hp": 250,
-     "enemies": 0,
-     "chestsDropped": 0,
-     "bossesSpawned": 0,
-     "px": 20789628,
-     "py": 20480000
+     "scene": "run",
+     "time": 121.44999999999524,
+     "kills": 59
     }
    }
   },
   {
    "seed": 202,
    "identical": false,
-   "divergingMarks": 120,
+   "pageErrorCount": 0,
+   "divergingMarks": 73,
    "totalMarks": 120,
    "divergingFields": {
-    "elapsed": 120,
-    "px": 120,
-    "py": 118,
-    "xp": 62,
-    "level": 70,
-    "kills": 69,
-    "enemies": 50,
-    "hp": 3
+    "kills": 50,
+    "enemies": 24,
+    "px": 72,
+    "py": 72,
+    "xp": 67,
+    "level": 36
    },
    "firstDiff": {
     "rep": 1,
-    "where": "mark[0] (s=1)",
+    "where": "mark[47] (s=48)",
     "fields": [
-     "elapsed",
-     "px"
+     "kills",
+     "enemies"
     ],
     "a": {
-     "s": 1,
-     "elapsed": 1.0318866666666668,
-     "kills": 0,
-     "level": 1,
-     "xp": 0,
+     "s": 48,
+     "elapsed": 48.04999999999941,
+     "kills": 24,
+     "level": 3,
+     "xp": 9,
      "hp": 250,
-     "enemies": 0,
+     "enemies": 4,
      "chestsDropped": 0,
      "bossesSpawned": 0,
-     "px": 20789566,
-     "py": 20480000
+     "px": 21085350,
+     "py": 25120111
     },
     "b": {
-     "s": 1,
-     "elapsed": 1.016566666666667,
-     "kills": 0,
-     "level": 1,
-     "xp": 0,
+     "s": 48,
+     "elapsed": 48.04999999999941,
+     "kills": 23,
+     "level": 3,
+     "xp": 9,
      "hp": 250,
-     "enemies": 0,
+     "enemies": 3,
      "chestsDropped": 0,
      "bossesSpawned": 0,
-     "px": 20774500,
-     "py": 20480000
+     "px": 21085350,
+     "py": 25120111
     }
    }
   },
   {
    "seed": 404,
    "identical": false,
-   "divergingMarks": 120,
+   "pageErrorCount": 0,
+   "divergingMarks": 0,
    "totalMarks": 120,
-   "divergingFields": {
-    "elapsed": 120,
-    "px": 120,
-    "py": 116,
-    "xp": 69,
-    "kills": 59,
-    "enemies": 35,
-    "level": 51
-   },
+   "divergingFields": {},
    "firstDiff": {
     "rep": 1,
-    "where": "mark[0] (s=1)",
-    "fields": [
-     "elapsed",
-     "px"
-    ],
+    "where": "final",
     "a": {
-     "s": 1,
-     "elapsed": 1.0320933333333315,
-     "kills": 0,
-     "level": 1,
-     "xp": 0,
-     "hp": 250,
-     "enemies": 0,
-     "chestsDropped": 0,
-     "bossesSpawned": 0,
-     "px": 20789628,
-     "py": 20480000
+     "scene": "run",
+     "time": 120.94999999999527,
+     "kills": 73
     },
     "b": {
-     "s": 1,
-     "elapsed": 1.0316766666666672,
-     "kills": 0,
-     "level": 1,
-     "xp": 0,
-     "hp": 250,
-     "enemies": 0,
-     "chestsDropped": 0,
-     "bossesSpawned": 0,
-     "px": 20789504,
-     "py": 20480000
+     "scene": "run",
+     "time": 122.44999999999519,
+     "kills": 74
     }
    }
   }
