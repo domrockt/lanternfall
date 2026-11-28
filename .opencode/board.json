@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "next": 13041,
+  "next": 13045,
   "cards": [
     {
       "id": 1,
@@ -18360,6 +18360,80 @@
         }
       ],
       "created": "2026-11-28T15:32:56.843Z"
+    },
+    {
+      "id": 13041,
+      "title": "m10-v10-gate-guard K1: Gate-Skript scripts/m10-v10-gate.mjs",
+      "description": "Orchestriert bestehende Werkzeuge (acceptance-count, m10-fullrun-guard, verify-final, eigener Perf-Pass nach frame-tail-batching-Muster) zu einem wiederholbaren v1.0-Host-Gate-Lauf: Renderer-String Pflicht (SwiftShader = ungültig, Exit 2), Frame-Zeit p95 ≤ 16 ms (Minute-25-Worst-Case), Draw-Calls/Frame + Texturanzahl (gemessen), Heap-Tor ≤ +15 % retained (endMB vs startMB), 0 JS-Fehler, Inhalte 30/6/6/6/6/2, Fullrun-Inhalt 6/6 Bosse 300–1800 s ±2 s, 6 Truhen, Sieg dawn. Keine src-Änderung. Abnahme: npx tsc --noEmit grün, Skript startet und schreibt Tor-JSON.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T14:42:18Z",
+          "by": "general",
+          "text": "backlog → doing: K1 gestartet"
+        },
+        {
+          "at": "2026-11-28T14:46:13Z",
+          "by": "build",
+          "text": "doing → review: K1 fertig: scripts/m10-v10-gate.mjs, Commit 7c5ba3b7; tsc + Suite (2424) grün"
+        },
+        {
+          "at": "2026-11-28T16:03:39+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #12724, Merge branch m10-v10-gate-guard"
+        }
+      ],
+      "created": "2026-11-28T14:42:10Z",
+      "updated": "2026-11-28T14:46:13Z"
+    },
+    {
+      "id": 13042,
+      "title": "m10-v10-gate-guard K2: Unit-Tests tests/v10-gate.test.ts",
+      "description": "Tor-Logik als reine Funktion exportiert und unit-getestet: PASS/FAIL-Matrix gegen Fixtures (alles grün; je ein FAIL pro Tor: p95>16, Heap>15, Bosse fehlen, Truhen<6, kein dawn, JS-Fehler, Inhaltszählung falsch; missing fields → FAIL bzw. null), Renderer-Check (Mesa Intel RPL-S ok, SwiftShader/llvmpipe/none → ungültig/Exit 2). Abnahme: npx vitest run tests/v10-gate.test.ts grün, npx tsc --noEmit grün.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T14:46:13Z",
+          "by": "build",
+          "text": "backlog → review: K2 fertig: tests/v10-gate.test.ts 17 Tests grün, Commit e9cc1593"
+        },
+        {
+          "at": "2026-11-28T16:03:39+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #12725, Merge branch m10-v10-gate-guard"
+        }
+      ],
+      "created": "2026-11-28T14:42:10Z",
+      "updated": "2026-11-28T14:46:13Z"
+    },
+    {
+      "id": 13043,
+      "title": "m10-v10-gate-guard K3: vollständiger Gate-Lauf auf main-Stand",
+      "description": "Gate-Lauf unter flock /home/ai/games/.lf-perf.lock: node scripts/m10-v10-gate.mjs --out shots/m10-v10-gate.json. Tor-JSON + Screenshot nach shots/m10-v10-gate-*, Roh-Belege nach ~/games/.evidence/m10-v10-gate-guard/. Bei FAIL: Befundliste (Datei/Hebel/Gewinn) in docs/lanes/m10-v10-gate-guard.md, NICHT selbst fixen. Abnahme: Exit 0 mit Renderer-String Intel-iGPU (kein SwiftShader) auf aktuellem main-Stand.",
+      "column": "done",
+      "notes": [
+        {
+          "at": "2026-11-28T14:46:13Z",
+          "by": "build",
+          "text": "backlog → doing: K3 gestartet: vollständiger Gate-Lauf unter flock auf aktuellem main-Stand"
+        },
+        {
+          "at": "2026-11-28T16:03:39+00:00",
+          "by": "merge-fastpath",
+          "text": "lane #13043, Merge branch m10-v10-gate-guard (doing-Karte der gemergten Lane)"
+        }
+      ],
+      "created": "2026-11-28T14:42:10Z",
+      "updated": "2026-11-28T14:46:13Z"
+    },
+    {
+      "id": 13044,
+      "title": "m10-v10-gate-guard K4: Lane-Doku + .lane-done",
+      "description": "docs/lanes/m10-v10-gate-guard.md schreiben (Ziel, Tore, Ergebnisse, Befunde/Hebelliste, Belegpfade) und .lane-done (5-10 Zeilen Zusammenfassung + Messwerte) committen. Abnahme: Suite + tsc grün, alle 4 Karten-Commits mit Präfix M10-m10-v10-gate-guard, .lane-done committed.",
+      "column": "backlog",
+      "notes": [],
+      "created": "2026-11-28T14:42:10Z",
+      "updated": "2026-11-28T14:42:10Z"
     }
   ]
 }
