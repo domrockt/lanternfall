@@ -8246,17 +8246,22 @@
       "id": 7101,
       "title": "m10-icon-contrast #4: Nachher-Messung + Doku + art-director",
       "description": "shots/m10-icon-contrast-after-*.png + JSON, docs/lanes/m10-icon-contrast.md mit Vorher/Nachher-Zahlen, art-director-Sichtprüfung der neu gezeichneten Icons (≥4/5, Maßstab kommerziell auslieferbar).",
-      "column": "review",
+      "column": "done",
       "assignee": "Lead",
       "notes": [
         {
           "at": "2026-11-28T00:45:01Z",
           "by": "build",
           "text": "todo → review: fce348b: after-JSON/-zoom, Doku, art-director FAIL 3,5 (Design-Debt) → Backlog #7102. Reviewer-Check läuft."
+        },
+        {
+          "at": "2026-11-28T00:47:39Z",
+          "by": "build",
+          "text": "review → done: fce348b: after-JSON/-zoom + Doku + art-director-Urteil (FAIL 3,5 Design-Debt -> Backlog #7102); reviewer PASS (Skript reproduzierbar, Doku-Zahlen verifiziert, Scope sauber, 991/991 Tests). .lane-done committed (1ac25c5)."
         }
       ],
       "created": "2026-11-28T00:33:10Z",
-      "updated": "2026-11-28T00:45:01Z"
+      "updated": "2026-11-28T00:47:39Z"
     },
     {
       "id": 7102,
