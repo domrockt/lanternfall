@@ -74,7 +74,7 @@ try {
   }, null, 2));
   // Abnahme-PNG: bester Frame mit Elite im Viewport (nach Vergrössern 4x in Doku referenziert).
   const best = log.findIndex((s) => s.elites.length > 0);
-  if (best >= 0) copyFileSync(`${frames}/f${String(best).padStart(3, "0")}.png`, "shots/m10-enemy-idle-abnahme.png");
+  if (best >= 0) copyFileSync(`${frames}/f${String(best).padStart(3, "0")}.png`, "shots/abnahme/m10-enemy-idle-abnahme.png");
   execFileSync("ffmpeg", ["-y", "-loglevel", "error", "-framerate", "15", "-i", `${frames}/f%03d.png`,
     "-vf", "split[s0][s1];[s0]palettegen=max_colors=256:stats_mode=full[p];[s1][p]paletteuse=dither=none",
     `${evidence}/m10-enemy-idle-ingame.gif`], { stdio: ["ignore", "ignore", "inherit"] });
