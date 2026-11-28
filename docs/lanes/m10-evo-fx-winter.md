@@ -1,4 +1,4 @@
-# Lane m10-evo-fx-winter — Ewiger-Winter-FX neu (Versuch 2)
+# Lane m10-evo-fx-winter — Ewiger-Winter-FX neu (Versuch 2, abgeschlossen Versuch 3)
 
 Dom-Wunsch 21:45Z, Punkt 1 (Evolutions-Effekte neu, 2/5). Vorlage: `docs/lanes/m10-evo-fx-phoenix.md`
 (Muster „Eine Pixelgröße für alles"). Regelwerk: Textur in Zielgröße backen, nie > 1x hochskalieren,
@@ -86,32 +86,43 @@ Der erste fixprobe-Lauf (falsche Messung) ist als Lernfall in `~/tmp/m10-evo-fx-
   Hebel 3 (Siegel-Sterne) = Hit-Signaturen spawnen nur bei Treffern — im Volley-Shot lesbar.
 - **art-director Runde 2: FAIL, eng eingegrenzt** — Signaturen 4.5 PASS, projectile_ice 4.5 PASS,
   ring_frost-Handwerk 4.0; **Aura-Siegel-Lesbarkeit auf hellem Moor-Grund 3.5 FAIL**.
-  Root Cause (art-director, belegt): der **multiplikative fogBlue-Tint** im FX-Spawn
-  (`CombatSystem.updateWinter`, `tint: PAL[C.fogBlue]`, Zeile ~698; Frostnova-Pfad ~503)
-  drückt paleMist (#8fa0a6) auf ≈ #2c3540 — die autorierte Band-Treppe erreicht den Screen
-  nicht; die pal5-Kante kann unter dem Tint nichts reißen. Die Textur-Arbeit selbst ist
-  laut art-director sauber und bleibt stehen.
-- **Status K4: blocked** — der wirksamste Fix ist ein Zeilen-Fix im FX-Pfad
-  (`src/systems/CombatSystem.ts`, geparkte Datei): fogBlue-Tint am ring_frost-Spawn
-  streichen oder auf paleMist/mist abschwächen (und Aura-Alpha 0.55→0.2 anheben).
-  Request in `/home/ai/games/.dispatch/requests.md`; gehört zusammen mit dem geparkten
-  CombatSystem-Diff (Partikel-Scale ≤ 1, Windup) in die Folgelane `m10-evo-fx-winter-w2`.
+  Verdacht: multiplikativer fogBlue-Tint im FX-Spawn (`tint: PAL[C.fogBlue]`) drückt die
+  Pale-Töne auf ≈ #2c3540. (Runde 3 korrigierte die Diagnose teilweise: der Tint musste
+  trotzdem weg, die dunkle Wolke stammte aber aus dem fx_ice-Zeichen-Bug, s. u.)
+- **Versuch 3, Fix 1 (Commit 4787abc):** fogBlue-Tint an fx_ice-Partikeln (updateWinter
+  ~710, Frostnova ~519) und am Frostnova-ring_frost (~506) gestrichen — autorierte
+  Eis-Treppe zeigt unverfälscht. after re-gemessen (iGPU, 0 JS-Fehler, 22/24 Gegner).
+- **art-director Runde 3: FAIL 2.7/5, ein Befund** — Aura-Siegel **4.5 PASS**, Signaturen
+  4.5 PASS, projectile_ice 4.5 PASS; **fx_ice-Partikel 1.5 FAIL**: die komplette Textur
+  renderte in Glut-/Flammen-Palette. Root Cause: `iceFrame` (`src/gfx/gen-fx.ts`) schrieb
+  Einzelziffer-Indizes als Buchstaben — `"j"`→pal19 flameBright, `"i"`→pal18 flame,
+  `"g"`→pal16 emberBrown (dieselbe charCode-Falle wie projectile_ice vor 0b3b563).
+  Der Tint überlagerte den Bug nur (flameBright · fogBlue ≈ dunkles Oliv).
+- **Versuch 3, Fix 2 (Commit ebf5a61):** `iceFrame` `"j"/"i"/"g"` → Ziffern `"9"/"8"/"6"`;
+  Regressionstest in `tests/evo-fx-winter.test.ts` (10 Guards): alle 4 fx_ice-Frames nur
+  Indizes ⊆ Eis-Treppe {13,12,11,9,8,6,5}, Kern 13 + Facette 9 je Frame, 8/6 über die
+  Familie; `iceFrame` dafür exportiert. after re-gemessen: 0 Glut-Palettenpixel in den
+  FX-Zonen (117.000 px geprüft), iGPU valid, 0 JS-Fehler, 22/24 Gegner.
+- **art-director Runde 4: PASS 4.5/5 gesamt** — fx_ice 1.5→4.5, Aura-Siegel 4.5,
+  Signaturen 4.5, projectile_ice 4.5. „Weiß-blau statt Glut ✓, Kristall-Kanten statt
+  Blob-Wolke ✓, Aura-Siegel ≠ Lampenschein ✓“. Optionaler Polier-Hinweis (kein
+  Abnahme-Thema): im dunklen 960-Shot entsättigt der Lampenglow die mist/fogBlue-Stufen —
+  falls nachgeschärft wird, Facette paleMist(9)→bone(10) oder 1 px mehr Kernfläche.
+- **Status K4: PASS — Lane abgeschlossen.** Belege: `shots/m10-evo-fx-winter-after.json`
+  (+ PNGs `-after-640/-aura/-960/-aura`), Urteile Runde 3 + 4 in dieser Doku.
 - **Build-/Test-Evidenz (Endstand):** `npm run build` rc=0, `npx tsc --noEmit` rc=0,
-  32/32 Tests grün (evo-fx-winter + fx-mixel + evo-signature-calls), 0 JS-Fehler in allen
-  Probe-Läufen, gültiger WebGL-Renderer-String in jeder JSON.
+  **907/907 Tests grün** (88 Dateien, inkl. evo-fx-winter 10 Guards), 0 JS-Fehler in allen
+  Probe-Läufen, gültiger WebGL-Renderer-String (iGPU ANGLE Mesa RPL-S) in jeder JSON.
 
 ## Offene Punkte
 
-1. **Aura-Siegel auf hellem Grund (art-director Runde 2 FAIL 3.5/5):** Root Cause ist der
-   multiplikative fogBlue-Tint im FX-Spawn (`CombatSystem.updateWinter`, `tint: PAL[C.fogBlue]`),
-   nicht die Textur. Fix (1 Zeile + optional Alpha): Tint streichen/abschwächen — in der
-   geparkten Datei `src/systems/CombatSystem.ts`, Request gestellt. Zusammen mit
-2. **fx_ice-Partikel live @ 1.25x** (Aura-Partikel, Scale steht in `CombatSystem.updateWinter`;
-   Frostnova-Pfad sogar 1.5x): CombatSystem-Diff (Scale → 1, Windup-Anticipation mit
-   `winterWindup`-Flag, WINTER_FX-Verdrahtung) ist fertig konzipiert, wurde aber auf
-   Supervisor-Anweisung aus K2 geparkt („CombatSystem gehört nicht zu K2"). → beide Punkte
-   in Folgelane `m10-evo-fx-winter-w2`.
+1. **Polier-Hinweis art-director Runde 4 (nicht blockierend):** im dunklen 960-Shot
+   entsättigt der warme Lampenglow die mist/fogBlue-Stufen der fx_ice-Diamanten —
+   Hebel: Facette paleMist(9)→bone(10) oder 1 px mehr Kernfläche. Nur falls nachgeschärft
+   wird; Abnahme ist PASS.
+2. **Geparkter CombatSystem-Diff (aus K2):** Windup-Anticipation (`winterWindup`-Flag,
+   `windupAt/windupLife` liegen in WINTER_FX bereit, ohne Wiring inert) und Partikel-Scale
+   ≤ 1 (fx_ice live @1.25x/1.5x, Mixel-Regel) — bewusst NICHT in Versuch 3 angefasst,
+   braucht eigene Karte.
 3. Signaturen wirken auf dunklem Grund eher weiß als blau — Histogramm belegt aber die
-   kalte Treppe (pal6-Anteil 33–40 %). art-director Runde 2: 4.5 PASS, kein Handlungsbedarf.
-4. `windupAt`/`windupLife` liegen in WINTER_FX bereit, sind aber ohne CombatSystem-Wiring
-   inert (Tests prüfen nur die Parameter).
+   kalte Treppe (pal6-Anteil 33–40 %). art-director Runde 4: 4.5 PASS, kein Handlungsbedarf.
