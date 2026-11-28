@@ -17549,25 +17549,36 @@
       "id": 12640,
       "title": "m10-fx-alloc-trim K1: Baseline Mess-Skript + Vorher-Messung",
       "description": "Skript scripts/m10-fx-alloc.mjs (Chaos-Lauf M25-artig, 500 Gegner, god/autoplay): rAF-CPU-ms p50/p95/p99/max, worstFrame-Spitzen (33-34ms-Klasse zaehlen), Allokationen/Frame (heap-alloc-profile-Muster) + FX-Attribution (Sites hinter FxSystem.ts). Vorher-JSON nach ~/games/.evidence/m10-fx-alloc-trim/. AK: JSON mit Zahlen + Renderer-String existiert, Skript committed.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-28T14:15:43Z",
           "by": "build",
           "text": "todo → doing: Lane m10-fx-alloc-trim gestartet: Mess-Skript + Vorher-Messung (Owner: lead)"
+        },
+        {
+          "at": "2026-11-28T14:21:46Z",
+          "by": "build",
+          "text": "doing → review: Skript + Baseline committed e4f55b14; 3 Vorher-Laeufe in ~/games/.evidence/m10-fx-alloc-trim/m10-fx-alloc-before.json (p95 5.2/9.2/10.6ms, max 16.5/23.3/25.3ms, alloc ~2100-2760B/Frame, FX-Sampling-Sites <1% - Befund ist Setter-Churn/CPU)"
         }
       ],
       "created": "2026-11-28T14:15:39Z",
-      "updated": "2026-11-28T14:15:43Z"
+      "updated": "2026-11-28T14:21:46Z"
     },
     {
       "id": 12641,
       "title": "m10-fx-alloc-trim K2: FxSystem.ts Alloc-/Setter-Fix",
       "description": "In src/systems/FxSystem.ts: Per-Frame-Objekt-Allokationen (Spread-Literale, frames.map) hoisten/poolen; Phaser-Setter-Churn senken (nur schreiben wenn geaendert); Hot-Loops allocations-frei. KEINE optische Aenderung: Alpha-/Palette-Semantik bitgleich, Caps unangetastet. AK: npx tsc --noEmit gruen, gezielte FX-Tests gruen, Diff nur in FxSystem.ts.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T14:21:46Z",
+          "by": "build",
+          "text": "todo → doing: K2 Fix: Setter-Churn + Spawn-Allokationen in FxSystem.ts/ParticleSystem"
+        }
+      ],
       "created": "2026-11-28T14:15:39Z",
-      "updated": "2026-11-28T14:15:39Z"
+      "updated": "2026-11-28T14:21:46Z"
     },
     {
       "id": 12642,
