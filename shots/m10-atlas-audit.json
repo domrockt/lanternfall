@@ -1,13 +1,134 @@
 {
   "tool": "scripts/art/atlas-audit.mjs",
-  "generatedAt": "2026-11-27T02:15:52.804Z",
+  "lane": "m10-atlas-gutter",
+  "generatedAt": "2026-11-28T02:52:18.099Z",
   "atlasKey": "runtime_atlas",
   "atlasSize": {
     "width": 1024,
-    "height": 387
+    "height": 1359
   },
-  "frameCount": 227,
+  "frameCount": 391,
   "frames": [
+    {
+      "key": "fx_shock@4",
+      "w": 192,
+      "h": 192
+    },
+    {
+      "key": "fx_shock@4_2",
+      "w": 192,
+      "h": 192
+    },
+    {
+      "key": "fx_shock@4_3",
+      "w": 192,
+      "h": 192
+    },
+    {
+      "key": "fx_shock@4_4",
+      "w": 192,
+      "h": 192
+    },
+    {
+      "key": "fx_shock@4_5",
+      "w": 192,
+      "h": 192
+    },
+    {
+      "key": "fx_shock@4_6",
+      "w": 192,
+      "h": 192
+    },
+    {
+      "key": "fx_halo@6",
+      "w": 144,
+      "h": 144
+    },
+    {
+      "key": "fx_halo@6_2",
+      "w": 144,
+      "h": 144
+    },
+    {
+      "key": "fx_shock@3",
+      "w": 144,
+      "h": 144
+    },
+    {
+      "key": "fx_shock@3_2",
+      "w": 144,
+      "h": 144
+    },
+    {
+      "key": "fx_shock@3_3",
+      "w": 144,
+      "h": 144
+    },
+    {
+      "key": "fx_shock@3_4",
+      "w": 144,
+      "h": 144
+    },
+    {
+      "key": "fx_shock@3_5",
+      "w": 144,
+      "h": 144
+    },
+    {
+      "key": "fx_shock@3_6",
+      "w": 144,
+      "h": 144
+    },
+    {
+      "key": "fx_evo_death_phoenix",
+      "w": 128,
+      "h": 128
+    },
+    {
+      "key": "fx_evo_death_phoenix_2",
+      "w": 128,
+      "h": 128
+    },
+    {
+      "key": "fx_evo_death_phoenix_3",
+      "w": 128,
+      "h": 128
+    },
+    {
+      "key": "fx_evo_death_phoenix_4",
+      "w": 128,
+      "h": 128
+    },
+    {
+      "key": "fx_evo_hit_phoenix",
+      "w": 128,
+      "h": 128
+    },
+    {
+      "key": "fx_evo_hit_phoenix_2",
+      "w": 128,
+      "h": 128
+    },
+    {
+      "key": "fx_evo_hit_phoenix_3",
+      "w": 128,
+      "h": 128
+    },
+    {
+      "key": "fx_evo_hit_phoenix_4",
+      "w": 128,
+      "h": 128
+    },
+    {
+      "key": "fx_halo@5",
+      "w": 120,
+      "h": 120
+    },
+    {
+      "key": "fx_halo@5_2",
+      "w": 120,
+      "h": 120
+    },
     {
       "key": "boss_coven",
       "w": 96,
@@ -40,6 +161,86 @@
     },
     {
       "key": "elite_aura",
+      "w": 96,
+      "h": 96
+    },
+    {
+      "key": "fx_evo_death_soul_beacon",
+      "w": 96,
+      "h": 96
+    },
+    {
+      "key": "fx_evo_death_soul_beacon_2",
+      "w": 96,
+      "h": 96
+    },
+    {
+      "key": "fx_evo_death_soul_beacon_3",
+      "w": 96,
+      "h": 96
+    },
+    {
+      "key": "fx_evo_death_soul_beacon_4",
+      "w": 96,
+      "h": 96
+    },
+    {
+      "key": "fx_evo_hit_soul_beacon",
+      "w": 96,
+      "h": 96
+    },
+    {
+      "key": "fx_evo_hit_soul_beacon_2",
+      "w": 96,
+      "h": 96
+    },
+    {
+      "key": "fx_evo_hit_soul_beacon_3",
+      "w": 96,
+      "h": 96
+    },
+    {
+      "key": "fx_evo_hit_soul_beacon_4",
+      "w": 96,
+      "h": 96
+    },
+    {
+      "key": "fx_halo@4",
+      "w": 96,
+      "h": 96
+    },
+    {
+      "key": "fx_halo@4_2",
+      "w": 96,
+      "h": 96
+    },
+    {
+      "key": "fx_shock@2",
+      "w": 96,
+      "h": 96
+    },
+    {
+      "key": "fx_shock@2_2",
+      "w": 96,
+      "h": 96
+    },
+    {
+      "key": "fx_shock@2_3",
+      "w": 96,
+      "h": 96
+    },
+    {
+      "key": "fx_shock@2_4",
+      "w": 96,
+      "h": 96
+    },
+    {
+      "key": "fx_shock@2_5",
+      "w": 96,
+      "h": 96
+    },
+    {
+      "key": "fx_shock@2_6",
       "w": 96,
       "h": 96
     },
@@ -94,6 +295,26 @@
       "h": 72
     },
     {
+      "key": "fx_halo@3",
+      "w": 72,
+      "h": 72
+    },
+    {
+      "key": "fx_halo@3_2",
+      "w": 72,
+      "h": 72
+    },
+    {
+      "key": "fx_halo_cold@3",
+      "w": 72,
+      "h": 72
+    },
+    {
+      "key": "fx_halo_cold@3_2",
+      "w": 72,
+      "h": 72
+    },
+    {
       "key": "fx_pillar",
       "w": 26,
       "h": 72
@@ -134,6 +355,41 @@
       "h": 64
     },
     {
+      "key": "fx_boom_phoenix",
+      "w": 64,
+      "h": 64
+    },
+    {
+      "key": "fx_boom_phoenix_2",
+      "w": 64,
+      "h": 64
+    },
+    {
+      "key": "fx_boom_phoenix_3",
+      "w": 64,
+      "h": 64
+    },
+    {
+      "key": "fx_boom_phoenix_4",
+      "w": 64,
+      "h": 64
+    },
+    {
+      "key": "fx_burn_phoenix",
+      "w": 64,
+      "h": 64
+    },
+    {
+      "key": "fx_burn_phoenix_2",
+      "w": 64,
+      "h": 64
+    },
+    {
+      "key": "fx_burn_phoenix_3",
+      "w": 64,
+      "h": 64
+    },
+    {
       "key": "telegraph_disc",
       "w": 64,
       "h": 64
@@ -152,6 +408,26 @@
       "key": "boss_moor_queen_3",
       "w": 56,
       "h": 56
+    },
+    {
+      "key": "fx_halo@2",
+      "w": 48,
+      "h": 48
+    },
+    {
+      "key": "fx_halo@2_2",
+      "w": 48,
+      "h": 48
+    },
+    {
+      "key": "fx_halo_cold@2",
+      "w": 48,
+      "h": 48
+    },
+    {
+      "key": "fx_halo_cold@2_2",
+      "w": 48,
+      "h": 48
     },
     {
       "key": "fx_shock",
@@ -184,6 +460,36 @@
       "h": 48
     },
     {
+      "key": "fx_fire@3",
+      "w": 42,
+      "h": 42
+    },
+    {
+      "key": "fx_fire@3_2",
+      "w": 42,
+      "h": 42
+    },
+    {
+      "key": "fx_fire@3_3",
+      "w": 42,
+      "h": 42
+    },
+    {
+      "key": "fx_fire@3_4",
+      "w": 42,
+      "h": 42
+    },
+    {
+      "key": "fx_fire@3_5",
+      "w": 42,
+      "h": 42
+    },
+    {
+      "key": "fx_fire@3_6",
+      "w": 42,
+      "h": 42
+    },
+    {
       "key": "puddle_poison",
       "w": 40,
       "h": 40
@@ -209,6 +515,11 @@
       "h": 32
     },
     {
+      "key": "enemy_abom_rim",
+      "w": 32,
+      "h": 32
+    },
+    {
       "key": "enemy_centipede",
       "w": 32,
       "h": 32
@@ -225,6 +536,11 @@
     },
     {
       "key": "enemy_centipede_4",
+      "w": 32,
+      "h": 32
+    },
+    {
+      "key": "enemy_centipede_rim",
       "w": 32,
       "h": 32
     },
@@ -249,6 +565,11 @@
       "h": 32
     },
     {
+      "key": "enemy_gargoyle_rim",
+      "w": 32,
+      "h": 32
+    },
+    {
       "key": "enemy_horror",
       "w": 32,
       "h": 32
@@ -265,6 +586,11 @@
     },
     {
       "key": "enemy_horror_4",
+      "w": 32,
+      "h": 32
+    },
+    {
+      "key": "enemy_horror_rim",
       "w": 32,
       "h": 32
     },
@@ -289,6 +615,11 @@
       "h": 32
     },
     {
+      "key": "enemy_reaper_bat_rim",
+      "w": 32,
+      "h": 32
+    },
+    {
       "key": "enemy_voidcaller",
       "w": 32,
       "h": 32
@@ -305,6 +636,11 @@
     },
     {
       "key": "enemy_voidcaller_4",
+      "w": 32,
+      "h": 32
+    },
+    {
+      "key": "enemy_voidcaller_rim",
       "w": 32,
       "h": 32
     },
@@ -339,6 +675,166 @@
       "h": 32
     },
     {
+      "key": "fx_evo_death_eternal_winter",
+      "w": 32,
+      "h": 32
+    },
+    {
+      "key": "fx_evo_death_eternal_winter_2",
+      "w": 32,
+      "h": 32
+    },
+    {
+      "key": "fx_evo_death_eternal_winter_3",
+      "w": 32,
+      "h": 32
+    },
+    {
+      "key": "fx_evo_death_eternal_winter_4",
+      "w": 32,
+      "h": 32
+    },
+    {
+      "key": "fx_evo_death_thorn_storm",
+      "w": 32,
+      "h": 32
+    },
+    {
+      "key": "fx_evo_death_thorn_storm_2",
+      "w": 32,
+      "h": 32
+    },
+    {
+      "key": "fx_evo_death_thorn_storm_3",
+      "w": 32,
+      "h": 32
+    },
+    {
+      "key": "fx_evo_death_thorn_storm_4",
+      "w": 32,
+      "h": 32
+    },
+    {
+      "key": "fx_evo_death_thunder_seal",
+      "w": 32,
+      "h": 32
+    },
+    {
+      "key": "fx_evo_death_thunder_seal_2",
+      "w": 32,
+      "h": 32
+    },
+    {
+      "key": "fx_evo_death_thunder_seal_3",
+      "w": 32,
+      "h": 32
+    },
+    {
+      "key": "fx_evo_death_thunder_seal_4",
+      "w": 32,
+      "h": 32
+    },
+    {
+      "key": "fx_evo_death_wrath_pendulum",
+      "w": 32,
+      "h": 32
+    },
+    {
+      "key": "fx_evo_death_wrath_pendulum_2",
+      "w": 32,
+      "h": 32
+    },
+    {
+      "key": "fx_evo_death_wrath_pendulum_3",
+      "w": 32,
+      "h": 32
+    },
+    {
+      "key": "fx_evo_death_wrath_pendulum_4",
+      "w": 32,
+      "h": 32
+    },
+    {
+      "key": "fx_evo_hit_eternal_winter",
+      "w": 32,
+      "h": 32
+    },
+    {
+      "key": "fx_evo_hit_eternal_winter_2",
+      "w": 32,
+      "h": 32
+    },
+    {
+      "key": "fx_evo_hit_eternal_winter_3",
+      "w": 32,
+      "h": 32
+    },
+    {
+      "key": "fx_evo_hit_eternal_winter_4",
+      "w": 32,
+      "h": 32
+    },
+    {
+      "key": "fx_evo_hit_thorn_storm",
+      "w": 32,
+      "h": 32
+    },
+    {
+      "key": "fx_evo_hit_thorn_storm_2",
+      "w": 32,
+      "h": 32
+    },
+    {
+      "key": "fx_evo_hit_thorn_storm_3",
+      "w": 32,
+      "h": 32
+    },
+    {
+      "key": "fx_evo_hit_thorn_storm_4",
+      "w": 32,
+      "h": 32
+    },
+    {
+      "key": "fx_evo_hit_thunder_seal",
+      "w": 32,
+      "h": 32
+    },
+    {
+      "key": "fx_evo_hit_thunder_seal_2",
+      "w": 32,
+      "h": 32
+    },
+    {
+      "key": "fx_evo_hit_thunder_seal_3",
+      "w": 32,
+      "h": 32
+    },
+    {
+      "key": "fx_evo_hit_thunder_seal_4",
+      "w": 32,
+      "h": 32
+    },
+    {
+      "key": "fx_evo_hit_wrath_pendulum",
+      "w": 32,
+      "h": 32
+    },
+    {
+      "key": "fx_evo_hit_wrath_pendulum_2",
+      "w": 32,
+      "h": 32
+    },
+    {
+      "key": "fx_evo_hit_wrath_pendulum_3",
+      "w": 32,
+      "h": 32
+    },
+    {
+      "key": "fx_evo_hit_wrath_pendulum_4",
+      "w": 32,
+      "h": 32
+    },
+    {
       "key": "fx_seal",
       "w": 32,
       "h": 32
@@ -364,6 +860,21 @@
       "h": 32
     },
     {
+      "key": "orb_soul",
+      "w": 22,
+      "h": 32
+    },
+    {
+      "key": "orb_soul_2",
+      "w": 22,
+      "h": 32
+    },
+    {
+      "key": "orb_soul_3",
+      "w": 22,
+      "h": 32
+    },
+    {
       "key": "enemy_harpy",
       "w": 28,
       "h": 28
@@ -380,6 +891,11 @@
     },
     {
       "key": "enemy_harpy_4",
+      "w": 28,
+      "h": 28
+    },
+    {
+      "key": "enemy_harpy_rim",
       "w": 28,
       "h": 28
     },
@@ -404,6 +920,11 @@
       "h": 28
     },
     {
+      "key": "enemy_imp_rim",
+      "w": 28,
+      "h": 28
+    },
+    {
       "key": "enemy_knight",
       "w": 28,
       "h": 28
@@ -420,6 +941,11 @@
     },
     {
       "key": "enemy_knight_4",
+      "w": 28,
+      "h": 28
+    },
+    {
+      "key": "enemy_knight_rim",
       "w": 28,
       "h": 28
     },
@@ -444,6 +970,11 @@
       "h": 28
     },
     {
+      "key": "enemy_lich_rim",
+      "w": 28,
+      "h": 28
+    },
+    {
       "key": "enemy_treant",
       "w": 28,
       "h": 28
@@ -460,6 +991,11 @@
     },
     {
       "key": "enemy_treant_4",
+      "w": 28,
+      "h": 28
+    },
+    {
+      "key": "enemy_treant_rim",
       "w": 28,
       "h": 28
     },
@@ -484,6 +1020,41 @@
       "h": 28
     },
     {
+      "key": "enemy_wraith_rim",
+      "w": 28,
+      "h": 28
+    },
+    {
+      "key": "fx_fire@2",
+      "w": 28,
+      "h": 28
+    },
+    {
+      "key": "fx_fire@2_2",
+      "w": 28,
+      "h": 28
+    },
+    {
+      "key": "fx_fire@2_3",
+      "w": 28,
+      "h": 28
+    },
+    {
+      "key": "fx_fire@2_4",
+      "w": 28,
+      "h": 28
+    },
+    {
+      "key": "fx_fire@2_5",
+      "w": 28,
+      "h": 28
+    },
+    {
+      "key": "fx_fire@2_6",
+      "w": 28,
+      "h": 28
+    },
+    {
       "key": "enemy_banshee",
       "w": 24,
       "h": 24
@@ -500,6 +1071,11 @@
     },
     {
       "key": "enemy_banshee_4",
+      "w": 24,
+      "h": 24
+    },
+    {
+      "key": "enemy_banshee_rim",
       "w": 24,
       "h": 24
     },
@@ -524,6 +1100,11 @@
       "h": 24
     },
     {
+      "key": "enemy_bomber_rim",
+      "w": 24,
+      "h": 24
+    },
+    {
       "key": "enemy_cultist",
       "w": 24,
       "h": 24
@@ -540,6 +1121,11 @@
     },
     {
       "key": "enemy_cultist_4",
+      "w": 24,
+      "h": 24
+    },
+    {
+      "key": "enemy_cultist_rim",
       "w": 24,
       "h": 24
     },
@@ -564,6 +1150,11 @@
       "h": 24
     },
     {
+      "key": "enemy_golem_rim",
+      "w": 24,
+      "h": 24
+    },
+    {
       "key": "enemy_spider",
       "w": 24,
       "h": 24
@@ -580,6 +1171,11 @@
     },
     {
       "key": "enemy_spider_4",
+      "w": 24,
+      "h": 24
+    },
+    {
+      "key": "enemy_spider_rim",
       "w": 24,
       "h": 24
     },
@@ -604,6 +1200,11 @@
       "h": 24
     },
     {
+      "key": "enemy_wolf_rim",
+      "w": 24,
+      "h": 24
+    },
+    {
       "key": "fx_halo",
       "w": 24,
       "h": 24
@@ -622,21 +1223,6 @@
       "key": "fx_halo_cold_2",
       "w": 24,
       "h": 24
-    },
-    {
-      "key": "orb_soul",
-      "w": 15,
-      "h": 22
-    },
-    {
-      "key": "orb_soul_2",
-      "w": 15,
-      "h": 22
-    },
-    {
-      "key": "orb_soul_3",
-      "w": 15,
-      "h": 22
     },
     {
       "key": "fx_ice",
@@ -669,12 +1255,42 @@
       "h": 20
     },
     {
+      "key": "enemy_bat_3",
+      "w": 20,
+      "h": 20
+    },
+    {
+      "key": "enemy_bat_4",
+      "w": 20,
+      "h": 20
+    },
+    {
+      "key": "enemy_bat_rim",
+      "w": 20,
+      "h": 20
+    },
+    {
       "key": "enemy_ghoul",
       "w": 20,
       "h": 20
     },
     {
       "key": "enemy_ghoul_2",
+      "w": 20,
+      "h": 20
+    },
+    {
+      "key": "enemy_ghoul_3",
+      "w": 20,
+      "h": 20
+    },
+    {
+      "key": "enemy_ghoul_4",
+      "w": 20,
+      "h": 20
+    },
+    {
+      "key": "enemy_ghoul_rim",
       "w": 20,
       "h": 20
     },
@@ -689,12 +1305,42 @@
       "h": 20
     },
     {
+      "key": "enemy_scarecrow_3",
+      "w": 20,
+      "h": 20
+    },
+    {
+      "key": "enemy_scarecrow_4",
+      "w": 20,
+      "h": 20
+    },
+    {
+      "key": "enemy_scarecrow_rim",
+      "w": 20,
+      "h": 20
+    },
+    {
       "key": "enemy_skeleton",
       "w": 20,
       "h": 20
     },
     {
       "key": "enemy_skeleton_2",
+      "w": 20,
+      "h": 20
+    },
+    {
+      "key": "enemy_skeleton_3",
+      "w": 20,
+      "h": 20
+    },
+    {
+      "key": "enemy_skeleton_4",
+      "w": 20,
+      "h": 20
+    },
+    {
+      "key": "enemy_skeleton_rim",
       "w": 20,
       "h": 20
     },
@@ -709,12 +1355,42 @@
       "h": 20
     },
     {
+      "key": "enemy_slime_3",
+      "w": 20,
+      "h": 20
+    },
+    {
+      "key": "enemy_slime_4",
+      "w": 20,
+      "h": 20
+    },
+    {
+      "key": "enemy_slime_rim",
+      "w": 20,
+      "h": 20
+    },
+    {
       "key": "enemy_witchling",
       "w": 20,
       "h": 20
     },
     {
       "key": "enemy_witchling_2",
+      "w": 20,
+      "h": 20
+    },
+    {
+      "key": "enemy_witchling_3",
+      "w": 20,
+      "h": 20
+    },
+    {
+      "key": "enemy_witchling_4",
+      "w": 20,
+      "h": 20
+    },
+    {
+      "key": "enemy_witchling_rim",
       "w": 20,
       "h": 20
     },
@@ -759,6 +1435,21 @@
       "h": 16
     },
     {
+      "key": "enemy_bog_rat_3",
+      "w": 16,
+      "h": 16
+    },
+    {
+      "key": "enemy_bog_rat_4",
+      "w": 16,
+      "h": 16
+    },
+    {
+      "key": "enemy_bog_rat_rim",
+      "w": 16,
+      "h": 16
+    },
+    {
       "key": "enemy_bogzombie",
       "w": 16,
       "h": 16
@@ -774,12 +1465,42 @@
       "h": 16
     },
     {
+      "key": "enemy_bogzombie_3",
+      "w": 16,
+      "h": 16
+    },
+    {
+      "key": "enemy_bogzombie_4",
+      "w": 16,
+      "h": 16
+    },
+    {
+      "key": "enemy_bogzombie_rim",
+      "w": 16,
+      "h": 16
+    },
+    {
       "key": "enemy_crow",
       "w": 16,
       "h": 16
     },
     {
       "key": "enemy_crow_2",
+      "w": 16,
+      "h": 16
+    },
+    {
+      "key": "enemy_crow_3",
+      "w": 16,
+      "h": 16
+    },
+    {
+      "key": "enemy_crow_4",
+      "w": 16,
+      "h": 16
+    },
+    {
+      "key": "enemy_crow_rim",
       "w": 16,
       "h": 16
     },
@@ -794,12 +1515,42 @@
       "h": 16
     },
     {
+      "key": "enemy_mudling_3",
+      "w": 16,
+      "h": 16
+    },
+    {
+      "key": "enemy_mudling_4",
+      "w": 16,
+      "h": 16
+    },
+    {
+      "key": "enemy_mudling_rim",
+      "w": 16,
+      "h": 16
+    },
+    {
       "key": "enemy_toad",
       "w": 16,
       "h": 16
     },
     {
       "key": "enemy_toad_2",
+      "w": 16,
+      "h": 16
+    },
+    {
+      "key": "enemy_toad_3",
+      "w": 16,
+      "h": 16
+    },
+    {
+      "key": "enemy_toad_4",
+      "w": 16,
+      "h": 16
+    },
+    {
+      "key": "enemy_toad_rim",
       "w": 16,
       "h": 16
     },
@@ -815,6 +1566,21 @@
     },
     {
       "key": "enemy_wisp_2",
+      "w": 16,
+      "h": 16
+    },
+    {
+      "key": "enemy_wisp_3",
+      "w": 16,
+      "h": 16
+    },
+    {
+      "key": "enemy_wisp_4",
+      "w": 16,
+      "h": 16
+    },
+    {
+      "key": "enemy_wisp_rim",
       "w": 16,
       "h": 16
     },
@@ -909,6 +1675,21 @@
       "h": 14
     },
     {
+      "key": "fx_phoenix_launch",
+      "w": 14,
+      "h": 14
+    },
+    {
+      "key": "fx_phoenix_launch_2",
+      "w": 14,
+      "h": 14
+    },
+    {
+      "key": "fx_phoenix_launch_3",
+      "w": 14,
+      "h": 14
+    },
+    {
       "key": "fx_orb",
       "w": 11,
       "h": 11
@@ -931,6 +1712,21 @@
     {
       "key": "gem_large",
       "w": 11,
+      "h": 11
+    },
+    {
+      "key": "projectile_phoenix",
+      "w": 15,
+      "h": 11
+    },
+    {
+      "key": "projectile_phoenix_2",
+      "w": 15,
+      "h": 11
+    },
+    {
+      "key": "projectile_phoenix_3",
+      "w": 15,
       "h": 11
     },
     {
@@ -999,6 +1795,26 @@
       "h": 9
     },
     {
+      "key": "fx_death_fire",
+      "w": 9,
+      "h": 9
+    },
+    {
+      "key": "fx_death_fire_2",
+      "w": 9,
+      "h": 9
+    },
+    {
+      "key": "fx_death_fire_3",
+      "w": 9,
+      "h": 9
+    },
+    {
+      "key": "fx_death_fire_4",
+      "w": 9,
+      "h": 9
+    },
+    {
       "key": "fx_death_void",
       "w": 9,
       "h": 9
@@ -1059,11 +1875,6 @@
       "h": 9
     },
     {
-      "key": "projectile_phoenix",
-      "w": 13,
-      "h": 9
-    },
-    {
       "key": "water_ripple_0",
       "w": 21,
       "h": 9
@@ -1104,6 +1915,16 @@
       "h": 7
     },
     {
+      "key": "fx_ember_muzzle",
+      "w": 7,
+      "h": 7
+    },
+    {
+      "key": "fx_ember_trail",
+      "w": 7,
+      "h": 7
+    },
+    {
       "key": "gem_small",
       "w": 7,
       "h": 7
@@ -1140,70 +1961,70 @@
     },
     {
       "key": "fx_spark",
-      "w": 3,
-      "h": 3
+      "w": 5,
+      "h": 5
     }
   ],
   "expected": {
     "enemyFrames": [
       {
         "base": "enemy_bog_rat",
-        "frames": 2,
+        "frames": 4,
         "missingGen": false
       },
       {
         "base": "enemy_wisp",
-        "frames": 2,
+        "frames": 4,
         "missingGen": false
       },
       {
         "base": "enemy_mudling",
-        "frames": 2,
+        "frames": 4,
         "missingGen": false
       },
       {
         "base": "enemy_crow",
-        "frames": 2,
+        "frames": 4,
         "missingGen": false
       },
       {
         "base": "enemy_bogzombie",
-        "frames": 2,
+        "frames": 4,
         "missingGen": false
       },
       {
         "base": "enemy_toad",
-        "frames": 2,
+        "frames": 4,
         "missingGen": false
       },
       {
         "base": "enemy_skeleton",
-        "frames": 2,
+        "frames": 4,
         "missingGen": false
       },
       {
         "base": "enemy_bat",
-        "frames": 2,
+        "frames": 4,
         "missingGen": false
       },
       {
         "base": "enemy_ghoul",
-        "frames": 2,
+        "frames": 4,
         "missingGen": false
       },
       {
         "base": "enemy_witchling",
-        "frames": 2,
+        "frames": 4,
         "missingGen": false
       },
       {
         "base": "enemy_slime",
-        "frames": 2,
+        "frames": 4,
         "missingGen": false
       },
       {
         "base": "enemy_scarecrow",
-        "frames": 2,
+        "frames": 4,
         "missingGen": false
       },
       {
@@ -1329,14 +2150,118 @@
         "missingGen": false
       }
     ],
-    "enemyFrameKeys": 96,
+    "enemyFrameKeys": 120,
     "bossFrameKeys": 18,
-    "prefixKeys": 227,
-    "total": 227
+    "prefixKeys": 391,
+    "total": 391
   },
+  "prefixes": [
+    {
+      "prefix": "enemy_",
+      "existing": 158,
+      "inAtlas": 158,
+      "uncovered": []
+    },
+    {
+      "prefix": "boss_",
+      "existing": 18,
+      "inAtlas": 18,
+      "uncovered": []
+    },
+    {
+      "prefix": "gem_",
+      "existing": 3,
+      "inAtlas": 3,
+      "uncovered": []
+    },
+    {
+      "prefix": "fx_",
+      "existing": 188,
+      "inAtlas": 188,
+      "uncovered": []
+    },
+    {
+      "prefix": "projectile_",
+      "existing": 6,
+      "inAtlas": 6,
+      "uncovered": []
+    },
+    {
+      "prefix": "orb_",
+      "existing": 4,
+      "inAtlas": 4,
+      "uncovered": []
+    },
+    {
+      "prefix": "enemy_shot_",
+      "existing": 5,
+      "inAtlas": 5,
+      "uncovered": []
+    },
+    {
+      "prefix": "telegraph_",
+      "existing": 2,
+      "inAtlas": 2,
+      "uncovered": []
+    },
+    {
+      "prefix": "ring_",
+      "existing": 4,
+      "inAtlas": 4,
+      "uncovered": []
+    },
+    {
+      "prefix": "chest_",
+      "existing": 2,
+      "inAtlas": 2,
+      "uncovered": []
+    },
+    {
+      "prefix": "arrow_chest",
+      "existing": 0,
+      "inAtlas": 0,
+      "uncovered": []
+    },
+    {
+      "prefix": "elite_aura",
+      "existing": 1,
+      "inAtlas": 1,
+      "uncovered": []
+    },
+    {
+      "prefix": "water_ripple_",
+      "existing": 2,
+      "inAtlas": 2,
+      "uncovered": []
+    },
+    {
+      "prefix": "flail_",
+      "existing": 1,
+      "inAtlas": 1,
+      "uncovered": []
+    },
+    {
+      "prefix": "chain_",
+      "existing": 1,
+      "inAtlas": 1,
+      "uncovered": []
+    },
+    {
+      "prefix": "bone_",
+      "existing": 0,
+      "inAtlas": 0,
+      "uncovered": []
+    },
+    {
+      "prefix": "puddle_",
+      "existing": 1,
+      "inAtlas": 1,
+      "uncovered": []
+    }
+  ],
   "coverage": {
-    "present": 227,
-    "total": 227,
+    "present": 391,
+    "total": 391,
     "percent": 100,
     "missing": [],
     "uncoveredHotKeys": [],
@@ -1352,14 +2277,47 @@
     "bufferPx": 2,
     "cases": [],
     "count": 0,
+    "ringPixels": 127752,
+    "transparentRingPixels": 127752,
+    "replicaPixels": 0,
+    "contentCheckedFrames": 391,
+    "contentMismatches": [],
     "edgeContentAdvisory": [
+      {
+        "key": "fx_shock@4_5",
+        "edgePixels": 164
+      },
+      {
+        "key": "fx_shock@4_6",
+        "edgePixels": 124
+      },
+      {
+        "key": "fx_shock@3_5",
+        "edgePixels": 126
+      },
+      {
+        "key": "fx_shock@3_6",
+        "edgePixels": 92
+      },
+      {
+        "key": "fx_evo_death_phoenix_4",
+        "edgePixels": 6
+      },
+      {
+        "key": "fx_shock@2_5",
+        "edgePixels": 86
+      },
+      {
+        "key": "fx_shock@2_6",
+        "edgePixels": 60
+      },
       {
         "key": "boss_pale_shepherd",
         "edgePixels": 4
       },
       {
-        "key": "boss_pale_shepherd_3",
-        "edgePixels": 12
+        "key": "boss_pale_shepherd_2",
+        "edgePixels": 4
       },
       {
         "key": "fx_pillar",
@@ -1382,6 +2340,10 @@
         "edgePixels": 16
       },
       {
+        "key": "fx_boom_phoenix_4",
+        "edgePixels": 12
+      },
+      {
         "key": "boss_moor_queen",
         "edgePixels": 3
       },
@@ -1391,7 +2353,7 @@
       },
       {
         "key": "boss_moor_queen_3",
-        "edgePixels": 17
+        "edgePixels": 3
       },
       {
         "key": "fx_shock_5",
@@ -1418,6 +2380,10 @@
         "edgePixels": 14
       },
       {
+        "key": "enemy_abom_rim",
+        "edgePixels": 14
+      },
+      {
         "key": "enemy_centipede",
         "edgePixels": 7
       },
@@ -1431,6 +2397,10 @@
       },
       {
         "key": "enemy_centipede_4",
+        "edgePixels": 7
+      },
+      {
+        "key": "enemy_centipede_rim",
         "edgePixels": 7
       },
       {
@@ -1455,27 +2425,83 @@
       },
       {
         "key": "fx_boss_core",
-        "edgePixels": 6
+        "edgePixels": 33
       },
       {
         "key": "fx_boss_core_2",
-        "edgePixels": 6
+        "edgePixels": 48
       },
       {
         "key": "fx_boss_core_3",
-        "edgePixels": 4
+        "edgePixels": 49
       },
       {
         "key": "fx_boss_core_4",
-        "edgePixels": 6
+        "edgePixels": 64
       },
       {
         "key": "fx_boss_core_5",
-        "edgePixels": 6
+        "edgePixels": 66
       },
       {
         "key": "fx_boss_core_6",
+        "edgePixels": 71
+      },
+      {
+        "key": "fx_evo_death_eternal_winter_3",
+        "edgePixels": 3
+      },
+      {
+        "key": "fx_evo_death_eternal_winter_4",
+        "edgePixels": 9
+      },
+      {
+        "key": "fx_evo_death_thorn_storm_3",
+        "edgePixels": 6
+      },
+      {
+        "key": "fx_evo_death_thorn_storm_4",
+        "edgePixels": 12
+      },
+      {
+        "key": "fx_evo_death_thunder_seal",
+        "edgePixels": 12
+      },
+      {
+        "key": "fx_evo_death_thunder_seal_2",
+        "edgePixels": 24
+      },
+      {
+        "key": "fx_evo_death_thunder_seal_3",
+        "edgePixels": 27
+      },
+      {
+        "key": "fx_evo_death_thunder_seal_4",
+        "edgePixels": 27
+      },
+      {
+        "key": "fx_evo_death_wrath_pendulum_3",
+        "edgePixels": 64
+      },
+      {
+        "key": "fx_evo_death_wrath_pendulum_4",
+        "edgePixels": 64
+      },
+      {
+        "key": "fx_evo_hit_wrath_pendulum_4",
+        "edgePixels": 20
+      },
+      {
+        "key": "orb_soul",
         "edgePixels": 4
+      },
+      {
+        "key": "orb_soul_2",
+        "edgePixels": 3
+      },
+      {
+        "key": "orb_soul_3",
+        "edgePixels": 1
       },
       {
         "key": "enemy_harpy",
@@ -1491,6 +2517,10 @@
       },
       {
         "key": "enemy_harpy_4",
+        "edgePixels": 10
+      },
+      {
+        "key": "enemy_harpy_rim",
         "edgePixels": 10
       },
       {
@@ -1510,6 +2540,10 @@
         "edgePixels": 30
       },
       {
+        "key": "enemy_knight_rim",
+        "edgePixels": 26
+      },
+      {
         "key": "enemy_lich",
         "edgePixels": 32
       },
@@ -1524,6 +2558,10 @@
       {
         "key": "enemy_lich_4",
         "edgePixels": 34
+      },
+      {
+        "key": "enemy_lich_rim",
+        "edgePixels": 32
       },
       {
         "key": "enemy_treant",
@@ -1542,6 +2580,10 @@
         "edgePixels": 23
       },
       {
+        "key": "enemy_treant_rim",
+        "edgePixels": 18
+      },
+      {
         "key": "enemy_wraith",
         "edgePixels": 6
       },
@@ -1552,6 +2594,10 @@
       {
         "key": "enemy_wraith_3",
         "edgePixels": 7
+      },
+      {
+        "key": "enemy_wraith_rim",
+        "edgePixels": 6
       },
       {
         "key": "enemy_banshee",
@@ -1566,20 +2612,28 @@
         "edgePixels": 1
       },
       {
+        "key": "enemy_banshee_rim",
+        "edgePixels": 1
+      },
+      {
         "key": "enemy_bomber",
-        "edgePixels": 9
+        "edgePixels": 7
       },
       {
         "key": "enemy_bomber_2",
-        "edgePixels": 8
+        "edgePixels": 1
       },
       {
         "key": "enemy_bomber_3",
-        "edgePixels": 8
+        "edgePixels": 4
       },
       {
         "key": "enemy_bomber_4",
-        "edgePixels": 10
+        "edgePixels": 3
+      },
+      {
+        "key": "enemy_bomber_rim",
+        "edgePixels": 7
       },
       {
         "key": "enemy_golem",
@@ -1598,6 +2652,30 @@
         "edgePixels": 18
       },
       {
+        "key": "enemy_golem_rim",
+        "edgePixels": 22
+      },
+      {
+        "key": "enemy_spider",
+        "edgePixels": 31
+      },
+      {
+        "key": "enemy_spider_2",
+        "edgePixels": 27
+      },
+      {
+        "key": "enemy_spider_3",
+        "edgePixels": 25
+      },
+      {
+        "key": "enemy_spider_4",
+        "edgePixels": 28
+      },
+      {
+        "key": "enemy_spider_rim",
+        "edgePixels": 31
+      },
+      {
         "key": "enemy_wolf",
         "edgePixels": 10
       },
@@ -1614,20 +2692,12 @@
         "edgePixels": 4
       },
       {
+        "key": "enemy_wolf_rim",
+        "edgePixels": 10
+      },
+      {
         "key": "fx_halo_cold_2",
         "edgePixels": 16
-      },
-      {
-        "key": "orb_soul",
-        "edgePixels": 4
-      },
-      {
-        "key": "orb_soul_2",
-        "edgePixels": 4
-      },
-      {
-        "key": "orb_soul_3",
-        "edgePixels": 4
       },
       {
         "key": "fx_ice",
@@ -1646,12 +2716,36 @@
         "edgePixels": 7
       },
       {
-        "key": "enemy_ghoul",
+        "key": "enemy_bat_3",
         "edgePixels": 7
       },
       {
+        "key": "enemy_bat_4",
+        "edgePixels": 7
+      },
+      {
+        "key": "enemy_bat_rim",
+        "edgePixels": 7
+      },
+      {
+        "key": "enemy_ghoul",
+        "edgePixels": 5
+      },
+      {
         "key": "enemy_ghoul_2",
-        "edgePixels": 3
+        "edgePixels": 4
+      },
+      {
+        "key": "enemy_ghoul_3",
+        "edgePixels": 1
+      },
+      {
+        "key": "enemy_ghoul_4",
+        "edgePixels": 4
+      },
+      {
+        "key": "enemy_ghoul_rim",
+        "edgePixels": 5
       },
       {
         "key": "enemy_scarecrow",
@@ -1662,12 +2756,36 @@
         "edgePixels": 14
       },
       {
+        "key": "enemy_scarecrow_3",
+        "edgePixels": 16
+      },
+      {
+        "key": "enemy_scarecrow_4",
+        "edgePixels": 14
+      },
+      {
+        "key": "enemy_scarecrow_rim",
+        "edgePixels": 8
+      },
+      {
         "key": "enemy_skeleton",
-        "edgePixels": 5
+        "edgePixels": 3
       },
       {
         "key": "enemy_skeleton_2",
         "edgePixels": 7
+      },
+      {
+        "key": "enemy_skeleton_3",
+        "edgePixels": 9
+      },
+      {
+        "key": "enemy_skeleton_4",
+        "edgePixels": 7
+      },
+      {
+        "key": "enemy_skeleton_rim",
+        "edgePixels": 3
       },
       {
         "key": "enemy_slime",
@@ -1675,6 +2793,14 @@
       },
       {
         "key": "enemy_slime_2",
+        "edgePixels": 5
+      },
+      {
+        "key": "enemy_slime_3",
+        "edgePixels": 5
+      },
+      {
+        "key": "enemy_slime_rim",
         "edgePixels": 5
       },
       {
@@ -1686,8 +2812,32 @@
         "edgePixels": 5
       },
       {
+        "key": "enemy_witchling_3",
+        "edgePixels": 6
+      },
+      {
+        "key": "enemy_witchling_4",
+        "edgePixels": 5
+      },
+      {
+        "key": "enemy_witchling_rim",
+        "edgePixels": 4
+      },
+      {
         "key": "enemy_bog_rat_2",
-        "edgePixels": 12
+        "edgePixels": 9
+      },
+      {
+        "key": "enemy_bog_rat_3",
+        "edgePixels": 8
+      },
+      {
+        "key": "enemy_bog_rat_4",
+        "edgePixels": 8
+      },
+      {
+        "key": "enemy_bog_rat_rim",
+        "edgePixels": 16
       },
       {
         "key": "enemy_bogzombie",
@@ -1699,7 +2849,19 @@
       },
       {
         "key": "enemy_bogzombie_2",
-        "edgePixels": 5
+        "edgePixels": 9
+      },
+      {
+        "key": "enemy_bogzombie_3",
+        "edgePixels": 10
+      },
+      {
+        "key": "enemy_bogzombie_4",
+        "edgePixels": 15
+      },
+      {
+        "key": "enemy_bogzombie_rim",
+        "edgePixels": 6
       },
       {
         "key": "enemy_crow",
@@ -1710,12 +2872,32 @@
         "edgePixels": 6
       },
       {
+        "key": "enemy_crow_3",
+        "edgePixels": 6
+      },
+      {
+        "key": "enemy_crow_4",
+        "edgePixels": 6
+      },
+      {
+        "key": "enemy_crow_rim",
+        "edgePixels": 9
+      },
+      {
         "key": "enemy_mudling",
         "edgePixels": 15
       },
       {
         "key": "enemy_mudling_2",
         "edgePixels": 5
+      },
+      {
+        "key": "enemy_mudling_3",
+        "edgePixels": 7
+      },
+      {
+        "key": "enemy_mudling_rim",
+        "edgePixels": 15
       },
       {
         "key": "enemy_toad",
@@ -1726,8 +2908,32 @@
         "edgePixels": 4
       },
       {
+        "key": "enemy_toad_3",
+        "edgePixels": 4
+      },
+      {
+        "key": "enemy_toad_4",
+        "edgePixels": 8
+      },
+      {
+        "key": "enemy_toad_rim",
+        "edgePixels": 11
+      },
+      {
         "key": "enemy_wisp_2",
-        "edgePixels": 6
+        "edgePixels": 7
+      },
+      {
+        "key": "enemy_wisp_3",
+        "edgePixels": 7
+      },
+      {
+        "key": "enemy_wisp_4",
+        "edgePixels": 7
+      },
+      {
+        "key": "enemy_wisp_rim",
+        "edgePixels": 5
       },
       {
         "key": "fx_bolt",
@@ -1774,24 +2980,76 @@
         "edgePixels": 12
       },
       {
+        "key": "projectile_phoenix",
+        "edgePixels": 6
+      },
+      {
+        "key": "projectile_phoenix_2",
+        "edgePixels": 6
+      },
+      {
+        "key": "projectile_phoenix_3",
+        "edgePixels": 6
+      },
+      {
         "key": "flail_ball",
         "edgePixels": 6
       },
       {
+        "key": "fx_death_blob",
+        "edgePixels": 7
+      },
+      {
+        "key": "fx_death_blob_2",
+        "edgePixels": 6
+      },
+      {
+        "key": "fx_death_blob_3",
+        "edgePixels": 6
+      },
+      {
         "key": "fx_death_blob_4",
-        "edgePixels": 8
+        "edgePixels": 6
+      },
+      {
+        "key": "fx_death_bone",
+        "edgePixels": 6
+      },
+      {
+        "key": "fx_death_bone_2",
+        "edgePixels": 7
+      },
+      {
+        "key": "fx_death_bone_3",
+        "edgePixels": 7
       },
       {
         "key": "fx_death_bone_4",
-        "edgePixels": 8
+        "edgePixels": 1
       },
       {
         "key": "fx_death_dust_4",
-        "edgePixels": 4
+        "edgePixels": 1
       },
       {
-        "key": "fx_death_void_4",
-        "edgePixels": 20
+        "key": "fx_death_fire",
+        "edgePixels": 9
+      },
+      {
+        "key": "fx_death_fire_2",
+        "edgePixels": 9
+      },
+      {
+        "key": "fx_death_fire_3",
+        "edgePixels": 14
+      },
+      {
+        "key": "fx_death_fire_4",
+        "edgePixels": 15
+      },
+      {
+        "key": "fx_death_void",
+        "edgePixels": 1
       },
       {
         "key": "fx_star",
@@ -1818,10 +3076,6 @@
         "edgePixels": 12
       },
       {
-        "key": "projectile_phoenix",
-        "edgePixels": 6
-      },
-      {
         "key": "chain_link",
         "edgePixels": 16
       },
@@ -1846,12 +3100,20 @@
         "edgePixels": 12
       },
       {
+        "key": "fx_ember_muzzle",
+        "edgePixels": 12
+      },
+      {
+        "key": "fx_ember_trail",
+        "edgePixels": 12
+      },
+      {
         "key": "gem_small",
         "edgePixels": 8
       },
       {
         "key": "projectile_ember",
-        "edgePixels": 10
+        "edgePixels": 8
       },
       {
         "key": "projectile_ice",
@@ -1880,5 +3142,6 @@
     ],
     "ok": true
   },
+  "criticalFrame": "fx_shock@4_5",
   "jsErrors": []
 }

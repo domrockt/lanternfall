@@ -9573,25 +9573,36 @@
       "id": 7618,
       "title": "m10-atlas-gutter K1: Audit-Skript + Vorher-Messung",
       "description": "scripts/art/atlas-audit.mjs: per-Prefix-Coverage (erfasst/abgelehnt je ATLAS_PREFIXES-Key), Gutter >= ATLAS_GUTTER, Pixel-Bleed im Rand. Akzeptanz vorher festgelegt: 0 Bleed-Faelle, alle heissen Klassen erfasst. Vorher-JSON shots/m10-atlas-gutter-before.json committet. AK: Audit laeuft, JSON committed, Auswertung in docs/lanes/m10-atlas-gutter.md.",
-      "column": "doing",
+      "column": "review",
       "notes": [
         {
           "at": "2026-11-28T02:48:40Z",
           "by": "build",
           "text": "todo → doing: K1 startet: Audit-Skript um Prefix-Coverage + Ring-Klassifikation (replica vs foreign) + 4x-Zoom-Shot erweitern, dann Vorher-Lauf."
+        },
+        {
+          "at": "2026-11-28T02:52:13Z",
+          "by": "build",
+          "text": "doing → review: Commit f90f569: Audit erweitert (Prefix-Coverage 17/17, Ring-Klassifikation, Zoom-Shot), Vorher-JSON + 4x-Zoom committed. Vorher-Befund: PASS — kein Laufzeitdefekt (0 Bleed, Coverage 100%, Gutter 4px)."
         }
       ],
       "created": "2026-11-28T02:46:44Z",
-      "updated": "2026-11-28T02:48:40Z"
+      "updated": "2026-11-28T02:52:13Z"
     },
     {
       "id": 7619,
       "title": "m10-atlas-gutter K2: Fix in atlas.ts + Bleed-Invariante-Tests",
       "description": "Befund aus Vorher-Audit in atlas.ts beheben (Gutter/Padding/shouldAtlasKey-Abdeckung); tests/atlas.test.ts um Bleed-Invariante zwischen benachbarten Frames erweitern. AK: tsc gruen, gezielte Tests gruen, ein Commit mit Belegen.",
-      "column": "todo",
-      "notes": [],
+      "column": "doing",
+      "notes": [
+        {
+          "at": "2026-11-28T02:52:13Z",
+          "by": "build",
+          "text": "todo → doing: K2: kein atlas.ts-Fix noetig (Vorher PASS, Packer-Fix bereits via m10-atlas-gaps in main). K2 haertet stattdessen: tests/atlas.test.ts auf 391er-Stand + Bleed-Invariante zwischen benachbarten Frames; stale shots/m10-atlas-audit.json refreshen."
+        }
+      ],
       "created": "2026-11-28T02:46:44Z",
-      "updated": "2026-11-28T02:46:44Z"
+      "updated": "2026-11-28T02:52:13Z"
     },
     {
       "id": 7620,
