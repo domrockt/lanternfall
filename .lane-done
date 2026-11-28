@@ -4,8 +4,8 @@ Ursache: phoenix L8 mit 4 Funken/0,48 s (250 Basis-DPS); mira erreicht ember:8 b
 und bekommt die Evolution über das Level-up-Angebot VOR Boss 1 → Moorkönigin in 9,5-15,1 s.
 kael (Zornpendel ~94 DPS vs. Einzelziel) war nie betroffen.
 
-Fix: src/data/evolution-weapons.ts phoenix L8 → 2 Funken/1,1 s (~109 Basis-DPS, damage 30
-bleibt wegen Pin tests/evolution.test.ts). 3 begründete Iterationen, verbindlich ausgewertet;
+Fix: src/data/evolution-weapons.ts phoenix L8 → 2 Funken/1,1 s (Direktschaden 250 → 54,5 DPS,
+inkl. fixer Explosion ~109 DPS gegen Einzelziel; damage 30 bleibt wegen Pin tests/evolution.test.ts). 3 begründete Iterationen, verbindlich ausgewertet;
 iter2 (2/0,8) FAILed full mira/404 16,7 s, iter3 grün.
 
 Nachher (committete Baselines shots/m10-balance-corridor-{short,full}.json, 13:43Z/13:52Z):

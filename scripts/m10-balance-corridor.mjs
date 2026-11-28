@@ -184,8 +184,9 @@ for (const character of CHARS) {
  * Aenderungen an dieser Liste NUR mit Begruendung in docs/lanes/m10-balance-corridor-guard.md.
  *
  * m10-mira-dps-corridor (2026-11-28, K3): der mira-Eintrag (bossDuration < 20 s) wurde
- * ENTFERNT — Ursache behoben (phoenix L8 4/0,48 = 250 Basis-DPS → 2/1,1 = ~109), neue
- * Baselines committed; alle mira/kael-Boss-Dauern in [20, 60] s. Befund + Zahlen:
+ * ENTFERNT — Ursache behoben (phoenix L8 Direktschaden 4×30/0,48 = 250 DPS → 2×30/1,1 =
+ * 54,5 DPS; inkl. fixer Explosion ~109 DPS gegen Einzelziel), neue Baselines committed;
+ * alle mira/kael-Boss-Dauern in [20, 60] s. Befund + Zahlen:
  * docs/lanes/m10-mira-dps-corridor.md.
  */
 const KNOWN_VIOLATIONS = [];
