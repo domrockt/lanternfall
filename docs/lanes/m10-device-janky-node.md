@@ -172,3 +172,20 @@ Belege: `~/games/.evidence/m10-device-janky-node/k3-after-device-fixedbuild.json
      lane-blockend (Reviewer-Zitat: „Hinweis, kein Fehlerbefund“).
 - Desktop-Bitgleichheit nach dem Review-Fix erneut belegt: die Änderung betrifft nur die
   Probe-Häufigkeit, nicht den Probe-Ausgang (`clampTierMax`/`isDeviceNode` unberührt).
+
+## Merge (2026-11-28T14:1xZ)
+
+- Lane `m10-device-janky-node` nach Rebase auf main per Merge-Commit `f0bc1de0` in main
+  übernommen (`git merge-base --is-ancestor` rc=0); `.lane-done` bewusst NICHT gemergt.
+- Lane-Karten #11969-#11972 als #12371-#12374 auf das main-Board übernommen und nach
+  Kontroll-Screenshots (`shots/merge-m10-device-janky-node-check-960.png`,
+  `...-check-1280.png`; Spielfeld voll gerendert, kein Schwarz, 0 JS-Fehler) auf `done` geschlossen.
+- Suite nach dem Merge grün: Build rc=0, 2338/2338 Tests (inkl. `tests/device-janky-node.test.ts`
+  und thermal-wiring mit baseTier-Writer).
+- **Status unverändert: Tor janky < 10 % ist mit Hebel A allein NICHT erreicht**
+  (Vorher 10,41 % → Nachher 10,62 %, kombiniert 462/4352; Rest hängt an
+  m10-mobile-fps-cap und m10-frame-tail-followup).
+- Post-Merge-Geräteprobe (Doms Bitte 09:45Z) ist bei Dora angefordert
+  (games/.dispatch/requests.md, 2026-11-28T14:1xZ): gfxinfo-Gegenprobe nach Methode K1
+  (`scripts/m10-device-janky-node.mjs`, Renderer-String + DPR) nach dem nächsten
+  stuendlichen APK-Build; Ergebnis wird hier im K3-Abschnitt ergänzt.
