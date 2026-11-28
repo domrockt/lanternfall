@@ -262,3 +262,22 @@ Drei Commit-Versuche (08:57, 09:08, 09:15) scheiterten an derselben Stelle → R
   10:55Z. Bedarf UNVERÄNDERT: gem_small/gem_medium-Row-Schnitt via Mini-Job
   oder Freigabe nach fx-bakes-evo-r2-Merge — danach 3 Dateien committen
   (#10180), Board #10177–#10180 done/review→done, `.lane-done`.
+
+## Run-Fortsetzung (28.11. 09:55–09:58Z, Versuch 2 / Run 10)
+
+- **Session-Fix:** Resume lief als NEUE Session (ses_dde6c8fdeffetvq5zty5AqB0vY);
+  beide Recheck-Automations (v2 + Backup) zeigten noch auf die alte Session
+  (ses_dde9a0acdf…) — bei freiem Claim wäre der Commit-Prompt ins Leere gelaufen.
+  Beide gelöscht und als **v3** (aut_221953ff6001…, alle 25 min bis 10:57Z,
+  erster Recheck 10:20:59Z) und **Backup** (aut_221953ff9001…, einmalig 11:10Z)
+  auf die aktuelle Session neu angelegt; Prompt um „zuerst fertig?-Check +
+  Commit nur die 3 gestageten Dateien + npm test/build 1x" ergänzt.
+- Claim-Lage (Substring-Check 09:54Z): `src/gfx/textures.ts` weiterhin bei
+  `m10-fx-bakes-evo-r2`, NOT-MERGED (merge-base-Check 09:54Z). Mini-Jobs
+  `m10-chest-arrow-texture-r2` / `m10-gem-rows-texture` nicht gestartet
+  (kein Worktree). Kein Commit-Retry (4 dokumentierte Fehlversuche).
+- Ready-Zustand unverändert zu Run 9 (frisch verifiziert 09:49Z): tsc clean,
+  Guard 10/10, r3-Patch gestaget (textures.ts 20 Z, xp.ts 24 Z, Test 8 Z);
+  Kontrolleure beide PASS (art-director r2 4,5/5, reviewer bitgleich 18/18).
+- Bedarf UNVERÄNDERT: gem-Rows-Freigabe oder fx-Merge; danach macht v3 den
+  Endcommit + Board-Moves + `.lane-done` automatisch.
