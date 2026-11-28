@@ -21,6 +21,7 @@ const argOf = (name, fallback) => {
 const TAG = String(argOf("tag", "before"));
 const SEED = String(argOf("seed", "7"));
 const DRAWCALLS = argv.includes("--drawcalls");
+const FROZEN = argv.includes("--frozen");
 
 ensureBuild();
 
@@ -102,7 +103,7 @@ const shadowProbe = () =>
         props++;
         const owner = p.getData("ownerKey") ?? p.texture?.key;
         const hit = shadows.some((s) => s.ownerKey === owner
-          && Math.abs(s.x - (p.x + 1)) <= 2 && Math.abs(s.y - (p.y - 1)) <= 2);
+          && Math.abs(s.x - (p.x + 1)) <= 2 && Math.abs(s.y - (p.y + 1)) <= 2);
         if (hit) withShadow++;
         else missing.push({ key: p.texture?.key, x: Math.round(p.x), y: Math.round(p.y) });
       }
@@ -218,6 +219,118 @@ try {
   await page.waitForTimeout(6000); // Chunks aufbauen
   await page.evaluate(() => window.__lf.setTimeScale(1));
   await page.waitForTimeout(1000);
+
+  if (FROZEN) {
+    // ── Eingefrorene Vorher/Nachher-Belege (art-director Runde 1) ──
+    // Sim anhalten (Licht/Wasser/Gluehwuermchen frieren ein), Cluster-Shot
+    // 960x540 (ganzzahlige 2x-Skalierung des 480x270-Spiels) + 3x-Crops an
+    // Props; dazu Texture-Dump + Schatten-Objekt-Verifikation im laufenden Spiel.
+    const props = await visibleProps();
+    const cluster = densestCluster(props);
+    await page.evaluate(({ x, y }) => {
+      window.__lf.autoPlay(false);
+      window.__lf.god(true);
+      window.__lf.teleport(Math.round(x), Math.round(y) - 12);
+    }, cluster);
+    await page.setViewportSize({ width: 960, height: 540 });
+    await page.waitForTimeout(1400);
+    await page.evaluate(() => window.__lf.setTimeScale(0));
+    await page.waitForTimeout(600);
+
+    const evidence = await page.evaluate(() => {
+      const g = window.__game.scene.getScene("run").ground;
+      const cam = window.__game.scene.getScene("run").cameras.main;
+      const canvas = document.querySelector("canvas");
+      const player = window.__game.scene.getScene("run").player;
+      // Texture-Dump: prop_contact_shadow direkt aus dem Spiel lesen.
+      const tex = window.__game.textures.get("prop_contact_shadow");
+      let texInfo = null;
+      if (tex) {
+        const src = tex.source[0].image;
+        const probe = document.createElement("canvas");
+        probe.width = src.width;
+        probe.height = src.height;
+        const pctx = probe.getContext("2d");
+        pctx.drawImage(src, 0, 0);
+        const data = pctx.getImageData(0, 0, src.width, src.height).data;
+        let lit = 0;
+        const samples = [];
+        for (let i = 3; i < data.length; i += 4) {
+          if (data[i] > 0) {
+            lit++;
+            if (samples.length < 3) samples.push([data[i - 3], data[i - 2], data[i - 1], data[i]]);
+          }
+        }
+        texInfo = { exists: true, w: src.width, h: src.height, litPixels: lit, samples, frames: Object.keys(tex.frames).filter((f) => f.startsWith("ps_")).sort() };
+      }
+      // Props mit Schattenstatus + projizierten Screen-Koordinaten. Projektion
+      // ueber cam.midPoint (Kamera-Lerp-sicher): CSS-px je Welt-px =
+      // cssWidth / (cam.width / zoom).
+      const rect = canvas.getBoundingClientRect();
+      const mid = cam.midPoint;
+      const worldPerCss = cam.width / cam.zoom / rect.width;
+      const toScreen = (wx, wy) => [
+        Math.round(rect.width / 2 + (wx - mid.x) / worldPerCss),
+        Math.round(rect.height / 2 + (wy - mid.y) / worldPerCss),
+      ];
+      const out = [];
+      for (const e of g.chunks.values()) {
+        for (const p of e.props) {
+          if (!p.visible || p.getData("isShadow") || p.getData("glow")) continue;
+          const sh = (e.props.find((q) => q.getData("isShadow") && q.getData("ownerKey") === (p.getData("ownerKey") ?? p.texture?.key)
+            && Math.abs(q.x - (p.x + 1)) <= 2 && Math.abs(q.y - (p.y + 1)) <= 2));
+          out.push({
+            key: p.texture?.key,
+            world: [Math.round(p.x * 10) / 10, Math.round(p.y * 10) / 10],
+            screen: toScreen(p.x, p.y),
+            hasShadow: Boolean(sh),
+            shadowVisible: sh ? sh.visible : false,
+            shadowFrame: sh ? sh.frame?.name : null,
+          });
+        }
+      }
+      return { texInfo, scale: rect.width / 480, worldPerCss, midPoint: [mid.x, mid.y], camZoom: cam.zoom, canvas: { width: canvas.width, cssWidth: rect.width, cssHeight: rect.height }, props: out };
+    });
+
+    const shot = `shots/abnahme/m10-prop-shadow-${TAG}-frozen960.png`;
+    await page.screenshot({ path: shot });
+    // Ganzzahlige 3x-Crops (nearest) um Props nahe am Spieler (hell/dunkel gemischt).
+    const pw = await page.evaluate(() => window.__game.scene.getScene("run").player);
+    const cropTargets = evidence.props
+      .filter((p) => p.hasShadow && p.shadowVisible)
+      .filter((p) => p.screen[0] > 160 && p.screen[0] < 800 && p.screen[1] > 140 && p.screen[1] < 400)
+      .sort((a, b) => (a.world[0] - pw.x) ** 2 + (a.world[1] - pw.y) ** 2 - ((b.world[0] - pw.x) ** 2 + (b.world[1] - pw.y) ** 2))
+      .slice(0, 3);
+    for (let i = 0; i < cropTargets.length; i++) {
+      const [sx, sy] = cropTargets[i].screen;
+      execFileSync("convert", [
+        shot, "-crop", "140x80+" + Math.max(0, sx - 70) + "+" + Math.max(0, sy - 55),
+        "+repage", "-sample", "300%",
+        `shots/abnahme/m10-prop-shadow-${TAG}-frozen3x-${i}.png`,
+      ]);
+    }
+    const out = {
+      card: "m10-prop-contact-shadow",
+      tag: TAG,
+      mode: "frozen",
+      measuredAt: new Date().toISOString(),
+      command: `node scripts/m10-prop-shadow.mjs --tag ${TAG} --frozen`,
+      shot,
+      ...evidence,
+      jsErrors: errors,
+    };
+    const evDir = `${process.env.HOME}/games/.evidence/m10-prop-contact-shadow`;
+    writeFileSync(`${evDir}/m10-prop-shadow-frozen-${TAG}.json`, JSON.stringify(out, null, 2));
+    console.log(JSON.stringify({
+      tag: TAG,
+      tex: evidence.texInfo,
+      scale: evidence.scale,
+      props: evidence.props.length,
+      withVisibleShadow: evidence.props.filter((p) => p.hasShadow && p.shadowVisible).length,
+      errors: errors.length,
+    }));
+    process.exit(errors.length ? 1 : 0);
+  }
 
   const props = await visibleProps();
   const cluster = densestCluster(props);

@@ -2,7 +2,7 @@
   "card": "m10-prop-contact-shadow",
   "tag": "after",
   "seed": "7",
-  "measuredAt": "2026-11-28T08:34:15.704Z",
+  "measuredAt": "2026-11-28T09:05:44.720Z",
   "command": "node scripts/m10-prop-shadow.mjs --tag after",
   "cluster": {
     "count": 12,

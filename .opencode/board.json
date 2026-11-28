@@ -13769,9 +13769,15 @@
       "title": "m10-prop-contact-shadow K4: Nachher-Belege, FPS-/Draw-Call-Gegenprobe, art-director",
       "description": "--tag after: Nachher-Shots (640x360 + 960x540 + 3x-Crop, gleiche Cluster-Logik), Probe 100% Props mit Schatten + 0 Off-Palette-Pixel im Schatten; Burst 640x360 mit 500 Gegnern unter flock (>= 55 FPS, iGPU-Renderer-String), Draw-Calls <= Baseline+2; art-director-Urteil >= 4/5; docs/lanes/m10-prop-contact-shadow.md + .lane-done. Abnahme: build rc=0, npm test gruen, Belege in shots/abnahme/ + .evidence/.",
       "column": "todo",
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-11-28T08:48:10Z",
+          "by": "build",
+          "text": "art-director FAIL Runde 1 (1-2/5): Schatten im Frame nicht wahrnehmbar laut dessen Pixelproben, Belege nicht eingefroren. Eigene Gegenpruefung laeuft: 960-Vorher/Nachher-Diff zeigt koherente Ellipsen unter Baeumen/Fels — AD-Messpunkte vermutlich an verschobenen Weltkoordinaten. Fix: --frozen-Modus (setTimeScale 0), Fusspunkt-Deltas an Props, ganzzahlige 3x-Crops, Texture-Dump."
+        }
+      ],
       "created": "2026-11-28T08:28:26Z",
-      "updated": "2026-11-28T08:28:26Z"
+      "updated": "2026-11-28T08:48:10Z"
     }
   ]
 }

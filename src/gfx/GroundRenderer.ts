@@ -775,7 +775,10 @@ export class GroundRenderer {
     const shadowTex = this.propShadowTexture ? this.scene.textures.get(this.propShadowTexture) : null;
     const shadowFrame = shadowTex && shadowTex.has(`ps_${shadowCls}`) ? `ps_${shadowCls}` : null;
     if (shadowFrame && this.propShadowTexture) {
-      shadow = this.scene.add.image(wx + 1, wy - 1, this.propShadowTexture, shadowFrame)
+      // Zentrum 1 px UNTER dem Fusspunkt: die untere Ellipsenhaelfte bleibt
+      // unter der opaken Basis sichtbar (wy-1 wuerde die Basis den Schatten
+      // verdecken lassen — art-director-Befund Runde 1).
+      shadow = this.scene.add.image(wx + 1, wy + 1, this.propShadowTexture, shadowFrame)
         .setOrigin(0.5, 0.5);
     } else if (this.scene.textures.exists("shadow")) {
       // Fallback (Atlas ohne Shadow-Frame): alter weicher Bodenschatten.
