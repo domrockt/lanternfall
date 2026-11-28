@@ -29,7 +29,29 @@ diese Lane-Doku. KEIN Spielcode, KEIN index.html, KEINE Abhängigkeits-Upgrades.
 
 ## K2 — vite.config.ts (Code-Split)
 
-(vorbereitet)
+Neu angelegt: `vite.config.ts` (einzige Änderung, kein package.json-Edit nötig).
+Rolldown `advancedChunks` mit drei Gruppen: `phaser` (node_modules/phaser),
+`sprites` (`src/gfx/gen-*.ts`), `gfx` (Rest von `src/gfx`); Spielcode bleibt in `index`.
+
+| Chunk | vorher | nachher | gzip nachher |
+|---|---|---|---|
+| `index` (Spielcode) | 1954,17 kB | 250,92 kB | 77,32 kB |
+| `sprites` (src/gfx/gen-*) | – | 420,78 kB | 39,86 kB |
+| `gfx` (Rest src/gfx) | – | 88,19 kB | 26,11 kB |
+| `phaser` (Vendor) | – | 1194,42 kB | 318,49 kB |
+| terrainWorker + runtime | 10,78 kB | 11,37 kB | – |
+
+- Warnung: **weg** (rc=0, keine Chunk-Größenwarnung). Vite-Zeit 523 ms (Wall inkl. tsc 0,85 s) — Budget 2 s: Pass.
+- **Abweichung, offen dokumentiert:** der Abnahme-Satz „alle Chunks < 500 kB“ ist für den
+  Phaser-Vendor-Chunk technisch unerreichbar — Phaser 3.90 ist ein einziges vorgebundenes
+  Modul; ein Teilen wäre nur per Abhängigkeits-Upgrade/-Austausch möglich (ausgeschlossen).
+  Statt die Warnung still zu verstecken, wurde der Spielcode maximal getrennt (250/421/88 kB)
+  und der Warn-Limit-Aufschlag in `vite.config.ts` NUR für den Vendor-Chunk gesetzt
+  (1250 kB, kommentiert). Der Guard-Test (K3) erzwingt: jeder Nicht-Phaser-Chunk < 500 kB,
+  Phaser-Chunk < Limit.
+- Splitting verzögert nichts: alle Chunks werden wie vorher statisch geladen
+  (kein dynamisches import(), index.html unverändert).
+
 
 ## K3 — Guard-Test + Preview-Smoke
 
