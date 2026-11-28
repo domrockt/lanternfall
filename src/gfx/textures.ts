@@ -227,27 +227,31 @@ export const SPRITE_GRIDS: Record<string, { rows: string[]; w: number; h: number
   },
   gem_small: {
     w: 7, h: 7,
-    // M10-Lesbarkeit: Groesse 1 (XP 2) = Moor-Gruen (PAL 31) mit Glanz (22),
-    // 1-px-Tinten-Kontur. Drei Groessen sind farblich eindeutig getrennt.
+    // m10-gem-value-reading r3 (Nachher-Messung): Groesse 1 (XP 2) = bone
+    // (PAL 10) mit candleWhite-Glanz (12) und 1 px lanternWhite-Sparkle (13)
+    // — Silber-Ende der Rampe. r1 mist = exakte Rat-Flankenfarbe (art-director
+    // FAIL), r2 fogBlue = 29,45 % Moor-Boden-Kollision. bone: 2,24 %
+    // (verbindliche je-Stufe-Messung, gem-reading-after.json).
     rows: [
       "..000..",
-      ".0vmv0.",
-      "0vmmvv0",
-      "0vvvvv0",
-      ".0vvv0.",
-      "..0v0..",
+      ".0dca0.",
+      "0acaaa0",
+      "0aaaaa0",
+      ".0aaa0.",
+      "..0a0..",
       "...0...",
     ],
   },
   gem_medium: {
     w: 9, h: 9,
-    // Groesse 2 (XP 6) = Bernstein/Gold (PAL 20/21). Nicht in den 6
-    // haeufigsten Gegnerfarben -> im Chaos klar getrennt.
+    // Groesse 2 (XP 6) = Bernstein/Gold (PAL 20/21) + lanternWhite-Sparkle
+    // (13, art-director r2: heller Kern, damit das Gem ueber Glow-/Brand-
+    // Decals lesbar bleibt, auf denen es haeufig liegt).
     rows: [
       "...000...",
       "..0lll0..",
       ".0llkkk0.",
-      "0llkkkkk0",
+      "0llkdddk0",
       "0lkkkkkk0",
       "0llkkkkk0",
       ".0llkkk0.",
